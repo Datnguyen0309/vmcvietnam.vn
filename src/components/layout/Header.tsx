@@ -74,17 +74,16 @@ export const Header = () => {
         <div className="hidden sm:block">
           <HeaderTop headerTop={homeContent?.acf?.header_top} />
         </div>
-        <nav className="max-w-7xl mx-auto py-3 sm:py-4 bg-white hidden sm:grid lg:flex lg:justify-between grid-flow-col">
-          <div className="col-start-1 col-end-2 items-center py-2 hidden md:flex">
+
+        <nav className="max-w-7xl mx-auto py-3 sm:py-4 bg-white hidden lg:flex lg:justify-between md:px-6 lg:px-8">
+          <div className="hidden md:flex items-center">
             <Logo logo={homeContent?.acf?.header?.logo} />
           </div>
-          <div className="col-start-10 col-end-13 flex items-center ">
-            <DesktopMenu
-              activeLink={state.activeLink}
-              isScrolled={state.isScrolled}
-            />
+
+          <div className="hidden lg:flex items-center">
+            <DesktopMenu activeLink={state.activeLink} isScrolled={state.isScrolled} />
             <motion.button
-              className="hidden text-sm md:flex items-center gap-2 bg-gradient-to-r from-[#B7042D] to-[#E65F1D] p-2 rounded-[99px] text-white ml-5"
+              className="hidden lg:flex items-center gap-2 bg-gradient-to-r from-[#B7042D] to-[#E65F1D] px-3 py-2 rounded-full text-white text-sm ml-5"
               animate={{ scaleX: [1, 1.2, 1] }}
               initial={{ scaleX: 1 }}
               transition={{
@@ -92,7 +91,6 @@ export const Header = () => {
                 ease: "easeInOut",
                 repeat: Infinity,
                 repeatType: "reverse",
-                playState: "running"
               }}
             >
               <Phone className="h-4 w-4" />
@@ -100,10 +98,16 @@ export const Header = () => {
             </motion.button>
           </div>
         </nav>
-        <MobileMenu logo={homeContent?.acf?.header?.logo}  activeLink={state.activeLink}
-              isScrolled={state.isScrolled} />
+        <div className="lg:hidden">
+          <MobileMenu
+            logo={homeContent?.acf?.header?.logo}
+            activeLink={state.activeLink}
+            isScrolled={state.isScrolled}
+          />
+        </div>
       </header>
-      <div className="pt-[50px] sm:pt-[150px]"></div>
+      
+      <div className="pt-[50px] sm:pt-[80px] lg:pt-[120px]"></div>
     </>
   );
 };

@@ -13,34 +13,34 @@ export const Majors = (section_1: any) => {
 
   const courses = [
     {
-      title: "Graphic Design",
-      image: "/assets/2.webp",
-      path: "/graphic-design"
+      title: section_1?.section_1?.list?.list_1?.list_a?.title ||"Graphic Design",
+      image: section_1?.section_1?.list?.list_1?.list_a?.image ||"/assets/2.webp",
+      path: section_1?.section_1?.list?.list_1?.list_a?.link ||"/graphic-design"
     },
     {
-      title: "Web design",
-      image: "/assets/2.webp",
-      path: "/web-design"
+      title:section_1?.section_1?.list?.list_1?.list_b?.title || "Web design",
+      image: section_1?.section_1?.list?.list_1?.list_b?.image ||"/assets/2.webp",
+      path: section_1?.section_1?.list?.list_1?.list_b?.link ||"/web-design"
     },
     {
-      title: "Digital Marketing",
-      image: "/assets/2.webp",
-      path: "/digital-marketing"
+      title: section_1?.section_1?.list?.list_2?.list_a?.title ||"Digital Marketing",
+      image: section_1?.section_1?.list?.list_2?.list_a?.image ||"/assets/2.webp",
+      path: section_1?.section_1?.list?.list_2?.list_a?.link ||"/digital-marketing"
     },
     {
-      title: "Content Writing",
-      image: "/assets/2.webp",
-      path: "/content-writing"
+      title: section_1?.section_1?.list?.list_2?.list_b?.title ||"Content Writing",
+      image: section_1?.section_1?.list?.list_2?.list_b?.image ||"/assets/2.webp",
+      path: section_1?.section_1?.list?.list_2?.list_b?.link ||"/content-writing"
     },
     {
-      title: "Finance",
-      image: "/assets/2.webp",
-      path: "/finance"
+      title: section_1?.section_1?.list?.list_2?.list_c?.title ||"Finance",
+      image: section_1?.section_1?.list?.list_2?.list_c?.image ||"/assets/2.webp",
+      path: section_1?.section_1?.list?.list_2?.list_c?.link ||"/finance"
     },
     {
-      title: "Business",
-      image: "/assets/2.webp",
-      path: "/business"
+      title:section_1?.section_1?.list?.list_2?.list_d?.title || "Business",
+      image: section_1?.section_1?.list?.list_2?.list_d?.image ||"/assets/2.webp",
+      path: section_1?.section_1?.list?.list_2?.list_d?.link ||"/business"
     }
   ];
 

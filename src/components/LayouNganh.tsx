@@ -52,12 +52,10 @@ export const LayoutNganh = ({ category, titles }: LayoutNganhProps) => {
       page: "1"
     })
   );
-  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
 
   return (
     <div className="container max-w-7xl mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
-        {/* Hàng trên */}
         <div className="flex items-center gap-2 text-[18px] text-gray-600">
           <Link href="/" className="hover:text-[#4A306D]">
             TRANG CHỦ

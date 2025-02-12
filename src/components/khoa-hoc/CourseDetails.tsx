@@ -3,7 +3,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { courses } from "@/utils/data";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -20,9 +19,9 @@ function formatPrice(price: number) {
 }
 
 export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
-  const [quantity, setQuantity] = useState(1);
   const router = useRouter();
   const [postsWp, setpostsWp] = useState<any>();
+  const [showDetails, setShowDetails] = useState(false);
 
   const { slug } = router.query;
   useEffect(() => {
@@ -33,6 +32,7 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
         });
         const data: { posts: any[]; totalPosts: string } = await res.json();
         const { posts } = data;
+        console.log(data)
         posts?.length && setpostsWp(posts[0]);
       } catch (error) {
         console.log(error);
@@ -40,12 +40,10 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
     };
 
     getpostsWp();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
+
   if (!CourseData) {
-    return (
-      <Loading/>
-    );
+    return <Loading />;
   }
 
   return (
@@ -62,16 +60,19 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
           <Button
             variant="secondary"
             className="bg-[#4A306D] text-white hover:bg-[#4A306D]/90"
+            onClick={() => setShowDetails(!showDetails)}
           >
             THÔNG TIN CHI TIẾT
           </Button>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: clean(
-                postsWp?.content?.rendered || defautlHtmlCourseDetail
-              )
-            }}
-          />
+          {showDetails && (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: clean(
+                  postsWp?.content?.rendered || defautlHtmlCourseDetail
+                )
+              }}
+            />
+          )}
         </div>
 
         <div className="w-full md:col-span-5 space-y-6 order-2 md:order-2">
@@ -109,7 +110,7 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
             </div>
 
             <div className="space-y-6 p-6">
-              <div className="flex  items-center gap-2">
+              <div className="flex items-center gap-2">
                 <span className="text-gray-500 line-through">
                   {formatPrice(CourseData.price || 0)}
                 </span>
@@ -119,7 +120,7 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
               </div>
 
               <Button
-                className="w-full bg-[#4A306D] lg:text-[16px] font-[700] hover:bg-[#4A306D] "
+                className="w-full bg-[#4A306D] lg:text-[16px] font-[700] hover:bg-[#4A306D]"
                 style={{
                   borderTopLeftRadius: "15px",
                   borderBottomRightRadius: "15px"
@@ -128,33 +129,15 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
                 HOTLINE: 091 234 5678
               </Button>
               <Button
-                className="w-full bg-[#fff] text-[#4A306D] hover:bg-[#4A306D] hover:text-[#fff] lg:text-[16px] font-[700] border-2 border-[#4A306D] "
+                className="w-full bg-[#fff] text-[#4A306D] hover:bg-[#4A306D] hover:text-[#fff] lg:text-[16px] font-[700] border-2 border-[#4A306D]"
                 style={{
                   borderTopLeftRadius: "15px",
                   borderBottomRightRadius: "15px"
                 }}
               >
-                ĐĂNG KÝ NGAY
+                MUA NGAY
               </Button>
             </div>
-            <div className="flex items-center justify-left">
-              <button
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="border h-8 w-8 text-center text-gray-600 bg-[#f1f1f1] hover:bg-gray-200"
-              >
-                -
-              </button>
-              <span className="border-t border-b h-8 w-12 flex items-center justify-center text-black bg-[#f1f1f1]">
-                {quantity}
-              </span>
-              <button
-                onClick={() => setQuantity(quantity + 1)}
-                className="border h-8 w-8 text-center text-gray-600 bg-[#f1f1f1] hover:bg-gray-200"
-              >
-                +
-              </button>
-            </div>
-
             <button className="w-full bg-[#f55500] hover:bg-orange-600 font-[700] text-[16px] border-none p-2 text-white mb-[16px]">
               THÊM VÀO GIỎ HÀNG
             </button>
