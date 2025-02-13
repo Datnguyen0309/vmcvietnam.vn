@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export const Register = (section_4: any) => {
   const stats = [
@@ -62,10 +63,12 @@ export const Register = (section_4: any) => {
                 `Mew cần tính nghiêm túc, sự kiên trì và cam kết của học viên để đảm bảo các
               khóa học thực sự mang lại hiệu quả cho học viên! `}
             </p>
-            <Button className="bg-[#463266] hover:bg-[#5a4180] text-white rounded-tl-[15px] rounded-br-[15px] px-4 py-2 flex items-center font-[700]">
-              ĐỌC THÊM
-              <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
+            <Link href="/gioi-thieu">
+              <Button className="bg-[#463266] hover:bg-[#5a4180] text-white rounded-tl-[15px] rounded-br-[15px] px-4 py-2 flex items-center font-[700]">
+                ĐỌC THÊM
+                <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
           </div>
           <div className="relative h-full min-h-[500px] lg:absolute lg:right-0 lg:w-1/2 lg:h-full">
             <Image

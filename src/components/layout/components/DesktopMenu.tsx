@@ -1,6 +1,7 @@
 import { getDataSetUp } from "@/utils/fetch-auth-odoo";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useState } from "react";
 import { useQuery } from "react-query";
 
 const MenuLink = dynamic(() =>
@@ -83,6 +84,20 @@ export const DesktopMenu = ({
     })
   );
 
+  let rootCategories = new Map();
+  let childCategoriesMap = new Map();
+
+  data?.data?.forEach((category: any) => {
+    if (!category.parent_category) {
+      rootCategories.set(category.id, category);
+    } else {
+      if (!childCategoriesMap.has(category.parent_category.id)) {
+        childCategoriesMap.set(category.parent_category.id, []);
+      }
+      childCategoriesMap.get(category.parent_category.id).push(category);
+    }
+  });
+  const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
 
   const renderMenuLinks = (links: { href: string; label: string }[]) =>
     links.map((link) => (
@@ -104,19 +119,57 @@ export const DesktopMenu = ({
       ])}
 
       <div className="relative group">
-        <div className="relative ">
-          <Menu title="Khóa học" />
-        </div>
+        <Menu title="Khóa học" />
 
         <div className="absolute left-0 mt-0 py-4 w-52 bg-white border border-gray-200 rounded shadow-lg opacity-0 group-hover:opacity-100 group-hover:visible transition-opacity duration-300 invisible space-y-3 z-10">
-          {data?.data?.map((link: any, index: number) => (
+        {Array.from(rootCategories.values()).map((category) => (
+  <div
+    key={category.id}
+    className="relative group"
+    onMouseEnter={() => setHoveredCategory(category.id)}
+    onMouseLeave={() => setHoveredCategory(null)}
+  >
+    <MenuLinkSub
+      href={`/khoa-hoc?type=${category.slug}`}
+      label={
+        <span className="flex justify-between items-center w-full">
+          {category.name}
+          {childCategoriesMap.has(category.id) && (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="12"
+              height="12"
+              fill="currentColor"
+              className="bi bi-chevron-right ml-1"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fillRule="evenodd"
+                d="M6.646 1.646a.5.5 0 0 1 .708 0l5 5a.5.5 0 0 1 0 .708l-5 5a.5.5 0 0 1-.708-.708L11.293 7.5 6.646 2.854a.5.5 0 0 1 0-.708"
+              />
+            </svg>
+          )}
+        </span>
+      }
+      activeLink={activeLink}
+    />
+
+    {childCategoriesMap.has(category.id) && hoveredCategory === category.id && (
+      <div className="absolute left-full top-0 mt-0 py-4 w-52 bg-white border border-gray-200 rounded shadow-lg space-y-3 z-10">
+        {childCategoriesMap.get(category.id).map((childCat: any) => (
+          <div key={childCat.id} className="relative">
             <MenuLinkSub
-              key={index}
-              href={`/khoa-hoc?type=${link.slug}`}
-              label={link.name}
+              href={`/khoa-hoc?type=${childCat.slug}`}
+              label={childCat.name}
               activeLink={activeLink}
             />
-          ))}
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+))}
+
         </div>
       </div>
 

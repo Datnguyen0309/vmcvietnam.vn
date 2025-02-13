@@ -11,9 +11,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  //lấy dữ liệu form từ wordpress
+  if (req.method !== "GET") {
+    return res.status(405).json({ posts: [], totalPosts: "0" });
+  }
 
-  const page = req?.query?.page || "";
+  const page = Number(req.query.page || 1);
   const api_url = process.env.API_URL || "";
 
   let posts: any[] = [];
@@ -21,48 +23,28 @@ export default async function handler(
 
   try {
     const endPoint = `${api_url}/posts?_embed&per_page=10&status=publish&page=${page}`;
-    const res = await fetchAuth({ url: endPoint, revalidate: 1 });
-    let ttp = Number(res.headers?.get("X-WP-Total") || "0");
-    if (ttp > 5) {
-      totalPosts = String(ttp - 5);
-    } else {
-      totalPosts = String(ttp);
-    }
+    const response = await fetchAuth({ url: endPoint, revalidate: 1 });
 
-    const postsNotFeatureImage: any[] = (await res?.json()) || [];
-    const filteredPosts = postsNotFeatureImage.filter((post) => {
-      const slug = post.slug || "";
+    const totalPostCount = Number(response.headers?.get("X-WP-Total") || "0");
+    totalPosts = totalPostCount > 5 ? String(totalPostCount - 5) : String(totalPostCount);
 
-      const excludedSlugs = [
-        "lich-khai-giang",
-        "form-main",
-        "form-poup",
-        "gioi-thieu",
-        "cta"
-      ];
+    const allPosts: any[] = (await response?.json()) || [];
 
-      return !excludedSlugs.includes(slug);
-    });
-    posts =
-      filteredPosts?.length > 0
-        ? filteredPosts?.map((post: any) => {
-            const featured_image =
-              post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || null;
-
-            return {
-              ...post,
-              featured_image
-            };
-          })
-        : [];
+    const excludedSlugs = ["lich-khai-giang", "form-main", "form-poup", "gioi-thieu", "cta"];
+    
+    const excludedCategoryId = 7; 
+    posts = allPosts
+      .filter((post) => 
+        !excludedSlugs.includes(post.slug) &&
+        !post.categories.includes(excludedCategoryId) 
+      )
+      .map((post) => ({
+        ...post,
+        featured_image: post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || null,
+      }));
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching posts:", error);
   }
 
-  if (req.method === "GET") {
-    res.status(200).json({
-      posts,
-      totalPosts
-    });
-  }
+  res.status(200).json({ posts, totalPosts });
 }

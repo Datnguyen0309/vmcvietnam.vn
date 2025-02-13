@@ -102,7 +102,6 @@ export const Header = () => {
           <MobileMenu
             logo={homeContent?.acf?.header?.logo}
             activeLink={state.activeLink}
-            isScrolled={state.isScrolled}
           />
         </div>
       </header>

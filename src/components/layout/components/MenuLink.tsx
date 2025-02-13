@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ReactNode } from "react";
 
 export const MenuLink = ({
   href,
@@ -62,7 +63,7 @@ export const MenuLinkSub = ({
   activeLink
 }: {
   href: string;
-  label: string;
+  label: ReactNode; 
   activeLink: string | null;
 }) => (
   <div className="relative">
