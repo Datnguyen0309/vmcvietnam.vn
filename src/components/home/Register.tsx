@@ -35,7 +35,6 @@ export const Register = (section_4: any) => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div className="space-y-6">
             <h2 className="lg:text-[40px] font-[700] text-[#463266]">
-              {" "}
               {section_4?.section_4?.list_1?.title || "Về Mew Academy"}
             </h2>
             <p className="text-gray-600">
@@ -58,13 +57,13 @@ export const Register = (section_4: any) => {
                 đóng góp những nhà thiết kế tên tuổi cho ngành Mỹ thuật đa phương tiện Việt Nam và Quốc tế`}
               </p>
             </div>
-            <p className="text-gray-600">
+            <p className="text-gray-600 pb-6">
               {section_4?.section_4?.list_1?.label_3?.split("\n") ||
                 `Mew cần tính nghiêm túc, sự kiên trì và cam kết của học viên để đảm bảo các
               khóa học thực sự mang lại hiệu quả cho học viên! `}
             </p>
             <Link href="/gioi-thieu">
-              <Button className="bg-[#463266] hover:bg-[#5a4180] text-white rounded-tl-[15px] rounded-br-[15px] px-4 py-2 flex items-center font-[700]">
+              <Button className="bg-[#463266] hover:bg-[#5a4180] text-white rounded-tl-[15px] rounded-br-[15px] px-4 py- flex items-center font-[700] ">
                 ĐỌC THÊM
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Button>

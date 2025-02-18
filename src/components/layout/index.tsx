@@ -3,18 +3,17 @@ import { ReactNode, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { BackToTop } from "../BackToTop";
 import { CTA } from "./components/Cta";
+import { Header } from "./Header";
 
 const Footer = dynamic(() =>
-  import("@/components/layout/Footer").then((mod) => mod.Footer)
-);
-const Header = dynamic(() =>
-  import("@/components/layout/Header").then((mod) => mod.Header)
+  import("@/components/layout/Footer").then((mod) => mod.Footer),
+  { ssr: false } // Chỉ tải trên client-side
 );
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { ref, inView } = useInView({
     threshold: 0.1,
-    triggerOnce: true
+    triggerOnce: true,
   });
 
   const [, setScrollPosition] = useState(0);
@@ -33,7 +32,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <Header />
-      <main className="bg-white ">
+      <main className="bg-white">
         {children}
         <div ref={ref} className="h-[1px]" />
         <CTA />

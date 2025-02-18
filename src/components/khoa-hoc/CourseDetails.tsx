@@ -18,7 +18,7 @@ function formatPrice(price: number) {
   }).format(price);
 }
 
-export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
+export const CourseDetails = ({ CourseData, }: { CourseData: any }) => {
   const router = useRouter();
   const [postsWp, setpostsWp] = useState<any>();
   const [showDetails, setShowDetails] = useState(false);
