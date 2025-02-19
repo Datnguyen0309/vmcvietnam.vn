@@ -62,10 +62,7 @@ export default function Page(props: IPostPage) {
           <title>{ogTitleContent}</title>
         </Head>
       )}
-
-      <Layout>
-        <Home />
-      </Layout>
+      <Home />
     </>
   );
 }

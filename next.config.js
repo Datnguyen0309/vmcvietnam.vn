@@ -10,8 +10,13 @@ const nextConfig = {
       },
       {
         protocol: "http",
-        hostname: "10.10.51.99",
+        hostname: "10.10.50.238",
         pathname: "**"
+      },
+      {
+        protocol: "http",
+        hostname: "it-datnt.aum.local.net",
+        pathname: "**", // Không cần chỉ định port ở đây
       },
       {
         protocol: "http",
@@ -26,4 +31,5 @@ const nextConfig = {
     ]
   }
 };
+
 module.exports = nextConfig;

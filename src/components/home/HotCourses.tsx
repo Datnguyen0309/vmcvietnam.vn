@@ -66,7 +66,7 @@ export const HotCourses = () => {
               >
                 Tất cả
               </TabsTrigger>
-              {data?.data.map((category: any) => (
+              {data?.data?.map((category: any) => (
                 <TabsTrigger
                   key={category.id}
                   value={category.slug}
