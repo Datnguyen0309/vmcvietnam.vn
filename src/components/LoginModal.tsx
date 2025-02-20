@@ -91,7 +91,7 @@ const AuthModal = ({ openForgot, isOpen, onClose, isLogin, toggleAuth }: AuthMod
           handleSendEmail({
             email: email,
             text: `Xin chào,  ${username} ! Đây là email xác nhận tài khoản của bạn.
-        Hãy click vào link này để kích hoạt tài khoản của bạn: http://localhost:3000/xac-nhan-tai-khoan?email=${email}&password=${CryptoJS.SHA256(
+        Hãy click vào link này để kích hoạt tài khoản của bạn: http://10.10.51.16:8686/xac-nhan-tai-khoan?email=${email}&password=${CryptoJS.SHA256(
               password
             ).toString()}`,
           });
