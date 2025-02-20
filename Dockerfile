@@ -26,6 +26,8 @@ ENV API_RMS_URL https://ednu.aum.edu.vn/wp-json/rankmath/v1/getHead?url=https://
 ENV NEXT_PUBLIC_DOMAIN http://10.10.51.16:3333
 ENV NEXT_PUBLIC_TOKEN_NEXT 610f25e22dbccb07171886c016103a86
 ENV SECRET 86c5931065c13ed78d2ba53c2e950d8
+ENV EMAIL_USER itaum116ttcn@gmail.com
+ENV EMAIL_PASS yonx azjv mgfo woyf
 
 RUN addgroup --system --gid 1003 nodejs
 RUN adduser --system --uid 1003 nextjs
