@@ -21,7 +21,7 @@ export const  Profice =()=> {
     } else {
       setUser(JSON.parse(storedUser)); 
     }
-  }, );
+  }, [router]);
 
   if (!user) return null; 
 
