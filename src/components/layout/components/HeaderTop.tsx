@@ -1,7 +1,7 @@
 import ForgotPasswordModal from "@/components/ForgotPasswordModal";
 import AuthModal from "@/components/LoginModal";
-import { logout, User } from "@/pages/redux/features/loginSlice";
-import { useAppSelector } from "@/pages/redux/store";
+import { logout, User } from "@/redux/features/loginSlice";
+import { useAppSelector } from "@/redux/store";
 import { handleUserInfo } from "@/utils/fetch-auth-odoo";
 import { Mail, Phone } from "lucide-react";
 import Link from "next/link";

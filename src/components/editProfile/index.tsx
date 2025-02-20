@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { handleUpdateUserInfo, handleUserInfo } from "@/utils/fetch-auth-odoo";
-import { changeUserInfo, User } from "@/pages/redux/features/loginSlice";
+import { changeUserInfo, User } from "@/redux/features/loginSlice";
 export const EditProfilePage = () => {
   const [tempUser, setTempUser] = useState<User>({
     name: "",

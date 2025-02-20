@@ -1,16 +1,16 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { FiPhoneCall, FiSearch } from "react-icons/fi";
-import ShoppingCartButton from "../ui/CartButton";
-import MobileMenu from "./components/MobileMenu";
-import Link from "next/link";
+import { useAppSelector } from "@/redux/store";
 import { motion } from "framer-motion";
 import { Phone } from "lucide-react";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { FiSearch } from "react-icons/fi";
+import ShoppingCartButton from "../ui/CartButton";
 import { HeaderTop } from "./components/HeaderTop";
-import { useAppSelector } from "@/pages/redux/store";
+import MobileMenu from "./components/MobileMenu";
 
 const Logo = dynamic(() => import("@/components/Logo").then((mod) => mod.Logo));
 

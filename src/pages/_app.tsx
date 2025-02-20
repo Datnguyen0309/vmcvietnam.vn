@@ -10,7 +10,7 @@ import "@/styles/slick.css";
 import "@/styles/tableContent.css";
 import "@/styles/tailwind.css";
 import "@fontsource/roboto";
-import { StoreProvider } from "./redux/store-provider";
+import { StoreProvider } from "@/redux/store-provider";
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {

@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { CartItem, deleteItem } from "@/redux/features/cartSlice";
+import { useAppSelector } from "@/redux/store";
 import Image from "next/image";
-import { BreadCrumb } from "@/components/BreadCrumb";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "@/pages/redux/store";
-import { CartItem, deleteItem } from "@/pages/redux/features/cartSlice";
 
 export default function ShoppingCart() {
   // const [items, setItems] = useState<CartItem[]>([

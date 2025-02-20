@@ -5,7 +5,7 @@ import { handleChangePassword } from "@/utils/fetch-auth-odoo";
 import nookies, { setCookie } from "nookies";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { logout } from "@/pages/redux/features/loginSlice";
+import { logout } from "@/redux/features/loginSlice";
 
 export const ChangePasswordPage = () => {
   const [oldPassword, setOldPassword] = useState("");

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { handleLogin, handleRegister, handleSendEmail } from "@/utils/fetch-auth-odoo";
 import CryptoJS from "crypto-js";
-import { LoginState, setLoginStatus } from "@/pages/redux/features/loginSlice";
+import { LoginState, setLoginStatus } from "@/redux/features/loginSlice";
 
 interface AuthModalProps {
   openForgot: () => void;
