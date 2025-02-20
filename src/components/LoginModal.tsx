@@ -46,8 +46,8 @@ const AuthModal = ({ openForgot, isOpen, onClose, isLogin, toggleAuth }: AuthMod
         password: password,
       });
       if (dataLogin.error) {
-
-        toast.error("Đăng nhập thất bại!");
+        console.log(dataLogin)
+        toast.error(`Đăng nhập thất bại! = ${dataLogin.error}`);
       } else {
         setCookie(null, "session_log_id", dataLogin.token, {
           maxAge: 7 * 24 * 60 * 60,
@@ -91,7 +91,7 @@ const AuthModal = ({ openForgot, isOpen, onClose, isLogin, toggleAuth }: AuthMod
           handleSendEmail({
             email: email,
             text: `Xin chào,  ${username} ! Đây là email xác nhận tài khoản của bạn.
-        Hãy click vào link này để kích hoạt tài khoản của bạn: http://10.10.51.16:3333/xac-nhan-tai-khoan?email=${email}&password=${CryptoJS.SHA256(
+        Hãy click vào link này để kích hoạt tài khoản của bạn: http://localhost:3000/xac-nhan-tai-khoan?email=${email}&password=${CryptoJS.SHA256(
               password
             ).toString()}`,
           });

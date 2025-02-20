@@ -75,7 +75,7 @@ export const Blog = () => {
   }
 
   return (
-    <div className="container max-w-7xl mx-auto py-8 px-4">
+    <div className="container max-w-7xl mx-auto py-20 px-4">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         <div className="md:col-span-8 lg:col-span-9 space-y-6">
           <div className="grid md:grid-cols-2 gap-6">

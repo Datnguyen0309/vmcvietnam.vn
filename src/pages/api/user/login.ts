@@ -21,8 +21,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           password: password,
         },
       });
-
       const data = await response.json();
+      console.log(data)
 
       if (response.ok) {
         // Nếu đăng nhập thành công, trả về session ID và thông tin người dùng
@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Nếu Odoo trả về lỗi, chuyển tiếp lỗi tới client
         return res.status(300).json(data);
       }
-    
+
     } catch (error) {
       return res.status(500).json({ error: "Lỗi khi gọi API Odoo" });
     }

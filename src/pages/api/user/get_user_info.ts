@@ -25,7 +25,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       } else {
         return res.status(400).json({ error: data.error || "Lỗi khi lấy thông tin người dùng" });
       }
-    
     } catch (error) {
       return res.status(500).json({ error: "Có lỗi xảy ra khi gọi API Odoo" });
     }

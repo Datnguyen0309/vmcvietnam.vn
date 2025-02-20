@@ -1,11 +1,13 @@
+import { BreadCrumb } from "@/components/BreadCrumb";
 import { ProfileSideBar } from "../profile/ProfileSideBar";
+import { handleUpdateUserInfo, handleUserInfo } from "@/utils/fetch-auth-odoo";
 import nookies from "nookies"; // To handle cookies
+
 import { useQuery } from "react-query";
+import { changeUserInfo, User } from "@/redux/features/loginSlice";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { handleUpdateUserInfo, handleUserInfo } from "@/utils/fetch-auth-odoo";
-import { changeUserInfo, User } from "@/redux/features/loginSlice";
 export const EditProfilePage = () => {
   const [tempUser, setTempUser] = useState<User>({
     name: "",
@@ -66,10 +68,14 @@ export const EditProfilePage = () => {
 
   return (
     <>
-      <div className="bg-[#fafafa] lg:py-20">
+      <BreadCrumb page="Chỉnh sửa thông tin cá nhân" />
+      <div className="bg-[#fafafa]">
         <div className="mx-auto max-w-[1320px] py-8">
           <div className="flex flex-col xl:flex-row gap-8">
+            {/* Sticky sidebar - 330px width */}
             <ProfileSideBar />
+
+            {/* Main content area - spans 3 columns */}
             <div className="flex-grow mx-[10px] xl:mx-0">
               <div className="bg-white rounded-lg border border-[#e9ecef]  p-6">
                 <div className="space-y-6 mb-6">
@@ -78,6 +84,7 @@ export const EditProfilePage = () => {
                     <p className="text-sm text-gray-500 mb-4">
                       Chỉnh sửa thông tin cá nhân của bạn.
                     </p>
+
                     <form className="grid grid-cols-1 xl:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <label
@@ -187,7 +194,7 @@ export const EditProfilePage = () => {
                 </div>
                 <button
                   onClick={handleSave}
-                  className="px-6 py-3 bg-Blush-Pink text-white rounded-md hover:bg-Regal-Violet transition-colors xl:w-auto w-[120px]"
+                  className="px-6 py-3 bg-[#4A3B63] text-white rounded-md hover:bg-Regal-Violet transition-colors xl:w-auto w-[120px]"
                 >
                   Cập nhật thông tin
                 </button>

@@ -17,7 +17,8 @@ export default async function handler(
   try {
     const responOdoo = await fetchAuthOdoo({
       api_url: `${odoo_api}/${root}/${type}`,
-      method: "POST"
+      method: "POST",
+      form_data : type
     });
 
     const data = await responOdoo.json();
