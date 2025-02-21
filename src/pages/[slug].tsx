@@ -22,11 +22,13 @@ const CourseDetail = () => {
   console.log(data?.data);
 
   return (
-    <><PageHeader
-      title={data?.data?.name || "Khóa học online thiết kế Graphic cơ bản"}
-      breadcrumbs={["Trang chủ", data?.data?.category || "Sản phẩm bán chạy"]} /><div className="container mx-auto  p-4">
+    <>
+      <PageHeader
+        title={data?.data?.name || "Khóa học online thiết kế Graphic cơ bản"}
+        breadcrumbs={["Trang chủ", data?.data?.category || "Sản phẩm bán chạy"]} /><div className="container mx-auto  p-4">
         <CourseDetails CourseData={data?.data} />
-      </div><InstructorProfile teacher_info={data?.data?.teacher} /><OtherCourse CourseData={data?.data} /></>
+      </div><InstructorProfile teacher_info={data?.data?.teacher} /><OtherCourse CourseData={data?.data} />
+    </>
   );
 };
 

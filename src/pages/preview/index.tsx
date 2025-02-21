@@ -1,4 +1,3 @@
-import Layout from "@/components/layout";
 import dynamic from "next/dynamic";
 
 const DraftPosts = dynamic(() =>
@@ -8,9 +7,7 @@ const DraftPosts = dynamic(() =>
 const Page = () => {
   return (
     <>
-      <Layout>
         <DraftPosts />
-      </Layout>
     </>
   );
 };

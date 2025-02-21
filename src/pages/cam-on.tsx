@@ -1,7 +1,6 @@
 "server only";
 
 import { DangkyTc } from "@/components/dang-ky-thanh-cong";
-import Layout from "@/components/layout";
 import { fetchSeo } from "@/utils/seo";
 import { replaceSeoRM } from "@/utils/seoRankMath";
 import ReactHtmlParser from "html-react-parser";
@@ -62,9 +61,7 @@ export default function Page(props: IPostPage) {
         </Head>
       )}
 
-      <Layout>
         <DangkyTc />
-      </Layout>
     </>
   );
 }

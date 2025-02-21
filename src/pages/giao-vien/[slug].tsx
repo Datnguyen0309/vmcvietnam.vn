@@ -1,5 +1,4 @@
 import { CourseCard } from "@/components/khoa-hoc/CourseCard";
-import Layout from "@/components/layout";
 import {
   Select,
   SelectContent,
@@ -38,7 +37,6 @@ const TeacherProfile = () => {
   );
 
   return (
-    <Layout>
       <div className="container max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row items-center justify-center md:justify-between mb-8 gap-4">
           <div className="flex items-center justify-center gap-2 text-[16px] text-gray-600">
@@ -134,7 +132,6 @@ const TeacherProfile = () => {
           )}
         </div>
       </div>
-    </Layout>
   );
 };
 

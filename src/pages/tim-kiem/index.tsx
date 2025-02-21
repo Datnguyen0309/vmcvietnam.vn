@@ -7,11 +7,9 @@ import { Search } from "@/components/search";
 const Page = () => {
   return (
     <>
-      <Layout>
         <ErrorBoundary fallback={<h1>Lỗi server</h1>}>
           <Search />
         </ErrorBoundary>
-      </Layout>
     </>
   );
 };

@@ -55,9 +55,7 @@ const Page = (props: IPostPage) => {
         </div>
       )}
       <ErrorBoundary fallback={<h1>Lỗi phía máy chủ</h1>}>
-      <Layout>
         <Post post={post} />
-        </Layout>
       </ErrorBoundary>
     </>
   );
