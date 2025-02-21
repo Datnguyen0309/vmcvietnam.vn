@@ -32,17 +32,13 @@ export default function ShoppingCart() {
       <div className="bg-Soft-Snow">
         <div className="max-w-[1320px] mx-auto px-[10px] xl:px-auto pt-20 pb-16 ">
           <div className="flex flex-col xl:flex-row gap-8">
-            {/* Cart Items Table */}
             <div className="lg:flex-1">
               <div className="lg:flex-1  ">
-                {/* Table for desktop */}
                 <table className="hidden xl:table w-full border bg-[#f7f7f7] border-[#0000001a]">
                   <thead>
                     <tr className="border border-[#0000001a]">
                       <th className="text-left px-[10px] py-4 font-medium">Sản phẩm</th>
                       <th className="text-left px-1 py-4 font-medium">Giá tiền</th>
-                      {/* <th className="text-left px-1 py-4 font-medium">Quantity</th>
-                      <th className="text-left px-1 py-4 font-medium">Subtotal</th> */}
                       <th></th>
                     </tr>
                   </thead>
@@ -67,7 +63,7 @@ export default function ShoppingCart() {
                         <td>
                           <button
                             onClick={() => dispatch(deleteItem(item.id))}
-                            className="px-1 border border-Blush-Pink text-Blush-Pink hover:text-[#FF3557] transition-colors"
+                            className="px-1 border border-[#4A306D]text-[#4A306D]hover:text-[#FF3557] transition-colors"
                           >
                             Xóa
                           </button>
@@ -77,7 +73,6 @@ export default function ShoppingCart() {
                   </tbody>
                 </table>
 
-                {/* Responsive list for mobile */}
                 <div className="xl:hidden space-y-4">
                   {cartItems.map((item) => (
                     <div
@@ -96,45 +91,12 @@ export default function ShoppingCart() {
                           <span className="text-lg font-semibold">{item.name}</span>
                           <span className="text-sm text-gray-500">Giá: {item.price} đ</span>
                           <div className="flex items-center gap-4 mt-2">
-                            {/* Button giảm số lượng */}
-                            {/* <button
-                              onClick={() => {
-                                const newItems = [...items];
-                                const index = newItems.findIndex((i) => i.id === item.id);
-                                if (newItems[index].quantity > 1) {
-                                  newItems[index].quantity -= 1;
-                                  setItems(newItems);
-                                }
-                              }}
-                              className="p-2 "
-                            >
-                              <AiOutlineMinus className="text-Blush-Pink w-5 h-5" />
-                            </button> */}
-
-                            {/* Hiển thị số lượng */}
-                            {/* <span className="w-8 text-center">{item.quantity}</span> */}
-
-                            {/* Button tăng số lượng */}
-                            {/* <button
-                              onClick={() => {
-                                const newItems = [...items];
-                                const index = newItems.findIndex((i) => i.id === item.id);
-                                newItems[index].quantity += 1;
-                                setItems(newItems);
-                              }}
-                              className="p-2 "
-                            >
-                              <AiOutlinePlus className="text-Blush-Pink w-5 h-5" />
-                            </button> */}
                           </div>
-                          {/* <span className="text-sm text-gray-500">
-                            Subtotal: ${item.price * item.quantity}
-                          </span> */}
                         </div>
                       </div>
                       <button
                         onClick={() => dispatch(deleteItem(item.id))}
-                        className="mt-2 text-Blush-Pink hover:text-red-600 text-sm"
+                        className="mt-2 text-[#4A306D]hover:text-red-600 text-sm"
                       >
                         Xóa
                       </button>
@@ -153,11 +115,11 @@ export default function ShoppingCart() {
                     onChange={(e) => setCouponCode(e.target.value)}
                     className="border max-w-[160px] xl:max-w-[225px]  border-[#E5F0FF] rounded-l-[5px] px-4 py-[10px] focus:outline-none"
                   />
-                  <button className="bg-Blush-Pink font-semibold text-white px-6 py-[10px] rounded-r-[5px] hover:bg-[#FF3557] w-full transition-colors">
+                  <button className="bg-[#4A306D] font-semibold text-white px-6 py-[10px] rounded-r-[5px] hover:bg-[#FF3557] w-full transition-colors">
                     Áp dụng mã giảm giá
                   </button>
                 </div>
-                <button className="border w-full font-semibold text-Blush-Pink text-opacity-70 border-Blush-Pink px-6 py-[10px] rounded hover:border-Blush-Pink hover:text-Blush-Pink transition-colors ml-auto">
+                <button className="border w-full font-semibold text-[#4A306D] text-opacity-70 border-[#4A306D]px-6 py-[10px] rounded hover:border-[#4A306D]hover:text-[#4A306D]transition-colors ml-auto">
                   Cập nhật giỏ hàng
                 </button>
               </div>
@@ -183,7 +145,7 @@ export default function ShoppingCart() {
                       {totalPrice.toLocaleString("vi-VN")} {" đ"}
                     </span>
                   </div>
-                  <button className="w-full bg-Blush-Pink text-white py-3 rounded hover:bg-[#FF3557] transition-colors mt-4">
+                  <button className="w-full bg-[#4A306D] text-white py-3 rounded hover:bg-[#FF3557] transition-colors mt-4">
                     Tiến hành thanh toán
                   </button>
                 </div>

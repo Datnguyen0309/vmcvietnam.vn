@@ -12,7 +12,7 @@ export const BreadCrumb = ({ page }: { page?: string }) => {
           <Link href="/" className="text-[16px] text-Dark-Blue font-medium">
             Trang chủ
           </Link>
-          <p className="font-medium text-Blush-Pink ">-</p>
+          <p className="font-medium text-[#4A306D]">-</p>
           <p className="text-[16px] text-Dusky-Lavender font-medium">{page}</p>
         </div>
       </div>

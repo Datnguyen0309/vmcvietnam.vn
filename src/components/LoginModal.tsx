@@ -124,7 +124,7 @@ const AuthModal = ({ openForgot, isOpen, onClose, isLogin, toggleAuth }: AuthMod
               {isLogin ? "Đăng nhập" : "Đăng ký"}
             </h2>
             <button
-              className="text-Blush-Pink font-bold"
+              className="text-[#4A306D] font-bold"
               onClick={() => {
                 resetFormFields();
                 onClose();

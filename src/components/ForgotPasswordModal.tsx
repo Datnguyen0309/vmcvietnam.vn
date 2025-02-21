@@ -14,7 +14,7 @@ interface ForgotPasswordModalProps {
         <div className="bg-white rounded-lg shadow-lg w-full max-w-md">
           <div className="flex justify-between items-center border-b px-4 py-2">
             <h2 className="text-lg font-semibold text-center w-full">Quên mật khẩu</h2>
-            <button className=" text-Blush-Pink font-bold" onClick={onClose}>
+            <button className=" text-[#4A306D] font-bold" onClick={onClose}>
               ✕
             </button>
           </div>

@@ -13,7 +13,7 @@ const ShoppingCartButton: React.FC<ShoppingCartButtonProps> = ({ itemCount }) =>
     >
       <FaShoppingCart className="w-4 h-4 xl:w-5 xl:h-5 text-[#685F78]" />
       {itemCount > 0 && (
-        <span className="absolute -top-1 -right-1 bg-Blush-Pink text-black text-xs font-bold rounded-full h-4 w-4 xl:h-5 xl:w-5 flex items-center justify-center ">
+        <span className="absolute -top-1 -right-1 bg-[#4A306D] text-black text-xs font-bold rounded-full h-4 w-4 xl:h-5 xl:w-5 flex items-center justify-center ">
           {itemCount}
         </span>
       )}
