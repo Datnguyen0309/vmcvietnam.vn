@@ -52,7 +52,7 @@ export default function ShoppingCart() {
                         <td className="px-[10px] py-6">
                           <div className="flex items-center gap-6">
                             <Image
-                              src={item.image || "https://placehold.co/600x400?text=Course+Image"}
+                              src={item.image || ""}
                               alt=""
                               width={80}
                               height={80}
@@ -86,7 +86,7 @@ export default function ShoppingCart() {
                     >
                       <div className="flex gap-4 items-start">
                         <Image
-                          src="https://placehold.co/600x400?text=Course+Image"
+                          src=""
                           alt=""
                           width={80}
                           height={80}

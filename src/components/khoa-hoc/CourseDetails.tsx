@@ -8,6 +8,10 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { clean } from "../lib/sanitizeHtml";
 import { Loading } from "../Loading";
+import { motion } from "framer-motion";
+import { useAppDispatch } from "@/redux/store";
+import { addItem } from "@/redux/features/cartSlice";
+import Link from "next/link";
 
 function formatPrice(price: number) {
   return new Intl.NumberFormat("vi-VN", {
@@ -18,10 +22,32 @@ function formatPrice(price: number) {
   }).format(price);
 }
 
-export const CourseDetails = ({ CourseData, }: { CourseData: any }) => {
+export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [postsWp, setpostsWp] = useState<any>();
   const [showDetails, setShowDetails] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const toggleCart = () => setIsCartOpen(!isCartOpen);
+
+  // Thêm vào giỏ hàng nhưng không mở modal
+  const handleAddToCart = () => {
+    const cartItem = {
+      id: CourseData.id,
+      name: CourseData.title,
+      price: CourseData.price,
+      image: CourseData.image,
+      quantity: 1,
+    };
+    dispatch(addItem(cartItem));
+  };
+
+  // Mở modal giỏ hàng nhưng không thêm sản phẩm
+  const handleBuyNow = () => {
+    handleAddToCart();
+    setIsCartOpen(true);
+  };
 
   const { slug } = router.query;
   useEffect(() => {
@@ -32,7 +58,6 @@ export const CourseDetails = ({ CourseData, }: { CourseData: any }) => {
         });
         const data: { posts: any[]; totalPosts: string } = await res.json();
         const { posts } = data;
-        console.log(data)
         posts?.length && setpostsWp(posts[0]);
       } catch (error) {
         console.log(error);
@@ -50,12 +75,9 @@ export const CourseDetails = ({ CourseData, }: { CourseData: any }) => {
     <div className="container max-w-7xl mx-auto px-4 py-8">
       <div className="flex flex-col md:grid md:grid-cols-12 gap-8">
         <div className="w-full md:col-span-7 space-y-6 order-1 md:order-1">
-          <h1 className="text-2xl font-bold text-[#4A306D]">
-            THÔNG TIN KHÓA HỌC
-          </h1>
+          <h1 className="text-2xl font-bold text-[#4A306D]">THÔNG TIN KHÓA HỌC</h1>
           <p className="text-gray-600">
-            {CourseData?.description ||
-              "Khóa học online thiết kế cơ bản là một chương trình giáo dục trực tuyến giúp cho những người mới bắt đầu muốn học về thiết kế đồ họa được nắm vững những kiến thức cơ bản nhất."}
+            {CourseData?.description || "Khóa học online thiết kế cơ bản giúp người mới bắt đầu học về thiết kế đồ họa."}
           </p>
           <Button
             variant="secondary"
@@ -67,14 +89,11 @@ export const CourseDetails = ({ CourseData, }: { CourseData: any }) => {
           {showDetails && (
             <div
               dangerouslySetInnerHTML={{
-                __html: clean(
-                  postsWp?.content?.rendered || defautlHtmlCourseDetail
-                )
+                __html: clean(postsWp?.content?.rendered || defautlHtmlCourseDetail)
               }}
             />
           )}
         </div>
-
         <div className="w-full md:col-span-5 space-y-6 order-2 md:order-2">
           <Card
             style={{
@@ -129,6 +148,7 @@ export const CourseDetails = ({ CourseData, }: { CourseData: any }) => {
                 HOTLINE: 091 234 5678
               </Button>
               <Button
+                onClick={handleBuyNow}
                 className="w-full bg-[#fff] text-[#4A306D] hover:bg-[#4A306D] hover:text-[#fff] lg:text-[16px] font-[700] border-2 border-[#4A306D]"
                 style={{
                   borderTopLeftRadius: "15px",
@@ -138,25 +158,58 @@ export const CourseDetails = ({ CourseData, }: { CourseData: any }) => {
                 MUA NGAY
               </Button>
             </div>
-            <button className="w-full bg-[#f55500] hover:bg-orange-600 font-[700] text-[16px] border-none p-2 text-white mb-[16px]">
+            <button
+              onClick={handleAddToCart}
+              className="w-full bg-[#f55500] hover:bg-orange-600 font-[700] text-[16px] border-none p-2 text-white mb-[16px]">
               THÊM VÀO GIỎ HÀNG
             </button>
           </Card>
         </div>
       </div>
+
+      {isCartOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-end">
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ duration: 0.3 }}
+             className="fixed top-0 right-0 w-full sm:w-[400px] h-full bg-white shadow-lg z-50 overflow-y-auto p-6 transition-transform transform sm:mt-[130px]"
+          >
+            <button onClick={toggleCart} className="absolute top-4 right-4 text-gray-600">✕</button>
+            <h2 className="text-xl font-bold text-gray-800">Giỏ hàng của bạn</h2>
+            <div className="mt-4 border-t pt-4">
+              <div className="flex items-center gap-4">
+                <Image
+                  src={CourseData?.image || "/assets/blog.jpeg"}
+                  alt="Course preview"
+                  width={80}
+                  height={80}
+                  className="rounded-lg"
+                />
+                <div>
+                  <p className="font-semibold">{CourseData?.title}</p>
+                  <p className="text-sm text-gray-500">{formatPrice(CourseData.price || 0)}</p>
+                </div>
+              </div>
+            </div>
+            <div className="mt-6 border-t pt-4">
+              <div className="flex justify-between font-semibold text-lg">
+                <span>Tổng giá:</span>
+                <span>{formatPrice(CourseData.price || 0)}</span>
+              </div>
+              <Button onClick={() => router.push('/thanh-toan')} className="w-full bg-purple-700 text-white mt-4">
+                THANH TOÁN
+              </Button>
+              <Link href="/gio-hang"><Button variant="outline" className="w-full mt-2">XEM GIỎ HÀNG</Button></Link>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };
 
 export const defautlHtmlCourseDetail = ` 
-          <p className="text-gray-600">
-            Khóa học cung cấp cho học viên những kỹ năng và kiến thức cần thiết
-            để tạo ra những hình ảnh và đồ họa chuyên nghiệp.
-          </p>
-
-          <p className="text-gray-600">
-            Khóa học được thiết kế linh hoạt, cho phép học viên tự túy chỉnh
-            thời gian học tập phù hợp với lịch trình của mình. Ngoài ra, học
-            viên có thể tham gia vào các hoạt động và bài tập thực hành để rèn
-            luyện kỹ năng của mình.
-          </p>`;
+<p className="text-gray-600">Khóa học cung cấp cho học viên những kỹ năng và kiến thức cần thiết để tạo ra những hình ảnh và đồ họa chuyên nghiệp.</p>
+<p className="text-gray-600">Khóa học được thiết kế linh hoạt, cho phép học viên tự tùy chỉnh thời gian học tập phù hợp với lịch trình của mình.</p>`;
