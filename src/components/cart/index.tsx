@@ -3,6 +3,7 @@
 import { CartItem, deleteItem } from "@/redux/features/cartSlice";
 import { useAppSelector } from "@/redux/store";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -24,7 +25,7 @@ export default function ShoppingCart() {
   const cartItems: CartItem[] = useAppSelector((state) => state.cart.cartItems);
   const totalPrice: number = useAppSelector((state) => state.cart.totalAmount);
   const dispatch = useDispatch();
-
+  const router = useRouter();
   const [couponCode, setCouponCode] = useState("");
 
   return (
@@ -145,7 +146,7 @@ export default function ShoppingCart() {
                       {totalPrice.toLocaleString("vi-VN")} {" đ"}
                     </span>
                   </div>
-                  <button className="w-full bg-[#4A306D] text-white py-3 rounded hover:bg-[#FF3557] transition-colors mt-4">
+                  <button onClick={() => router.push('/thanh-toan')}  className="w-full bg-[#4A306D] text-white py-3 rounded hover:bg-[#FF3557] transition-colors mt-4">
                     Tiến hành thanh toán
                   </button>
                 </div>
