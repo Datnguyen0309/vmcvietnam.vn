@@ -97,21 +97,27 @@ export const getListModel = async ({
   }
 };
 
-export const getDataSetUp = async ({ root, type }: { root: string; type: string }) => {
+export const getDataSetUp = async ({
+  root,
+  type,
+  sortType = "all",
+}: {
+  root: string;
+  type: string;
+  sortType?: string;
+}) => {
   try {
     const res = await fetchAuthOdoo({
-      api_url: `/api/general/data-setup/?root=${root}&type=${type}`,
+      api_url: `/api/general/data-setup/?root=${root}&type=${type}&sortType=${sortType}`,
       method: "POST",
     });
     const data = await res.json();
-
     return data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return { error: `Failed to get ${root} ${type}` };
   }
 };
-
 export const handleRegister = async ({
   name,
   email,

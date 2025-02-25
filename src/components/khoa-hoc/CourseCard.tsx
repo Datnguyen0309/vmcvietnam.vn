@@ -56,7 +56,6 @@ export const CourseCard = ({ course }: { course: any }) => {
               }}
             >
               {course?.price}
-
             </div>
           </div>
         </CardContent>
@@ -74,7 +73,6 @@ export const CourseCard = ({ course }: { course: any }) => {
               {course?.teacher?.name}
             </span>
           </div>
-
           <Link
             href={`/${course?.slug_url}`}
             className="text-orange-500 hover:text-orange-600 flex items-center gap-1 text-sm"

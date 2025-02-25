@@ -3,10 +3,10 @@ import AuthModal from "@/components/LoginModal";
 import { logout, User } from "@/redux/features/loginSlice";
 import { useAppSelector } from "@/redux/store";
 import { handleUserInfo } from "@/utils/fetch-auth-odoo";
-import { Mail, Phone } from "lucide-react";
+import { Mail, Phone, LogIn } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import nookies, { setCookie } from "nookies"; // To handle cookies
+import nookies, { setCookie } from "nookies";
 import { useEffect, useState } from "react";
 import { MdLogout } from "react-icons/md";
 import { PiNotePencilBold } from "react-icons/pi";
@@ -18,27 +18,26 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
   const OpenForgotModel = () => (setModalOpen(false), setForgotPasswordOpen(true));
-  const openModal = () => (setModalOpen(true), setIsLogin(true));
   const cookies = nookies.get();
   const [user, setUser] = useState<User>(useAppSelector((state) => state.login.user));
   const router = useRouter();
   const dispatch = useDispatch();
+
   const openAuthModal = (loginMode: boolean) => {
     setModalOpen(true);
     setIsLogin(loginMode);
   };
   const closeModal = () => setModalOpen(false);
   const toggleAuth = () => setIsLogin((prev) => !prev);
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-
     window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
   const list = [
     {
       path: "thong-tin-ca-nhan",
@@ -47,14 +46,11 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
     },
   ];
 
-
   const sessionLogId = cookies.session_log_id;
   useEffect(() => {
     const handleUserInfoIN = async () => {
       if (sessionLogId != undefined) {
-        const dataUser = await handleUserInfo({
-          session_log_id: sessionLogId,
-        });
+        const dataUser = await handleUserInfo({ session_log_id: sessionLogId });
         setUser({
           name: dataUser?.user_info?.user_info?.name,
           email: dataUser?.user_info?.user_info?.email,
@@ -69,14 +65,13 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
       return null;
     };
     handleUserInfoIN();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
       <header className="bg-[#4A3B63] text-white py-2">
-        <div className="container max-w-7xl mx-auto">
+        <div className="container max-w-7xl mx-auto px-4">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex flex-wrap items-center gap-6">
               <Link
@@ -88,32 +83,45 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
                   {headerTop?.mail?.mail_label || "CONTACT"}
                 </span>
               </Link>
-
               <div className="flex items-center gap-2 text-sm">
                 <Phone className="h-4 w-4" />
                 <span>{headerTop?.phone || "+47 900 99 000"}</span>
               </div>
-
               <div className="flex items-center gap-2 text-sm">
                 <span>{headerTop?.time || "08:00 - 17:00"}</span>
               </div>
             </div>
             <div className="flex space-x-4 justify-center items-center">
-              {!sessionLogId && (
-                <>
-                  <button onClick={() => openAuthModal(true)}>Đăng nhập</button>
-                  <span >|</span>
-                  <button onClick={() => openAuthModal(false)}>Đăng ký</button>
+              {/* Nếu chưa đăng nhập, chỉ hiển thị icon đăng nhập */}
+              <div className="flex items-center">
+                {/* Dành cho desktop: hiển thị nút đăng nhập và đăng ký */}
+                <div className="hidden md:flex space-x-2">
+                  {!sessionLogId && (
+                    <>
+                      <button onClick={() => openAuthModal(true)}>Đăng nhập</button>
+                      <span>|</span>
+                      <button onClick={() => openAuthModal(false)}>Đăng ký</button>
+                    </>
+                  )}
+                </div>
 
-                </>
-              )}
+                {/* Dành cho mobile: hiển thị icon đăng nhập */}
+                <div className="flex md:hidden">
+                  {!sessionLogId && (
+                    <button onClick={() => openAuthModal(true)} className="p-2">
+                      <LogIn size={24} />
+                    </button>
+                  )}
+                </div>
+              </div>
+
               {sessionLogId && (
                 <div
                   className="relative"
                   onMouseEnter={() => setIsOpen(true)}
                   onMouseLeave={() => setIsOpen(false)}
                 >
-                  <div className="cursor-pointer flex justify-center items-center w-[32px] h-[32px] xl:w-[50px] xl:h-[50px] rounded-full  xl:border-[3px] border-[1px] border-slate-200">
+                  <div className="cursor-pointer flex justify-center items-center w-[32px] h-[32px] xl:w-[50px] xl:h-[50px] rounded-full xl:border-[3px] border-[1px] border-slate-200">
                     <div
                       className="border border-gray-200 bg-cover bg-center w-full h-auto rounded-full aspect-square"
                       style={{ backgroundImage: `url(${user.image || "/assets/default-kh.jpg"})` }}
@@ -124,18 +132,16 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
                       }`}
                   >
                     <div>
-                      <div className="inline-flex space-x-2 ">
+                      <div className="inline-flex space-x-2">
                         <div className="flex flex-col space-y-1">
-                          <span className="text-green-600 text-base xl:text-lg  font-semibold">
+                          <span className="text-green-600 text-base xl:text-lg font-semibold">
                             {user.name}
                           </span>
                           <span className="text-gray-500 text-xs">{user.email}</span>
                         </div>
                       </div>
-
                       <div className="border-t border-gray-300 my-2"></div>
                     </div>
-
                     {list.map((item, index) => (
                       <a
                         key={index}
@@ -146,7 +152,6 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
                         <span>{item.title}</span>
                       </a>
                     ))}
-
                     <div
                       onClick={() => {
                         dispatch(logout());
@@ -161,7 +166,6 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
                   </div>
                 </div>
               )}
-
             </div>
           </div>
         </div>
@@ -177,7 +181,6 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
         isOpen={forgotPasswordOpen}
         onClose={() => setForgotPasswordOpen(false)}
       />
-
     </>
   );
-}
+};

@@ -13,12 +13,14 @@ export default async function handler(
 
   const METHOD = req.method;
 
-  const { root, type } = query;
+  const { root, type,sortType } = query;
+  const form_data = { "type" : sortType };
+
   try {
     const responOdoo = await fetchAuthOdoo({
       api_url: `${odoo_api}/${root}/${type}`,
       method: "POST",
-      form_data : type
+      form_data : form_data
     });
 
     const data = await responOdoo.json();

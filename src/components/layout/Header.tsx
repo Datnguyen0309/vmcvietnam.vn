@@ -72,11 +72,13 @@ export const Header = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+  
   const [searchQuery, setSearchQuery] = useState("");
+  
   return (
     <>
       <header className="bg-white fixed top-0 left-0 w-full z-50 shadow-md header-container">
-        <div className="hidden sm:block z-70">
+        <div className="z-70">
           <HeaderTop headerTop={homeContent?.acf?.header_top} />
         </div>
         <nav className="max-w-7xl mx-auto py-3 sm:py-4 bg-white hidden lg:flex items-center justify-between px-6 lg:px-1 z-50">
@@ -110,13 +112,15 @@ export const Header = () => {
           </Link>
         </nav>
       </header>
-      <div className="lg:hidden">
+      
+      {/* MobileMenu sticky bên dưới HeaderTop */}
+      <div className="lg:hidden bg-white sticky top-[50px] py-5 z-[40]">
         <MobileMenu
           logo={homeContent?.acf?.header?.logo}
           activeLink={state.activeLink}
         />
       </div>
-      <div className="pt-[50px] sm:pt-[80px] lg:pt-[120px]"></div>
+      <div className="pt-[10px] sm:pt-[80px] lg:pt-[120px]"></div>
     </>
   );
 };
