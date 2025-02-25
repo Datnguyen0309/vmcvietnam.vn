@@ -64,7 +64,7 @@ export default function ShoppingCart() {
                         <td>
                           <button
                             onClick={() => dispatch(deleteItem(item.id))}
-                            className="px-1 border border-[#4A306D]text-[#4A306D]hover:text-[#FF8162] transition-colors"
+                            className="px-1 border border-[#4A306D] text-[#4A306D] hover:text-[#FF8162] transition-colors"
                           >
                             Xóa
                           </button>
