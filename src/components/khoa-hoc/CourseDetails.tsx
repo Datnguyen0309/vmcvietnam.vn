@@ -177,7 +177,7 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
              className="fixed top-0 right-0 w-full sm:w-[400px] h-full bg-white shadow-lg z-50 overflow-y-auto p-6 transition-transform transform sm:mt-[130px]"
           >
             <button onClick={toggleCart} className="absolute top-4 right-4 text-gray-600">✕</button>
-            <h2 className="text-xl font-bold text-gray-800">Giỏ hàng của bạn</h2>
+            <h2 className="text-xl font-bold text-[#4A306D] ">Giỏ hàng của bạn</h2>
             <div className="mt-4 border-t pt-4">
               <div className="flex items-center gap-4">
                 <Image
@@ -198,7 +198,7 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
                 <span>Tổng giá:</span>
                 <span>{formatPrice(CourseData.price || 0)}</span>
               </div>
-              <Button onClick={() => router.push('/thanh-toan')} className="w-full bg-purple-700 text-white mt-4">
+              <Button onClick={() => router.push('/thanh-toan')} className="w-full bg-[#4A306D]  hover:bg-[#FF8162] text-white mt-4">
                 THANH TOÁN
               </Button>
               <Link href="/gio-hang"><Button variant="outline" className="w-full mt-2">XEM GIỎ HÀNG</Button></Link>

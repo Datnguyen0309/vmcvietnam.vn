@@ -31,8 +31,8 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="container max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-purple-700 mb-6">Thanh toán</h1>
+    <div className="container max-w-6xl mx-auto px-4 py-20">
+      <h1 className="text-2xl font-bold text-[#4A306D] mb-6">Thanh toán</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="border p-6 rounded-lg shadow">
           <h2 className="text-lg font-bold">Đơn hàng của bạn</h2>
@@ -55,14 +55,14 @@ export default function CheckoutPage() {
 
         {/* Thông tin thanh toán */}
         <div className="border p-6 rounded-lg shadow">
-          <h2 className="text-lg font-bold">Thông tin thanh toán</h2>
+          <h2 className="text-lg font-bold text-[#4A306D]">Thông tin thanh toán</h2>
           <Input name="name" placeholder="Họ và tên" value={formData.name} onChange={handleInputChange} className="mt-4" />
           <Input name="phone" placeholder="Số điện thoại" value={formData.phone} onChange={handleInputChange} className="mt-4" />
           <Input name="email" placeholder="Email" value={formData.email} onChange={handleInputChange} className="mt-4" />
-          <div className="mt-6 p-4 bg-gray-100 rounded">
+          <div className="mt-6 p-4 bg-[#4A306D] text-white rounded">
             <input type="radio" checked readOnly className="mr-2" /> Thanh toán bằng chuyển khoản ngân hàng
           </div>
-          <Button onClick={handlePayment} className="w-full bg-purple-700 text-white mt-4">Thanh toán ngay</Button>
+          <Button onClick={handlePayment} className="w-full bg-[#4A306D] hover:bg-[#FF8162] text-white mt-4">Thanh toán ngay</Button>
         </div>
       </div>
     </div>
