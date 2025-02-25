@@ -64,7 +64,7 @@ export default function ShoppingCart() {
                         <td>
                           <button
                             onClick={() => dispatch(deleteItem(item.id))}
-                            className="px-1 border border-[#4A306D]text-[#4A306D]hover:text-[#FF3557] transition-colors"
+                            className="px-1 border border-[#4A306D]text-[#4A306D]hover:text-[#FF8162] transition-colors"
                           >
                             Xóa
                           </button>
@@ -116,7 +116,7 @@ export default function ShoppingCart() {
                     onChange={(e) => setCouponCode(e.target.value)}
                     className="border max-w-[160px] xl:max-w-[225px]  border-[#E5F0FF] rounded-l-[5px] px-4 py-[10px] focus:outline-none"
                   />
-                  <button className="bg-[#4A306D] font-semibold text-white px-6 py-[10px] rounded-r-[5px] hover:bg-[#FF3557] w-full transition-colors">
+                  <button className="bg-[#4A306D] font-semibold text-white px-6 py-[10px] rounded-r-[5px] hover:bg-[#FF8162] w-full transition-colors">
                     Áp dụng mã giảm giá
                   </button>
                 </div>
@@ -146,7 +146,7 @@ export default function ShoppingCart() {
                       {totalPrice.toLocaleString("vi-VN")} {" đ"}
                     </span>
                   </div>
-                  <button onClick={() => router.push('/thanh-toan')}  className="w-full bg-[#4A306D] text-white py-3 rounded hover:bg-[#FF3557] transition-colors mt-4">
+                  <button onClick={() => router.push('/thanh-toan')}  className="w-full bg-[#4A306D] text-white py-3 rounded hover:bg-[#FF8162] transition-colors mt-4">
                     Tiến hành thanh toán
                   </button>
                 </div>
