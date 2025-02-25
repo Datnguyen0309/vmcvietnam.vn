@@ -7,15 +7,9 @@ import { useState } from "react";
 import { useQuery } from "react-query";
 import { getDataSetUp } from "@/utils/fetch-auth-odoo";
 import { motion, AnimatePresence } from "framer-motion";
-import dynamic from "next/dynamic";
-
-const MenuLinkSub = dynamic(() =>
-  import("@/components/layout/components/MenuLink").then((mod) => mod.MenuLinkSub)
-);
 
 export default function MobileMenu({ activeLink, logo }: { activeLink: string | null; logo: string }) {
   const [isOpen, setIsOpen] = useState(false);
-  // openSubMenus lưu trạng thái mở của từng menu (dùng key là id của danh mục; với -1 dành cho menu "Khóa học")
   const [openSubMenus, setOpenSubMenus] = useState<Record<number, boolean>>({});
   const { data } = useQuery("getListCates", () =>
     getDataSetUp({
@@ -95,7 +89,6 @@ export default function MobileMenu({ activeLink, logo }: { activeLink: string | 
               <div className="flex justify-between items-center mb-5">
                 <div className="flex items-center gap-2">
                   <Logo logo={logo} />
-                  <span className="text-xl font-semibold text-gray-800">Menu</span>
                 </div>
                 <button onClick={() => setIsOpen(false)} className="p-2 text-gray-700 hover:text-gray-900 transition-all">
                   <X className="h-6 w-6" />

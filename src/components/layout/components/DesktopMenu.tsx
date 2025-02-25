@@ -128,7 +128,6 @@ export const DesktopMenu = ({
           }
           activeLink={activeLink}
         />
-        {/* Hiển thị submenu nếu có danh mục con và đang hover */}
         {category.child_categories &&
           category.child_categories.length > 0 &&
           isHovered && (

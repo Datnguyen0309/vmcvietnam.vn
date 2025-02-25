@@ -1,5 +1,6 @@
 import ForgotPasswordModal from "@/components/ForgotPasswordModal";
 import AuthModal from "@/components/LoginModal";
+import ShoppingCartButton from "@/components/ui/CartButton";
 import { logout, User } from "@/redux/features/loginSlice";
 import { useAppSelector } from "@/redux/store";
 import { handleUserInfo } from "@/utils/fetch-auth-odoo";
@@ -22,6 +23,7 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
   const [user, setUser] = useState<User>(useAppSelector((state) => state.login.user));
   const router = useRouter();
   const dispatch = useDispatch();
+  const totalQuantity = useAppSelector((state) => state.cart.totalQuantity);
 
   const openAuthModal = (loginMode: boolean) => {
     setModalOpen(true);
@@ -72,8 +74,8 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
     <>
       <header className="bg-[#4A3B63] text-white py-2">
         <div className="container max-w-7xl mx-auto px-4">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex flex-wrap items-center gap-6">
+          <div className="flex  lg:flex-wrap lg:items-center justify-between gap-4">
+            <div className="flex items-center gap-6">
               <Link
                 href={`mailto:${headerTop?.mail?.mail_to || "contact@example.com"}`}
                 className="flex items-center gap-2 text-sm hover:text-gray-200"
@@ -83,18 +85,17 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
                   {headerTop?.mail?.mail_label || "CONTACT"}
                 </span>
               </Link>
-              <div className="flex items-center gap-2 text-sm">
+              <div className="flex items-center   gap-2 text-sm">
                 <Phone className="h-4 w-4" />
                 <span>{headerTop?.phone || "+47 900 99 000"}</span>
               </div>
-              <div className="flex items-center gap-2 text-sm">
+              <div className="hidden md:flex items-center gap-2 text-sm">
                 <span>{headerTop?.time || "08:00 - 17:00"}</span>
               </div>
+
             </div>
             <div className="flex space-x-4 justify-center items-center">
-              {/* Nếu chưa đăng nhập, chỉ hiển thị icon đăng nhập */}
               <div className="flex items-center">
-                {/* Dành cho desktop: hiển thị nút đăng nhập và đăng ký */}
                 <div className="hidden md:flex space-x-2">
                   {!sessionLogId && (
                     <>
@@ -104,14 +105,15 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
                     </>
                   )}
                 </div>
-
-                {/* Dành cho mobile: hiển thị icon đăng nhập */}
                 <div className="flex md:hidden">
                   {!sessionLogId && (
                     <button onClick={() => openAuthModal(true)} className="p-2">
                       <LogIn size={24} />
                     </button>
                   )}
+                  <Link href="/gio-hang" className="relative pt-1">
+                    <ShoppingCartButton itemCount={totalQuantity} />
+                  </Link>
                 </div>
               </div>
 
@@ -128,7 +130,7 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
                     ></div>
                   </div>
                   <div
-                    className={`absolute z-[60] xl:left-[-60px] right-[-50px] mt-2 xl:w-[300px] w-[240px] bg-white shadow-xl rounded-xl p-4 border border-gray-200 transition-all duration-200 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"
+                    className={`absolute z-[60] left-[-190px] lg:left-[-60px]   right-[-50px] mt-2 xl:w-[300px] w-[240px] bg-white shadow-xl rounded-xl p-4 border border-gray-200 transition-all duration-200 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"
                       }`}
                   >
                     <div>
