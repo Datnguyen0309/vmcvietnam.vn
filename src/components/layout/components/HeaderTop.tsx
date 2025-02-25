@@ -31,7 +31,6 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
   };
   const closeModal = () => setModalOpen(false);
   const toggleAuth = () => setIsLogin((prev) => !prev);
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);

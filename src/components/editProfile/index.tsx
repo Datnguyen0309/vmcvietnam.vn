@@ -156,17 +156,18 @@ export const EditProfilePage = () => {
                       </div>
                       <div className="space-y-2">
                         <label htmlFor="age" className="block text-sm font-medium text-gray-700">
-                          Tuổi
+                          Tuổi
                         </label>
                         <input
                           type="number"
                           id="age"
                           name="age"
                           defaultValue={tempUser.age || ""}
+                          min="0"
                           onChange={(e) =>
                             setTempUser({ ...tempUser, age: Number(e.target.value) })
                           }
-                          placeholder="Nhập tuổi của bạn"
+                          placeholder="Nhập tuổi của bạn"
                           className="mt-1 block w-full py-2 px-2 rounded-md border border-[#e9ecef]"
                         />
                       </div>
