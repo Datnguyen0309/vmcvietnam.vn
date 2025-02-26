@@ -101,6 +101,9 @@ export const LayoutNganh = ({ category, titles }: LayoutNganhProps) => {
         </div>
 
         <div className="w-full md:w-[360px] grid grid-cols-2 ">
+        <div className="flex items-center justify-center gap-2 text-[18px] text-gray-600">
+            <p>Có {data?.data?.total_documents || 10} khóa học</p>
+          </div>
           <Select defaultValue="default">
             <SelectTrigger>
               <SelectValue placeholder="Thứ tự mặc định" />
