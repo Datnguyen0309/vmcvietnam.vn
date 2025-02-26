@@ -162,18 +162,9 @@ export const LayoutNganh = ({ category, titles }: LayoutNganhProps) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {result?.slice((pageQuery - 1) * 9, pageQuery * 9).map((course: any, index: number) => (
-          <CourseCard
-            key={index}
-            course={{
-              id: course.id,
-              image: course.image,
-              name: course.name,
-              lessons: course.number_of_lessons,
-              duration: course.duration,
-              price: course.price,
-              slug: course.slug_url,
-            }}
-          />
+          <div key={index}>
+          <CourseCard course={course} />
+        </div>
         ))}
       </div>
       {!isLoading && page * 8 < data?.data?.total_documents && (
