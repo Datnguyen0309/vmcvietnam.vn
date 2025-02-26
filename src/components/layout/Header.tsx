@@ -74,7 +74,16 @@ export const Header = () => {
   }, []);
   
   const [searchQuery, setSearchQuery] = useState("");
-  
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push({
+        pathname: "/khoa-hoc",
+        query: { key: encodeURIComponent(searchQuery.trim()) },
+      });
+    }
+  };
   return (
     <>
       <header className="bg-white fixed top-0 left-0 w-full z-50 shadow-md header-container">
@@ -84,15 +93,18 @@ export const Header = () => {
         <nav className="max-w-7xl mx-auto py-3 sm:py-4 bg-white hidden lg:flex items-center justify-between px-6 lg:px-1 z-50">
           <Logo logo={homeContent?.acf?.header?.logo} />
           <DesktopMenu activeLink={state.activeLink} isScrolled={state.isScrolled} />
-          <div className="search-box">
-            <FiSearch className="text-gray-500" />
-            <input
-              type="text"
-              placeholder="Tìm kiếm"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
+          <form onSubmit={handleSearch} className="relative flex items-center w-[300px] border border-gray-300 rounded-lg px-3 py-2 bg-white">
+          <input
+            type="text"
+            placeholder="Tìm khóa học..."
+            className="w-full focus:outline-none"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button type="submit" className="text-gray-500">
+            <FiSearch className="h-5 w-5" />
+          </button>
+        </form>
           <motion.button
             className="hidden lg:flex items-center gap-2 bg-gradient-to-r from-[#B7042D] to-[#E65F1D] px-3 py-2 rounded-full text-white text-sm ml-5"
             animate={{ scaleX: [1, 1.2, 1] }}

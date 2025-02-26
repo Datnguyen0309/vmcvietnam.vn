@@ -18,6 +18,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { CourseCard } from "./khoa-hoc/CourseCard";
+import { toSlug } from "@/utils/toSlug";
+import { IoSearchSharp } from "react-icons/io5";
 
 function formatPrice(price: number) {
   return new Intl.NumberFormat("vi-VN", {
@@ -36,6 +38,7 @@ interface LayoutNganhProps {
 export const LayoutNganh = ({ category, titles }: LayoutNganhProps) => {
   const [page, setPage] = useState(1);
   const router = useRouter();
+  const [inputKey, setInputKey] = useState("");
 
   useEffect(() => {
     setPage(1);
@@ -52,9 +55,38 @@ export const LayoutNganh = ({ category, titles }: LayoutNganhProps) => {
       page: "1"
     })
   );
+  const keyWord = decodeURIComponent((router?.query?.key as string) || "");
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // Ngăn chặn reload
+    const query = { ...router.query }; // Sao chép query hiện tại
+    if (inputKey.trim()) {
+      query.key = encodeURIComponent(inputKey.trim()); // Thêm từ khóa
+    } else {
+      delete query.key; // Xóa nếu trống
+    }
+
+    router.push({ pathname: router.pathname, query });
+  };
+
+  const filterByKeyword = (list: { name: string }[], keyword: string) => {
+    const normalizedKeywordWords = toSlug({ type: "signed", input: keyword }).split(/\s+/); // Tách từ khóa thành mảng từ
+
+    return list.filter((item) => {
+      const normalizedNameWords = toSlug({ type: "signed", input: item.name }).split(/\W+/); // Tách `name` thành mảng từ
+
+      // Kiểm tra nếu tất cả các từ trong keyword đều xuất hiện trong `name`
+      return normalizedKeywordWords.every((word) =>
+        normalizedNameWords.some((nameWord) => nameWord.includes(word))
+      );
+    });
+  };
+  const result = filterByKeyword(data?.data?.short_course || [], keyWord);
+  const pageQuery = Number((router?.query?.page as string) || "1");
 
   return (
-    <div className="container max-w-7xl mx-auto px-4 py-8">
+    <div className="container max-w-7xl mx-auto px-4 py-20">
+
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
         <div className="flex items-center gap-2 text-[18px] text-gray-600">
           <Link href="/" className="hover:text-[#4A306D]">
@@ -69,9 +101,6 @@ export const LayoutNganh = ({ category, titles }: LayoutNganhProps) => {
         </div>
 
         <div className="w-full md:w-[360px] grid grid-cols-2 ">
-          <div className="flex items-center justify-center gap-2 text-[18px] text-gray-600">
-            <p>Có {data?.data?.total_documents || 10} khóa học</p>
-          </div>
           <Select defaultValue="default">
             <SelectTrigger>
               <SelectValue placeholder="Thứ tự mặc định" />
@@ -92,15 +121,60 @@ export const LayoutNganh = ({ category, titles }: LayoutNganhProps) => {
             </SelectContent>
           </Select>
         </div>
+        <div className="mx-auto max-w-[1320px] py-8 hidden">
+          <div className="grid gap-6 xl:grid-cols-[1fr_310px] mx-[10px] xl:mx-0">
+            <div className="flex text-[20px] justify-between items-center text-Dusky-Lavender">
+              <p>
+                <span className=" font-semibold text-Blush-Pink text-[16x] pr-2">
+                  {result?.length || "0"}
+                </span>
+                Khóa học
+              </p>
+              {/* {keyWord != "" && (
+                <p>
+                  Từ khóa:
+                  <span className=" font-semibold text-Blush-Pink text-[24px]">
+                    {" "}
+                    {keyWord || "0"}
+                  </span>
+                </p>
+              )} */}
+            </div>
+            <div className=" flex justify-between items-center text-[14px] ">
+              <div className="flex border border-Cloud-Gray bg-white w-full rounded-[5px] items-center ">
+                <form className="flex items-center" action="" onSubmit={handleSearch}>
+                  <button type="submit" className=" text-Blush-Pink rounded-r-[5px] py-[15px] pl-3">
+                    <IoSearchSharp className="h-5 w-5 font-bold" />
+                  </button>
+                  <input
+                    placeholder="Tìm khóa học"
+                    onChange={(e) => {
+                      setInputKey(e.target.value);
+                    }}
+                    value={inputKey}
+                    className="flex-1 text-Dusky-Lavender bg-transparent text-[18px] py-[6px] px-2 rounded-md focus:outline-none "
+                  />
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {data?.data?.short_course
-          ?.slice(0, page * 8)
-          .map((course: any, index: number) => (
-            <div key={index}>
-              <CourseCard course={course} />
-            </div>
-          ))}
+        {result?.slice((pageQuery - 1) * 9, pageQuery * 9).map((course: any, index: number) => (
+          <CourseCard
+            key={index}
+            course={{
+              id: course.id,
+              image: course.image,
+              name: course.name,
+              lessons: course.number_of_lessons,
+              duration: course.duration,
+              price: course.price,
+              slug: course.slug_url,
+            }}
+          />
+        ))}
       </div>
       {!isLoading && page * 8 < data?.data?.total_documents && (
         <div className="py-12 flex justify-center items-center">
