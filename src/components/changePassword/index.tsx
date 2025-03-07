@@ -80,7 +80,7 @@ export const ChangePasswordPage = () => {
 
   return (
     <>
-      <div className="bg-[#fafafa]">
+      <div className="bg-[#fafafa] lg:py-20">
         <div className="mx-auto max-w-[1320px] py-8">
           <div className="flex flex-col xl:flex-row gap-8">
             <ProfileSideBar />
