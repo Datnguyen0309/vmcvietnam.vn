@@ -15,11 +15,13 @@ export interface CartState {
   totalQuantity: number;
   totalAmount: number;
 }
+
 const initialState: CartState = {
   cartItems: [],
   totalQuantity: 0,
   totalAmount: 0,
 };
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -30,19 +32,17 @@ const cartSlice = createSlice({
 
       if (!existingItem) {
         state.cartItems.push({
-          product_id: newItem.product_id,
-          name: newItem.name,
-          price_unit: newItem.price_unit,
-          image: newItem.image,
+          ...newItem,
           quantity: 1,
         });
         state.totalQuantity++;
-        toast.success("Thêm sản phẩm vào giỏ hàng thành công");
+        toast.success(`🎉 ${newItem.name || "Sản phẩm"} đã được thêm vào giỏ hàng!`);
       } else {
-        toast.success("Sản phẩm đã được thêm vào giỏ hàng");
+        toast.info(`🔄 ${newItem.name || "Sản phẩm"} đã có trong giỏ hàng.`);
       }
+
       state.totalAmount = state.cartItems.reduce(
-        (total, item) => total + Number(item.price_unit) * 1,
+        (total, item) => total + Number(item.price_unit) * item.quantity,
         0
       );
     },
@@ -52,18 +52,27 @@ const cartSlice = createSlice({
       const existingItem = state.cartItems.find((item) => item.product_id === id);
       if (existingItem) {
         state.cartItems = state.cartItems.filter((item) => item.product_id !== id);
-        state.totalQuantity = state.totalQuantity - existingItem.quantity;
+        state.totalQuantity -= existingItem.quantity;
+        toast.warning(`🗑️ Đã xóa ${existingItem.name || "sản phẩm"} khỏi giỏ hàng.`);
+      } else {
+        toast.info("⚠️ Không tìm thấy sản phẩm trong giỏ hàng.");
       }
 
       state.totalAmount = state.cartItems.reduce(
-        (total, item) => total + Number(item.price_unit) * Number(item.quantity),
+        (total, item) => total + Number(item.price_unit) * item.quantity,
         0
       );
     },
+
     clearCart: (state) => {
-      state.cartItems = [];
-      state.totalQuantity = 0;
-      state.totalAmount = 0;
+      if (state.cartItems.length > 0) {
+        state.cartItems = [];
+        state.totalQuantity = 0;
+        state.totalAmount = 0;
+        toast.success("🛒 Giỏ hàng đã được làm trống.");
+      } else {
+        toast.info("🚀 Giỏ hàng của bạn đã trống.");
+      }
     },
   },
 });
