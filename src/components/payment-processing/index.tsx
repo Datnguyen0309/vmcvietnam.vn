@@ -66,8 +66,7 @@ export const PaymentProcessingPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className=" bg-transparent mt-2 md:mt-[2px]"></div>
+    <div className="bg-white">
         <div className="bg-[rgb(74,59,99)] py-10">
         <div className="mx-auto max-w-6xl px-4">
           <div className="grid grid-cols-5 items-center justify-center gap-4 text-white">
