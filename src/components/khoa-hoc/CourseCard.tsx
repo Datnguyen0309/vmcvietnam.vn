@@ -26,7 +26,7 @@ export const CourseCard = ({ course }: { course: any }) => {
             height={400}
             className="w-full aspect-square object-cover transition-transform"
           />
-          <Badge
+          {/* <Badge
             className="absolute top-[30px] left-[-10px] bg-[#f55500] text-white rounded-full flex items-center justify-center text-[16px] font-[700] shadow-lg transition-transform transform hover:scale-110"
             style={{
               width: "48px",
@@ -36,7 +36,7 @@ export const CourseCard = ({ course }: { course: any }) => {
             variant="secondary"
           >
             30%
-          </Badge>
+          </Badge> */}
         </div>
         <CardContent className="p-4">
           <h3 className=" text-[20px] text-[#4A306D] line-clamp-2 min-h-[48px] font-bold">
@@ -45,7 +45,7 @@ export const CourseCard = ({ course }: { course: any }) => {
 
           <div className="mt-4 space-y-2 flex justify-between">
             <div className="text-gray-500 line-through mt-3">
-              {course?.price}
+            {Number( course?.price).toLocaleString("vi-VN")} đ
             </div>
             <div
               className="text-[15px] font-bold text-[#fff]"
@@ -55,7 +55,7 @@ export const CourseCard = ({ course }: { course: any }) => {
                 borderRadius: "20px"
               }}
             >
-              {course?.price}
+             {Number( course?.price).toLocaleString("vi-VN")} đ
             </div>
           </div>
         </CardContent>

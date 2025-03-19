@@ -152,14 +152,14 @@ export const CardBlogVertA = ({
   );
 };
 
-export const CardPost = (props: Post) => {
+export const  CardPost = (props: Post) => {
   const { id, slug, imageUrl, title, excerpt } = props;
   return (
     <Card
       key={id}
       className="group overflow-hidden hover:shadow-lg transition-shadow"
     >
-      <Link href={`/blog/${slug}`}>
+      <Link href={`/tin-tuc/${slug}`}>
         <div className="relative h-48 overflow-hidden">
           <Image
             src={imageUrl || "/assets/blog.jpeg"}

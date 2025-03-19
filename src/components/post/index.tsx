@@ -52,7 +52,7 @@ export const Post = ({ post }: { post: any }) => {
   }, [post]);
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
+    <div className="max-w-5xl mx-auto p-6 py-20">
       <article className={styles["post"]}>
         <main>
           {post && (

@@ -329,3 +329,235 @@ export const checkEmailExist = async (email: string) => {
     return false;
   }
 };
+
+//------order--------------------------
+export const handleCreateOrder = async ({
+  partner_name = "public",
+  partner_email = "09999999999",
+  partner_phone = "public@gmail.com",
+  items,
+}: {
+  partner_name?: string;
+  partner_email?: string;
+  partner_phone?: string;
+  items: { product_id: number; quantity: number; price_unit: number }[];
+}) => {
+  try {
+    const response = await fetch("/api/order/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        partner_name,
+        partner_email,
+        partner_phone,
+        items,
+      }),
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      return data;
+    } else {
+      return { error: data.message };
+    }
+  } catch (error) {
+    console.error("Error: ", error);
+    return { error: "Lỗi kết nối API" };
+  }
+};
+
+export const fetchOrderDetails = async (order_id: number) => {
+  try {
+    const response = await fetch(`/api/order/details?order_id=${order_id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    if (!data.success) {
+      return { error: data.message };
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Lỗi khi lấy thông tin đơn hàng:", error);
+    return { error: "Lỗi hệ thống" };
+  }
+};
+
+export const fetchPromotions = async (order_id: number) => {
+  try {
+    const response = await fetch(`/api/order/promotions?order_id=${order_id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    if (!data.success) {
+      return { error: data.message };
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Lỗi khi lấy danh sách khuyến mãi:", error);
+    return { error: "Lỗi hệ thống" };
+  }
+};
+
+export const fetchApplyPromotion = async (order_id: number, promotion_id: number) => {
+  try {
+    const response = await fetch("/api/order/apply_promotion", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ order_id, promotion_id }),
+    });
+
+    const data = await response.json();
+    if (!data.success) {
+      return { error: data.message };
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Lỗi khi áp dụng khuyến mãi:", error);
+    return { error: "Lỗi hệ thống" };
+  }
+};
+
+export const fetchApplyPromoCode = async (order_id: number, promo_code: string) => {
+  try {
+    const response = await fetch("/api/order/apply_promo_code", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ order_id, promo_code }),
+    });
+
+    const data = await response.json();
+    if (!data.success) {
+      return { error: data.message };
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Lỗi khi áp dụng mã khuyến mãi:", error);
+    return { error: "Lỗi hệ thống" };
+  }
+};
+
+export interface OrderItem {
+  product_id: number;
+  quantity: number;
+  price_unit: number;
+  is_reward_line?: boolean;
+}
+export const fetchUpdateOrder = async (
+  order_id: number,
+  partner_name: string,
+  partner_email: string,
+  partner_phone?: string,
+  items?: { product_id: number; quantity: number; price_unit: number }[]
+) => {
+  try {
+    const response = await fetch("/api/order/update", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        order_id,
+        partner_name,
+        partner_email,
+        ...(partner_phone && { partner_phone }),
+        ...(items && { items }),
+      }),
+    });
+
+    const data = await response.json();
+    if (!data.success) {
+      return { error: data.message };
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Lỗi khi cập nhật đơn hàng:", error);
+    return { success: false, message: "Lỗi hệ thống", error: "Lỗi hệ thống" };
+  }
+};
+
+export const fetchConfirmPayment = async (order_id: number) => {
+  try {
+    const response = await fetch("/api/order/confirm_payment", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ order_id }),
+    });
+
+    const data = await response.json();
+    if (!data.success) {
+      return { error: data.message };
+    }
+    return data;
+  } catch (error) {
+    console.error("Lỗi khi xác nhận thanh toán:", error);
+    return { success: false, message: "Lỗi hệ thống", error: "Lỗi hệ thống" };
+  }
+};
+
+export const fetchUpdateOrderStatus = async (order_id: number) => {
+  try {
+    const response = await fetch("/api/order/update_status", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ order_id: order_id }),
+    });
+
+    const data = await response.json();
+    if (!data.success) {
+      return { error: data.message };
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Lỗi khi cập nhật trạng thái đơn hàng:", error);
+    return { success: false, message: "Lỗi hệ thống", error: "Lỗi hệ thống" };
+  }
+};
+
+export const getUserOrders = async ({ session_log_id }: { session_log_id: string }) => {
+  try {
+    const response = await fetch("/api/order/user_orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        session_log_id: session_log_id,
+      }),
+    });
+    const data = await response.json();
+
+    if (!data.success) {
+      console.error("Lỗi lấy danh sách đơn hàng:", data.message);
+      return data.message;
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Lỗi hệ thống:", error);
+    return { success: false, message: "Lỗi hệ thống", error: "Lỗi hệ thống" };
+  }
+};

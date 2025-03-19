@@ -19,7 +19,7 @@ export const Solution = ({ AboutUs }: { AboutUs: any }) => {
         </div>
         <div className="space-y-6 self-center">
           <SectionTitle title={"  ABOUT US"} icon={<FaUser />} />
-          <h2 className="text-3xl md:text-4xl font-bold text-[#4A306D]">
+          <h2 className="text-xl md:text-3xl font-bold text-[#4A306D]">
             {AboutUs?.content?.company_name_line_1 || "Công ty TNHH"}
             <br />
             {AboutUs?.content?.company_name_line_2 ||

@@ -12,7 +12,7 @@ import { Trend } from "./Trend";
 
 export const Home = () => {
   const [homeContent, setHomeContent] = useState<any>(null);
-  const [posts, setPosts] = useState<any[]>([]); // State để lưu bài viết
+  const [posts, setPosts] = useState<any[]>([]);
 
   useEffect(() => {
     const getHomeContent = async () => {

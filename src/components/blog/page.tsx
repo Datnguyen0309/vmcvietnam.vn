@@ -81,7 +81,7 @@ export const Blog = () => {
           <div className="grid md:grid-cols-2 gap-6">
             {featuredPosts.map((post: any) => (
               <Card key={post.id} className="overflow-hidden">
-                <Link href={`/blog/${post.slug}`}>
+                <Link href={`/tin-tuc/${post.slug}`}>
                   <CardContent className="p-0">
                     <div className="relative">
                       <Image
@@ -109,7 +109,7 @@ export const Blog = () => {
           <div className="grid md:grid-cols-3 gap-6">
             {regularPosts.map((post: any) => (
               <Card key={post.id} className="overflow-hidden">
-                <Link href={`/blog/${post.slug}`}>
+                <Link href={`/tin-tuc/${post.slug}`}>
                   <CardContent className="p-0">
                     <div className="relative">
                       <Image

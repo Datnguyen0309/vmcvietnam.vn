@@ -105,7 +105,7 @@ const TeacherProfile = () => {
 
         <div className="mt-12">
           <h2 className="text-[25px] font-[700] text-[#4A306D] mb-6  uppercase">
-            DANH SÁCH CÁC KHÓA HỌC CỦA{" "}
+            DANH SÁCH CÁC KHÓA HỌC CỦA
             {data?.data?.short_course[0]?.teacher?.name}
           </h2>
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8">

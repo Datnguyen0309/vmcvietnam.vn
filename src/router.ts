@@ -20,33 +20,6 @@ export const menus = [
   {
     path: "/khoa-hoc", // the url
     title: "Khóa học",
-    childs: [
-      {
-        path: "/graphic-design",
-        title: "Graphic Design",
-      },
-
-      {
-        path: "/web-design",
-        title: "Web design",
-      },
-      {
-        path: "/content-writing",
-        title: "Content Writing",
-      },
-      {
-        path: "/digital-marketing",
-        title: "Digital Marketing",
-      },
-      {
-        path: "/business",
-        title: "Business",
-      },
-      {
-        path: "/finance",
-        title: "Finance",
-      },
-    ],
   },
 
   {

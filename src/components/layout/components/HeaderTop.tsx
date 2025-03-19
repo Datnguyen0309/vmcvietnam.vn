@@ -66,7 +66,7 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
       return null;
     };
     handleUserInfoIN();
-  }, [router]);
+  }, [sessionLogId,router]);
   const [isOpen, setIsOpen] = useState(false);
 
   return (

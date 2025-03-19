@@ -10,7 +10,7 @@ export const HeroBanner = ({ banner }: { banner: any }) => {
       <div className="container max-w-7xl mx-auto px-4 pt-16 pb-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative">
           <div className="text-white space-y-6">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold">
               {banner?.content?.title || "Tri Anh Solutions"}
             </h1>
             <p className="text-white text-lg md:text-xl  max-w-xl">

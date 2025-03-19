@@ -13,7 +13,6 @@ import { ReactElement } from "react";
 
 export const getServerSideProps: GetServerSideProps = async (context: any) => {
   const api_url = process.env.API_URL || "";
-  const url = "https://ehou.aum.edu.vn/wp-json/rankmath/v1/getHead?url=https://ehou.aum.edu.vn";
   try {
     const params = context.params;
     const slug = params?.slug || "";
@@ -21,16 +20,12 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
       url: `${api_url}/posts?slug=${slug}`,
       revalidate: 3600
     });
-    const resSeo = await fetchSeo({
-      url: `${url}/${slug}`,
-      revalidate: 3600
-    });
-    const head = await resSeo.json();
+   
     const posts = await res.json();
     const post = posts ? posts[0] : null;
 
     return {
-      props: { post: post || null, head: head.head || null }
+      props: { post: post || null, }
     };
   } catch (error) {
     console.log(error);
@@ -49,11 +44,6 @@ const Page = (props: IPostPage) => {
   const { post, head } = props;
   return (
     <>
-      {head && (
-        <div>
-          <Head>{ReactHtmlParser(replaceSeoRM(head))}</Head>
-        </div>
-      )}
       <ErrorBoundary fallback={<h1>Lỗi phía máy chủ</h1>}>
         <Post post={post} />
       </ErrorBoundary>

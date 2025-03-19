@@ -1,17 +1,17 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { CartItem } from "@/redux/features/cartSlice";
+import { useAppDispatch } from "@/redux/store";
+import { addToCartThunk } from "@/redux/thunks/oderThunks";
+import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { clean } from "../lib/sanitizeHtml";
 import { Loading } from "../Loading";
-import { motion } from "framer-motion";
-import { useAppDispatch } from "@/redux/store";
-import { addItem } from "@/redux/features/cartSlice";
-import Link from "next/link";
 
 function formatPrice(price: number) {
   return new Intl.NumberFormat("vi-VN", {
@@ -32,15 +32,24 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
   const toggleCart = () => setIsCartOpen(!isCartOpen);
 
   // Thêm vào giỏ hàng nhưng không mở modal
-  const handleAddToCart = () => {
-    const cartItem = {
-      id: CourseData.id,
-      name: CourseData.title,
-      price: CourseData.price,
-      image: CourseData.image,
-      quantity: 1,
-    };
-    dispatch(addItem(cartItem));
+  const handleAddToCart = async () => {
+    try {
+      // Dispatch thunk, nó sẽ xử lý logic thêm sản phẩm
+      await dispatch(
+        addToCartThunk({
+          product_id: Number(CourseData.id),
+          name: CourseData.name,
+          image: CourseData.image,
+          price_unit: Number(CourseData.price),
+          quantity: 1,
+        } as CartItem)
+      );
+      // Sau khi thành công, bạn có thể hiển thị thông báo cho người dùng nếu cần
+      console.log("Sản phẩm đã được thêm vào giỏ hàng thành công.");
+    } catch (error) {
+      // Xử lý lỗi nếu API hoặc quá trình dispatch gặp sự cố
+      console.error("Lỗi khi thêm sản phẩm vào giỏ hàng:", error);
+    }
   };
 
   // Mở modal giỏ hàng nhưng không thêm sản phẩm
@@ -58,6 +67,7 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
         });
         const data: { posts: any[]; totalPosts: string } = await res.json();
         const { posts } = data;
+        console.log(data)
         posts?.length && setpostsWp(posts[0]);
       } catch (error) {
         console.log(error);
@@ -116,7 +126,7 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
                   objectFit: "cover"
                 }}
               />
-              <Badge
+              {/* <Badge
                 className="absolute top-[30px] left-[10px] bg-[#f55500] text-white rounded-full flex items-center justify-center text-[20px] font-[700]"
                 style={{
                   width: "58px",
@@ -125,11 +135,13 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
                 variant="secondary"
               >
                 30%
-              </Badge>
+              </Badge> */}
             </div>
-
             <div className="space-y-6 p-6">
-              <div className="flex items-center gap-2">
+              <h3 className=" text-[20px] text-[#4A306D] line-clamp-2 min-h-[48px] font-bold">
+                {CourseData?.name}
+              </h3>
+              <div className="flex items-center gap-2 mt-[0px!important]">
                 <span className="text-gray-500 line-through">
                   {formatPrice(CourseData.price || 0)}
                 </span>
@@ -159,7 +171,9 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
               </Button>
             </div>
             <button
-              onClick={handleAddToCart}
+              onClick={() => {
+                handleAddToCart();
+              }}
               className="w-full bg-[#f55500] hover:bg-orange-600 font-[700] text-[16px] border-none p-2 text-white mb-[16px]">
               THÊM VÀO GIỎ HÀNG
             </button>
@@ -174,7 +188,7 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.3 }}
-             className="fixed top-0 right-0 w-full sm:w-[400px] h-full bg-white shadow-lg z-50 overflow-y-auto p-6 transition-transform transform sm:mt-[130px]"
+            className="fixed top-0 right-0 w-full sm:w-[400px] h-full bg-white shadow-lg z-50 overflow-y-auto p-6 transition-transform transform sm:mt-[130px]"
           >
             <button onClick={toggleCart} className="absolute top-4 right-4 text-gray-600">✕</button>
             <h2 className="text-xl font-bold text-[#4A306D] ">Giỏ hàng của bạn</h2>
@@ -188,7 +202,7 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
                   className="rounded-lg"
                 />
                 <div>
-                  <p className="font-semibold">{CourseData?.title}</p>
+                  <p className="font-semibold">{CourseData?.name}</p>
                   <p className="text-sm text-gray-500">{formatPrice(CourseData.price || 0)}</p>
                 </div>
               </div>

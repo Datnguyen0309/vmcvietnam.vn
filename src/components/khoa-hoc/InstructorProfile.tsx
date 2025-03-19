@@ -35,7 +35,7 @@ export const InstructorProfile = ({ teacher_info }: { teacher_info: any }) => {
           <Card className="border-none bg-transparent">
             <CardContent className="p-0">
               <div className="flex flex-col md:flex-row gap-6">
-                <div className="w-full md:w-48 h-48 relative">
+                <div className=" md:w-48 h-48 relative">
                   <Image
                     src={teacher_info?.image || ""}
                     alt={teacher_info?.name || ""}
@@ -46,11 +46,11 @@ export const InstructorProfile = ({ teacher_info }: { teacher_info: any }) => {
                       borderRadius: "6px",
                       borderTopLeftRadius: "34px",
                       borderBottomRightRadius: "34px",
-                      objectFit: "cover"
+                      objectFit: "cover",
+                      height:"192px",
                     }}
                   />
                 </div>
-
                 <div className="flex-1 space-y-4">
                   <h3 className="text-xl font-semibold text-[#4A306D]">
                     {teacher_info?.name}
