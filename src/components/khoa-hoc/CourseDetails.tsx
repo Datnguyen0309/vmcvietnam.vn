@@ -53,11 +53,11 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
   };
 
   // Mở modal giỏ hàng nhưng không thêm sản phẩm
-  const handleBuyNow = () => {
-    handleAddToCart();
+  const handleBuyNow = async () => {
+    await handleAddToCart(); // Chờ thêm vào giỏ xong mới mở modal
     setIsCartOpen(true);
   };
-
+  
   const { slug } = router.query;
   useEffect(() => {
     const getpostsWp = async () => {
@@ -159,7 +159,7 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
               >
                 HOTLINE: 091 234 5678
               </Button>
-              <Button
+              {/* <Button
                 onClick={handleBuyNow}
                 className="w-full bg-[#fff] text-[#4A306D] hover:bg-[#4A306D] hover:text-[#fff] lg:text-[16px] font-[700] border-2 border-[#4A306D]"
                 style={{
@@ -168,7 +168,7 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
                 }}
               >
                 MUA NGAY
-              </Button>
+              </Button> */}
             </div>
             <button
               onClick={() => {
