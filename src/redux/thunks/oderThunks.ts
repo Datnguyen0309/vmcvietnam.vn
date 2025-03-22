@@ -1,4 +1,3 @@
-// src/redux/thunks/orderThunks.ts
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { addItem, CartItem, deleteItem } from "../features/cartSlice";

@@ -5,7 +5,7 @@ export interface CartItemOrder extends CartItem {
   product_id: number;
   price_unit: number;
   quantity: number;
-  name :string
+  name?: string;
   is_reward_line?: boolean;
 }
 export interface OrderState {
