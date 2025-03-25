@@ -1,131 +1,135 @@
 "use client"
 
-import type React from "react"
-
-import { useEffect, useState } from "react"
-import Image from "next/image"
-import type { CartItem } from "@/redux/features/cartSlice"
-import { type CartItemOrder, clearOrder } from "@/redux/features/orderSlice"
-import { useAppDispatch, useAppSelector } from "@/redux/store"
-import { useRouter } from "next/router"
-import nookies from "nookies"
-import { fetchUpdateOrder, fetchUpdateOrderStatus } from "@/utils/fetch-auth-odoo"
-import { encryptOrderId } from "@/utils/decodeOrderID"
-import { clearPromotion } from "@/redux/features/promotionSlice"
-import { createOrderThunk } from "@/redux/thunks/oderThunks"
-import { Loading } from "@/components/Loading"
-import { Gift, Percent, CreditCard, User, Mail, Phone, ShoppingBag, CheckCircle, ArrowRight } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
+import type { CartItem } from "@/redux/features/cartSlice"
+import { type CartItemOrder, clearOrder } from "@/redux/features/orderSlice"
+import { clearPromotion } from "@/redux/features/promotionSlice"
+import { useAppDispatch, useAppSelector } from "@/redux/store"
+import { createOrderThunk } from "@/redux/thunks/oderThunks"
+import { encryptOrderId } from "@/utils/decodeOrderID"
+import { fetchUpdateOrder, fetchUpdateOrderStatus } from "@/utils/fetch-auth-odoo"
+import { ArrowRight, CreditCard, Gift, Mail, Percent, Phone, ShoppingBag, User } from "lucide-react"
+import Image from "next/image"
+import { useRouter } from "next/router"
+import nookies from "nookies"
+import type React from "react"
+import { useEffect, useState } from "react"
+import { Loading } from "../Loading"
 
 export const ConfirmInfo = () => {
-  const [email, setEmail] = useState("")
-  const [phone, setPhone] = useState("")
-  const [username, setUsername] = useState("")
-  const [errors, setErrors] = useState({ phone: "", email: "" })
-  const [checkEmail, setCheckEmail] = useState<any>(0)
-  const dispatchApp = useAppDispatch()
-  const router = useRouter()
-  const cookies = nookies.get()
-  const sessionLogId = cookies.session_log_id
-  const cartItems: CartItem[] = useAppSelector((state) => state.cart.cartItems)
-  const rewardItems: CartItemOrder[] = useAppSelector((state) =>
-    state.order.items.filter((item) => item.is_reward_line === true),
-  )
-  const [isLoading, setIsLoading] = useState(false)
-  const user = useAppSelector((state) => state.login.user)
-  const promotion = useAppSelector((state) => state.promotion.currentPromotion)
-  const totalAmount: number = useAppSelector((state) => state.cart.totalAmount)
-  const totalPrice: number = useAppSelector((state) => state.order.total_price)
-  const order_id = useAppSelector((state) => state.order.order_id)
-  const dispatch = useAppDispatch()
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [username, setUsername] = useState("");
+  const [errors, setErrors] = useState({ phone: "", email: "" });
+  const [checkEmail, setCheckEmail] = useState<any>(0);
+  const dispatchApp = useAppDispatch();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
 
     if (name === "phone") {
-      setPhone(value)
-      const phonePattern = /^(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})$/
+      setPhone(value);
+      const phonePattern = /^(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})$/;
       setErrors((prev: any) => ({
         ...prev,
         phone: phonePattern.test(value) ? "" : "Số điện thoại không hợp lệ",
-      }))
+      }));
     }
 
     if (name === "email") {
-      setEmail(value)
-      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+      setEmail(value);
+
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       setErrors((prev: any) => ({
         ...prev,
         email: emailPattern.test(value) ? "" : "Email không hợp lệ",
-      }))
+      }));
     }
-  }
-
+  };
+  const router = useRouter();
+  const cookies = nookies.get();
+  const sessionLogId = cookies.session_log_id;
+  const cartItems: CartItem[] = useAppSelector((state) => state.cart.cartItems);
+  const rewardItems: CartItemOrder[] = useAppSelector((state) =>
+    state.order.items.filter((item) => item.is_reward_line === true)
+  );
+  const [isLoading, setIsLoading] = useState(false);
+  const user = useAppSelector((state) => state.login.user);
+  const promotion = useAppSelector((state) => state.promotion.currentPromotion);
+  const totalAmount: number = useAppSelector((state) => state.cart.totalAmount);
+  const totalPrice: number = useAppSelector((state) => state.order.total_price);
+  const order_id = useAppSelector((state) => state.order.order_id);
+  const dispatch = useAppDispatch();
   const handleCheckEmail = async () => {
-    try {
-      const orderData = await fetchUpdateOrder(Number(order_id), username, email, phone)
-      if (!orderData.success) {
-        throw new Error(orderData.message)
-      }
-      setCheckEmail(1)
-    } catch (error) {
-      console.error("Error updating order:", error)
+    // Gọi hàm kiểm tra email tồn tại
+    const orderData = await fetchUpdateOrder(
+      Number(order_id), // Chuyển order_id về number nếu cần
+      username,
+      email,
+      phone
+    );
+
+    if (!orderData.success) {
+      throw new Error(orderData.message);
     }
-  }
+    setCheckEmail(1);
+  };
 
-  const handleConfirmOrder = async () => {
+  const handleConfirmOrder = () => {
     try {
-      setIsLoading(true)
+      setIsLoading(true); // 🔄 Bắt đầu loading
 
-      const response = await fetchUpdateOrderStatus(Number(order_id))
-      if (response.success) {
-        const decoodeOrderId = order_id ? encryptOrderId(String(order_id)) : ""
-        router.push(`/chon-phuong-thuc-thanh-toan?order_id=${decoodeOrderId}`)
+      // Gọi API nhưng không chờ kết quả
+      fetchUpdateOrderStatus(Number(order_id)).catch(console.error);
 
-        dispatch(clearOrder())
-        dispatch(clearPromotion())
-      } else {
-        throw new Error(response.message)
-      }
+      const decoodeOrderId = order_id ? encryptOrderId(String(order_id)) : "";
+      router.push(`/chon-phuong-thuc-thanh-toan?order_id=${decoodeOrderId}`);
+
+      dispatch(clearOrder());
+      dispatch(clearPromotion());
     } catch (error) {
-      console.error(error)
+      console.error(error);
     } finally {
-      setIsLoading(false)
-      sessionStorage.setItem("exited_order_page", "true")
+      setIsLoading(false);
+      sessionStorage.setItem("exited_order_page", "true"); // ✅ Kết thúc loading
     }
-  }
+  };
 
   useEffect(() => {
     const handleCreateOrder = async () => {
-      if (!order_id && sessionStorage.getItem("exited_order_page") && !sessionStorage.getItem("order_created")) {
+      // Kiểm tra xem order_id có tồn tại trong Redux store hay không
+
+      if (
+        !order_id &&
+        sessionStorage.getItem("exited_order_page") &&
+        !sessionStorage.getItem("order_created")
+      ) {
         try {
-          await dispatchApp(createOrderThunk())
-          console.log("Tạo đơn hàng thành công.")
-          sessionStorage.removeItem("exited_order_page")
-          sessionStorage.setItem("order_created", "true")
+          // Dispatch thunk, nó sẽ xử lý logic thêm sản phẩm
+
+          await dispatchApp(createOrderThunk());
+          // Sau khi thành công, bạn có thể hiển thị thông báo cho người dùng nếu cần
+          console.log("Tạo đơn hàng thành công.");
+          sessionStorage.removeItem("exited_order_page");
+          sessionStorage.setItem("order_created", "true"); // Đánh dấu đã tạo
         } catch (error) {
-          console.error("Lỗi khi tạo đơn hàng:", error)
+          // Xử lý lỗi nếu API hoặc quá trình dispatch gặp sự cố
+          console.error("Lỗi khi tạo đơn hàng:", error);
         }
       }
-    }
+    };
 
-    handleCreateOrder()
-  }, [ dispatchApp, order_id])
-
+    handleCreateOrder();
+  }, [Loading]);
   return (
     <>
       <div className=" bg-[#f9f7fc] py-20">
         <div className="max-w-[1320px] mx-auto px-4 pt-8 pb-16">
-          <div className="flex items-center mb-8">
-            <CheckCircle className="w-6 h-6 mr-2 text-[rgb(74,59,99)]" />
-            <h1 className="text-2xl font-bold text-[rgb(74,59,99)]">Xác nhận thông tin</h1>
-          </div>
-
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left column - Order information */}
             <div className="lg:col-span-2">
@@ -165,7 +169,7 @@ export const ConfirmInfo = () => {
                           </div>
                           <div className="col-span-5 flex items-center">
                             <span className="font-semibold text-[rgb(74,59,99)]">
-                              {(item?.price_unit * item?.quantity).toLocaleString("vi-VN")} đ
+                              {(item?.price_unit * item?.quantity).toLocaleString("vi-VN")} {" đ"}
                             </span>
                           </div>
                         </div>
@@ -220,7 +224,7 @@ export const ConfirmInfo = () => {
                           <div className="flex-1">
                             <h3 className="font-medium text-gray-800 mb-1">{item?.name}</h3>
                             <p className="text-[rgb(74,59,99)] font-semibold">
-                              {(item?.price_unit * item?.quantity).toLocaleString("vi-VN")} đ
+                              Giá: {(item?.price_unit).toLocaleString("vi-VN")} {" đ"}
                             </p>
                           </div>
                         </div>
@@ -253,7 +257,10 @@ export const ConfirmInfo = () => {
                   <div className="space-y-3 bg-gray-50 p-4 rounded-lg">
                     <div className="flex justify-between text-gray-600">
                       <span>Tạm tính:</span>
-                      <span>{totalAmount.toLocaleString("vi-VN")} đ</span>
+                      <span>
+                        {totalAmount.toLocaleString("vi-VN")}
+                        {" đ"}
+                      </span>
                     </div>
 
                     {promotion && (
@@ -261,17 +268,17 @@ export const ConfirmInfo = () => {
                         <span>Giảm:</span>
                         <span>
                           {promotion && promotion.reward_type === "discount"
-                            ? (rewardItems[0]?.price_unit * rewardItems[0]?.quantity).toLocaleString("vi-VN") + " đ"
+                            ? (rewardItems[0]?.price_unit * rewardItems[0]?.quantity).toLocaleString(
+                              "vi-VN"
+                            ) + " đ"
                             : "-0 đ"}
                         </span>
                       </div>
                     )}
-
                     <Separator className="my-2" />
-
                     <div className="flex justify-between font-bold text-lg">
                       <span>Tổng cộng:</span>
-                      <span className="text-[rgb(74,59,99)]">{totalPrice.toLocaleString("vi-VN")} đ</span>
+                      <span className="text-[rgb(74,59,99)]">      {totalPrice.toLocaleString("vi-VN")} {" đ"}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -378,6 +385,15 @@ export const ConfirmInfo = () => {
                         />
                         {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
                       </div>
+                      {checkEmail == 0 && (
+                        <button
+                          onClick={handleCheckEmail}
+                          disabled={!email || !phone || !username || errors.email ? true : false}
+                          className="w-full bg-[rgb(74,59,99)] hover:bg-[rgb(74,59,69)] text-white font-bold py-3 px-4 rounded-lg mt-6 transition-colors"
+                        >
+                          Xác nhận thông tin
+                        </button>
+                      )}
                     </div>
                   )}
                 </CardContent>
@@ -401,7 +417,6 @@ export const ConfirmInfo = () => {
                   </Button>
                 </div>
               )}
-
               {(checkEmail !== 0 || (sessionLogId && Number(user.phone) !== 0)) && (
                 <div className="mt-4">
                   <Button
@@ -414,26 +429,17 @@ export const ConfirmInfo = () => {
                     ) : (
                       <CreditCard className="w-5 h-5 mr-2" />
                     )}
-                    {isLoading ? "Đang xử lý..." : "Tiến hành thanh toán"}
+                    {isLoading ? (
+                      <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+                    ) : (
+                      "Tiến hành thanh toán"
+                    )}
                     {!isLoading && <ArrowRight className="w-4 h-4 ml-2" />}
                   </Button>
 
                   <p className="text-xs text-gray-500 text-center mt-2">
                     Bằng cách tiến hành thanh toán, bạn đồng ý với các điều khoản và điều kiện của chúng tôi.
                   </p>
-                </div>
-              )}
-
-              {checkEmail === 0 && !sessionLogId && (
-                <div className="mt-4">
-                  <Button
-                    onClick={handleCheckEmail}
-                    disabled={!email || !phone || !username || Boolean(errors.email) || Boolean(errors.phone)}
-                    className="w-full bg-[rgb(74,59,99)] hover:bg-[rgb(94,79,119)]"
-                  >
-                    <CheckCircle className="w-4 h-4 mr-2" />
-                    Xác nhận thông tin
-                  </Button>
                 </div>
               )}
             </div>

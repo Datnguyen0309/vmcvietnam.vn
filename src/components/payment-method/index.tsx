@@ -193,7 +193,6 @@ export const PaymentMethod = () => {
                     <span className="text-gray-500">Tạm tính:</span>
                     <span>{total_amount?.toLocaleString("vi-VN") || "0"} đ</span>
                   </div>
-
                   {promotion && (
                     <div className="flex justify-between text-sm text-[rgb(74,59,99)] mb-2">
                       <span>Giảm:</span>
@@ -204,9 +203,7 @@ export const PaymentMethod = () => {
                       </span>
                     </div>
                   )}
-
                   <Separator className="my-2" />
-
                   <div className="flex justify-between font-bold">
                     <span>Tổng cộng:</span>
                     <span className="text-[rgb(74,59,99)]">
