@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,32 +14,32 @@ export const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [filteredPosts, setFilteredPosts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+  const categoryFromUrl = router.query.category as string | undefined;
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
         const categoryResponse = await fetch(`/api/categories`);
-        if (!categoryResponse.ok) {
-          throw new Error(`Categories fetch failed with status: ${categoryResponse.statusText}`);
-        }
-        const { categories } = await categoryResponse.json();
-
         const postResponse = await fetch(`/api/posts?page=1`);
-        if (!postResponse.ok) {
-          throw new Error(`Posts fetch failed with status: ${postResponse.statusText}`);
+
+        if (!categoryResponse.ok || !postResponse.ok) {
+          throw new Error("Failed to fetch data");
         }
+
+        const { categories } = await categoryResponse.json();
         const { posts } = await postResponse.json();
-        console.log("Posts Data:", posts);
+
         setCategories(categories);
         setPosts(posts);
 
-        setSelectedCategory(categories[0]?.slug || null);
+        const defaultSlug = categoryFromUrl || categories[0]?.slug || null;
+        setSelectedCategory(defaultSlug);
 
+        const categoryObj = categories.find((cat: any) => cat.slug === defaultSlug);
         const initialFiltered = posts.filter(
-          (post: any) =>
-            post.categories &&
-            post.categories.includes(categories[0]?.id)
+          (post: any) => post.categories?.includes(categoryObj?.id)
         );
         setFilteredPosts(initialFiltered);
       } catch (error) {
@@ -49,17 +50,14 @@ export const Blog = () => {
     };
 
     fetchData();
-  }, []);
+  }, [categoryFromUrl]);
 
   useEffect(() => {
-    if (selectedCategory) {
-      const category = categories.find(
-        (cat: any) => cat.slug === selectedCategory
-      );
+    if (selectedCategory && categories.length && posts.length) {
+      const category = categories.find((cat: any) => cat.slug === selectedCategory);
       if (category) {
-        const filtered = posts.filter(
-          (post: any) =>
-            post.categories && post.categories.includes(category.id)
+        const filtered = posts.filter((post: any) =>
+          post.categories?.includes(category.id)
         );
         setFilteredPosts(filtered);
       }
@@ -137,7 +135,7 @@ export const Blog = () => {
           <div className="space-y-6">
             {sregularPosts.map((post: any) => (
               <Card key={post.id} className="overflow-hidden">
-                <Link href={`/blog/${post.slug}`}>
+                <Link href={`/tin-tuc/${post.slug}`}>
                   <CardContent className="p-4">
                     <div className="grid md:grid-cols-12 gap-6">
                       <div className="md:col-span-4">
@@ -165,20 +163,25 @@ export const Blog = () => {
           </div>
         </div>
 
+        {/* Sidebar */}
         <div className="md:col-span-4 lg:col-span-3 space-y-6">
           <Card>
-            <CardTitle className="text-lg font-bold  text-[#463266] pb-2">
+            <CardTitle className="text-lg font-bold text-[#463266] pb-2">
               CHUYÊN MỤC BÀI VIẾT
             </CardTitle>
             <ul className="space-y-2 bg-white border border-gray-200 rounded-lg p-[15px]">
               {categories.map((category: any) => (
                 <li key={category.id} className="flex items-center">
                   <button
-                    onClick={() => setSelectedCategory(category.slug)}
-                    className={`text-left w-full hover:text-red-600 ${selectedCategory === category.slug
-                      ? "text-red-600 font-bold"
-                      : ""
-                      }`}
+                    onClick={() => {
+                      router.push(`/tin-tuc?category=${category.slug}`);
+                      setSelectedCategory(category.slug);
+                    }}
+                    className={`text-left w-full hover:text-red-600 ${
+                      selectedCategory === category.slug
+                        ? "text-red-600 font-bold"
+                        : ""
+                    }`}
                   >
                     {category.name} ({category.count || 0})
                   </button>
@@ -192,4 +195,4 @@ export const Blog = () => {
       </div>
     </div>
   );
-}
+};

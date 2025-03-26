@@ -17,7 +17,7 @@ export const Banner = (banner: any) => {
         }))
     : [
         { id: 1, bgImage: "/assets/slide-img2.webp" },
-        { id: 2, bgImage: "/assets/default-slide.webp" }
+        { id: 2, bgImage: "/assets/slide-img2.webp"  }
       ];
 
   let swiperInstance: any = null;

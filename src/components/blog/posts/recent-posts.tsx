@@ -12,7 +12,7 @@ export const RecentPosts = ({ posts }: { posts: any[] }) => {
         {posts.slice(0, 5).map((post) => (
           <li key={post.id} className="flex items-center space-x-4">
             <Link
-              href={`/${post.slug}`}
+              href={`/tin-tuc/${post.slug}`}
               className="flex items-center space-x-4 text-sm font-bold transition-colors hover:text-red-500"
             >
               <div className="w-[100px] h-[70px] flex-shrink-0">

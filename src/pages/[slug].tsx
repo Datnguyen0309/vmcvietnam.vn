@@ -19,7 +19,6 @@ const CourseDetail = () => {
     })
   );
 
-  console.log(data?.data);
 
   return (
     <>
