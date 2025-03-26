@@ -1,7 +1,6 @@
 "server only";
 
 import { Home } from "@/components/home";
-import Layout from "@/components/layout";
 import { fetchSeo } from "@/utils/seo";
 import { replaceSeoRM } from "@/utils/seoRankMath";
 import ReactHtmlParser from "html-react-parser";

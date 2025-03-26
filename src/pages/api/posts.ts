@@ -22,7 +22,7 @@ export default async function handler(
   let totalPosts: string = "0";
 
   try {
-    const endPoint = `${api_url}/posts?_embed&per_page=10&status=publish&page=${page}`;
+    const endPoint = `${api_url}/posts?_embed&per_page=100&status=publish&page=${page}`;
     const response = await fetchAuth({ url: endPoint, revalidate: 1 });
 
     const totalPostCount = Number(response.headers?.get("X-WP-Total") || "0");
@@ -30,7 +30,7 @@ export default async function handler(
 
     const allPosts: any[] = (await response?.json()) || [];
 
-    const excludedSlugs = ["lich-khai-giang", "form-main", "form-poup", "gioi-thieu", "cta"];
+    const excludedSlugs = ["lich-khai-giang", "form-main", "form-poup", "gioi-thieu", "cta","khoa-hoc-vmc"]
     
     const excludedCategoryId = 7; 
     posts = allPosts

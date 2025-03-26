@@ -22,7 +22,9 @@ export default async function handler(
     const res = await fetch(endPoint, {
       next: { revalidate: 1 }
     });
-
+    if (!res.ok) {
+      throw new Error(`Posts fetch failed with status: ${res.statusText}`);
+    }
     contentPage = (await res?.json()) || [];
   } catch (error) {
     console.log(error);

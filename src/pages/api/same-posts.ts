@@ -23,6 +23,9 @@ export default async function handler(
         url: `${api_url}/posts?categories=${catId}&exclude=${id}&per_page=3&_embed`,
         revalidate: 1
       });
+      if (!resRelatedPosts.ok) {
+        throw new Error(`Posts fetch failed with status: ${resRelatedPosts.statusText}`);
+      }
       const relatedPosts: any[] = await resRelatedPosts.json();
       const postsWithFeaturedImages =
         relatedPosts?.length > 0

@@ -18,7 +18,9 @@ export default async function handler(
   try {
     const endPoint = `${api_url}/posts?_embed&per_page=${len}&status=draft&page=1`;
     const res = await fetchAuth({ url: endPoint });
-
+    if (!res.ok) {
+      throw new Error(`Posts fetch failed with status: ${res.statusText}`);
+    }
     const postsNotFeatureImage: any[] = (await res?.json()) || [];
     posts =
       postsNotFeatureImage?.length > 0

@@ -23,7 +23,9 @@ export default async function handler(
     const res = await fetch(endPoint, {
       next: { revalidate: 1 }
     });
-
+    if (!res.ok) {
+      throw new Error(`Posts fetch failed with status: ${res.statusText}`);
+    }
     const postsNotFeatureImage: any[] = (await res?.json()) || [];
     posts =
       postsNotFeatureImage?.length > 0

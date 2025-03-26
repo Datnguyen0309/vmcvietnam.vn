@@ -20,6 +20,9 @@ export default async function handler(
       url: `${api_url}/form`,
       revalidate: 1
     });
+    if (!responeWordpress.ok) {
+      throw new Error(`Posts fetch failed with status: ${responeWordpress.statusText}`);
+    }
     const data: any[] = await responeWordpress.json();
     const htmlString = data?.length > 0 ? data[0]?.acf?.[String(type)] : "";
     // Sử dụng biểu thức chính quy để trích xuất chuỗi id

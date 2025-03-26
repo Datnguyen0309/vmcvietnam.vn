@@ -66,7 +66,7 @@ export function BankTransferDetails({
           <div className="space-y-6">
             <div className="flex items-center gap-4">
               <Image
-                src="/bank.png"
+                src="/assets/bank1.png"
                 alt="Techcombank"
                 width={120}
                 height={40}
@@ -129,7 +129,7 @@ export function BankTransferDetails({
 
             <div className="flex flex-col items-center gap-4">
               <div className="relative h-48 w-48">
-                <Image src="/qr.png" alt="QR Code" fill className="object-contain" />
+                <Image src="/assets/qr.png" alt="QR Code" fill className="object-contain" />
               </div>
               <p className="text-center text-sm text-gray-500">
                 Dùng ứng dụng ngân hàng quét QR để chuyển khoản

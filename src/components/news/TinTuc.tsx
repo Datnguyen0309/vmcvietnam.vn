@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router"; // Import from next/router
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { CardPost } from "../CardBlogVert";
@@ -11,9 +11,9 @@ interface ListPostsProps {
 }
 
 export default function BlogListing({ handleRouter }: ListPostsProps) {
-  const router = useRouter(); // Use useRouter hook to access router object
-  const page = router.query.page || "1"; // Use router.query to get query parameters
-
+  const router = useRouter();
+  const page = router.query.page || "1";
+  const category = router.query.category || "";
   const [posts, setPosts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [recentPosts, setRecentPosts] = useState<any[]>([]);
@@ -21,45 +21,43 @@ export default function BlogListing({ handleRouter }: ListPostsProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (!router.isReady) return;
     const getPosts = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch(`/api/posts/?type=notifis&page=${page}`, {
-          next: { revalidate: 3 }
-        });
-
-        const data: { posts: any[]; totalPosts: string } = await res.json();
-        const { posts, totalPosts } = data;
-        posts?.length && setPosts(posts);
-        totalPosts && setTotalPosts(totalPosts);
+        const res = await fetch(
+          `/api/posts/?type=tin-tuc&category=${category}&page=${page}`
+        );
+        if (!res.ok) {
+          throw new Error(`Posts fetch failed with status: ${res.statusText}`);
+        }
+        const data = await res.json();
+        setPosts(data.posts || []);
+        setTotalPosts(data.totalPosts || "0");
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
       setIsLoading(false);
     };
-
     getPosts();
-  }, [page]);
+  }, [router.isReady, page, category]);
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      setIsLoading(true);
+    const fetchMeta = async () => {
       try {
-        const response = await fetch(
-          "https://ehou.aum.edu.vn/wp-json/wp/v2/categories"
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch categories");
-        }
-        const data = await response.json();
-        setCategories(data);
-      } catch (error: any) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
+        const [catRes, recentRes] = await Promise.all([
+          fetch("/api/categories"),
+          fetch("/api/posts/recent"),
+        ]);
+        const categories = await catRes.json();
+        const recent = await recentRes.json();
+        setCategories(categories || []);
+        setRecentPosts(recent || []);
+      } catch (error) {
+        console.error("Meta fetch error", error);
       }
     };
-    fetchCategories();
+    fetchMeta();
   }, []);
 
   return (
@@ -100,25 +98,25 @@ export default function BlogListing({ handleRouter }: ListPostsProps) {
               {categories.map((category, index) => (
                 <li key={index}>
                   <Link
-                    href={`/category/${category.name
-                      .toLowerCase()
-                      .replace(/ /g, "-")}`}
+                    href={{
+                      pathname: "/tin-tuc",
+                      query: { category: category.slug },
+                    }}
                     className="flex items-center justify-between text-gray-600 hover:text-[#4A306D]"
                   >
-                    <span> {category.name}</span>
+                    <span>{category.name}</span>
                     <span>({category.count})</span>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
-
           <div>
             <h2 className="text-xl font-bold text-[#4A306D] mb-4">
               BÀI VIẾT MỚI ĐĂNG
             </h2>
             <div className="space-y-4">
-              {recentPosts.map((post) => (
+              {recentPosts.slice(0.5).map((post) => (
                 <Link
                   key={post.id}
                   href={`/posts/${post.slug}`}
