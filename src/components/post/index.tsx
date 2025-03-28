@@ -1,20 +1,29 @@
 "only server";
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import styles from "@/styles/Post.module.css";
+import { buildCommentTree } from "@/utils/comments";
+import { fetchComments, postComment } from "@/utils/fetch-auth";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { toast } from "react-toastify";
+import { CommentComponent } from "../CommentCard";
+import { CommentForm } from "../CommentForm";
 import { clean } from "../lib/sanitizeHtml";
 
 export const Post = ({ post }: { post: any }) => {
   const catIds = post?.categories || [];
   const catId = catIds[0];
+  const [parentId, setParentId] = useState<number | undefined>(undefined);
+  const [rememberMe, setRememberMe] = useState(false);
 
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    comment: "",
+  });
   useEffect(() => {
     const replaceHrefWithId = () => {
       const ezTocContainer = document.getElementById("ez-toc-container");
@@ -24,7 +33,7 @@ export const Post = ({ post }: { post: any }) => {
 
         tocLinks.forEach((link) => {
           link.addEventListener("click", (event) => {
-            event.preventDefault(); 
+            event.preventDefault();
 
             const href = link.getAttribute("href");
             const match = href?.match(/#(.+)$/);
@@ -51,6 +60,95 @@ export const Post = ({ post }: { post: any }) => {
     replaceHrefWithId();
   }, [post]);
 
+  const { data: commentsData, isLoading: isLoadingComments } = useQuery(
+    `comments-${post.id}`,
+    async () =>
+      fetchComments({
+        postId: Number(post?.id || 0),
+      })
+  );
+  const hanldeReply = ({
+    parentId,
+    commentsId,
+  }: {
+    parentId: number | undefined;
+    commentsId: number;
+  }) => {
+    setParentId(commentsId == parentId ? undefined : commentsId);
+  };
+
+  useEffect(() => {
+    // Lấy dữ liệu từ localStorage khi component mount
+    const savedName = localStorage.getItem("commentName");
+    const savedEmail = localStorage.getItem("commentEmail");
+    const savedRememberMe = localStorage.getItem("rememberMe") === "true";
+
+    if (savedRememberMe) {
+      setFormData((prev: any) => ({
+        ...prev,
+        name: savedName || "",
+        email: savedEmail || "",
+      }));
+      setRememberMe(true);
+    }
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleRememberMeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = e.target.checked;
+    setRememberMe(isChecked);
+
+    if (isChecked) {
+      localStorage.setItem("commentName", formData.name);
+      localStorage.setItem("commentEmail", formData.email);
+      localStorage.setItem("rememberMe", "true");
+    } else {
+      localStorage.removeItem("commentName");
+      localStorage.removeItem("commentEmail");
+      localStorage.removeItem("rememberMe");
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Nếu chọn lưu thông tin, cập nhật lại localStorage
+    if (rememberMe) {
+      localStorage.setItem("commentName", formData.name);
+      localStorage.setItem("commentEmail", formData.email);
+      localStorage.setItem("rememberMe", "true");
+    }
+
+    try {
+      const dataResponse = await postComment({
+        postId: post?.id,
+        parentId: parentId,
+        authorName: formData.name,
+        authorEmail: formData.email,
+        content: formData.comment,
+      });
+
+      if (dataResponse.id) {
+        // Xử lý khi gửi thành công
+        setFormData({
+          name: rememberMe ? formData.name : "",
+          email: rememberMe ? formData.email : "",
+          comment: "",
+        });
+        toast.success("Bình luận đã được gửi thành công! Chờ phê duyệt trước khi hiện thị");
+        setParentId(undefined);
+      } else {
+        // Xử lý khi gửi thất bại
+        console.error("Lỗi khi gửi bình luận.");
+      }
+      // Reset form sau khi gửi thành công
+    } catch (error) {
+      console.error("Lỗi khi đăng bình luận:", error);
+    }
+  };
   return (
     <div className="max-w-5xl mx-auto p-6 py-20">
       <article className={styles["post"]}>
@@ -132,53 +230,45 @@ export const Post = ({ post }: { post: any }) => {
                 />
                 <h2 className="text-[#FF4500] text-2xl font-medium">Thiện Lệ</h2>
               </div>
-
-              <div className="bg-[#F7F7F7] p-6">
-                <h3 className="text-xl font-medium mb-4">Trả lời</h3>
-                <p className="text-sm text-gray-600 mb-4">
-                  Email của bạn sẽ không được hiển thị công khai. Các trường bắt buộc được đánh dấu *
-                </p>
-                <form className="space-y-6">
-                  <div>
-                    <label htmlFor="comment" className="block mb-2 font-medium">
-                      Bình luận <span className="text-red-500">*</span>
-                    </label>
-                    <Textarea id="comment" required className="min-h-[120px] bg-white border-gray-300" />
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                      <label htmlFor="name" className="block mb-2 font-medium">
-                        Tên <span className="text-red-500">*</span>
-                      </label>
-                      <Input id="name" required className="bg-white border-gray-300" />
-                    </div>
-                    <div>
-                      <label htmlFor="email" className="block mb-2 font-medium">
-                        Email <span className="text-red-500">*</span>
-                      </label>
-                      <Input id="email" type="email" required className="bg-white border-gray-300" />
-                    </div>
-                    <div>
-                      <label htmlFor="website" className="block mb-2 font-medium">
-                        Trang web
-                      </label>
-                      <Input id="website" type="url" className="bg-white border-gray-300" />
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Checkbox id="save-info" />
-                    <label htmlFor="save-info" className="text-sm leading-none">
-                      Lưu tên của tôi, email, và trang web trong trình duyệt này cho lần bình luận kế tiếp của tôi.
-                    </label>
-                  </div>
-                  <Button type="submit" className="bg-[#584167] hover:bg-[#584167]/90 text-white font-bold px-8 py-3">
-                    PHẢN HỒI
-                  </Button>
-                </form>
-              </div>
             </>
           )}
-
+          <div className=" mb-6 xl:mx-0 mx-[10px]">
+            <div className="mx-auto space-y-6">
+              <h2 className="text-[24px] font-medium text-Dark-Blue">
+                Bình luận ({commentsData?.length || 0})
+              </h2>
+              <div className="space-y-6">
+                {!isLoadingComments &&
+                  buildCommentTree(commentsData).map((comment: any, index: number) => (
+                    <CommentComponent
+                      key={index}
+                      comment={comment}
+                      parentId={parentId}
+                      onReply={hanldeReply}
+                      commentFormProps={{
+                        replyTo: comment.author,
+                        onSubmit: handleSubmit,
+                        onChange: handleChange,
+                        onRememberMeChange: handleRememberMeChange,
+                        rememberMe: rememberMe,
+                        name: formData.name,
+                        email: formData.email,
+                        comment: formData.comment,
+                      }}
+                    />
+                  ))}
+              </div>
+            </div>
+          </div>
+          {parentId == undefined && (
+            <CommentForm
+              {...formData}
+              rememberMe={rememberMe}
+              onChange={handleChange}
+              onRememberMeChange={handleRememberMeChange}
+              onSubmit={handleSubmit}
+            />
+          )}
           {!post && (
             <div className={styles["not-found"]}>
               <p>Bài viết này không tồn tại!</p>
