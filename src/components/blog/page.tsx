@@ -73,126 +73,120 @@ export const Blog = () => {
   }
 
   return (
-    <div className="container max-w-7xl mx-auto py-20 px-4">
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-        <div className="md:col-span-8 lg:col-span-9 space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            {featuredPosts.map((post: any) => (
-              <Card key={post.id} className="overflow-hidden">
-                <Link href={`/tin-tuc/${post.slug}`}>
-                  <CardContent className="p-0">
-                    <div className="relative">
-                      <Image
-                        src={post.featured_image || "/assets/blog.jpeg"}
-                        alt={post.title.rendered}
-                        width={500}
-                        height={300}
-                        className="object-cover w-full h-[225px]"
-                      />
-                      <div className="py-6">
-                        <h2 className="text-xl font-bold mb-2 hover:text-red-500 transition-colors">
-                          {post.title.rendered}
-                        </h2>
-                        <p className="text-muted-foreground line-clamp-2"
-                          dangerouslySetInnerHTML={{ __html: clean(post.excerpt.rendered) }}
-                        />
+    <>
+      <div className=" xl:pt-[120px]"></div>
+      <div className="container max-w-7xl mx-auto py-20 px-4">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+          <div className="md:col-span-8 lg:col-span-9 space-y-6">
+            <div className="grid md:grid-cols-2 gap-6">
+              {featuredPosts.map((post: any) => (
+                <Card key={post.id} className="overflow-hidden">
+                  <Link href={`/tin-tuc/${post.slug}`}>
+                    <CardContent className="p-0">
+                      <div className="relative">
+                        <Image
+                          src={post.featured_image || "/assets/blog.jpeg"}
+                          alt={post.title.rendered}
+                          width={500}
+                          height={300}
+                          className="object-cover w-full h-[225px]" />
+                        <div className="py-6">
+                          <h2 className="text-xl font-bold mb-2 hover:text-red-500 transition-colors">
+                            {post.title.rendered}
+                          </h2>
+                          <p className="text-muted-foreground line-clamp-2"
+                            dangerouslySetInnerHTML={{ __html: clean(post.excerpt.rendered) }} />
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Link>
-              </Card>
-            ))}
-          </div>
+                    </CardContent>
+                  </Link>
+                </Card>
+              ))}
+            </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {regularPosts.map((post: any) => (
-              <Card key={post.id} className="overflow-hidden">
-                <Link href={`/tin-tuc/${post.slug}`}>
-                  <CardContent className="p-0">
-                    <div className="relative">
-                      <Image
-                        src={post.featured_media_url || "/assets/blog.jpeg"}
-                        alt={post.title.rendered}
-                        width={400}
-                        height={225}
-                        className="object-cover w-full h-[180px]"
-                      />
-                      <div className="py-4">
-                        <h2 className="text-xl font-bold mb-2 hover:text-red-500 transition-colors">
-                          {post.title.rendered}
-                        </h2>
-                        <p className="text-sm text-muted-foreground line-clamp-2"
-                          dangerouslySetInnerHTML={{ __html: clean(post.excerpt.rendered) }}
-                        />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Link>
-              </Card>
-            ))}
-          </div>
-
-          <div className="space-y-6">
-            {sregularPosts.map((post: any) => (
-              <Card key={post.id} className="overflow-hidden">
-                <Link href={`/tin-tuc/${post.slug}`}>
-                  <CardContent className="p-4">
-                    <div className="grid md:grid-cols-12 gap-6">
-                      <div className="md:col-span-4">
+            <div className="grid md:grid-cols-3 gap-6">
+              {regularPosts.map((post: any) => (
+                <Card key={post.id} className="overflow-hidden">
+                  <Link href={`/tin-tuc/${post.slug}`}>
+                    <CardContent className="p-0">
+                      <div className="relative">
                         <Image
                           src={post.featured_media_url || "/assets/blog.jpeg"}
                           alt={post.title.rendered}
-                          width={300}
-                          height={200}
-                          className="object-cover w-full h-[200px] rounded-lg"
-                        />
+                          width={400}
+                          height={225}
+                          className="object-cover w-full h-[180px]" />
+                        <div className="py-4">
+                          <h2 className="text-xl font-bold mb-2 hover:text-red-500 transition-colors">
+                            {post.title.rendered}
+                          </h2>
+                          <p className="text-sm text-muted-foreground line-clamp-2"
+                            dangerouslySetInnerHTML={{ __html: clean(post.excerpt.rendered) }} />
+                        </div>
                       </div>
-                      <div className="md:col-span-8 flex flex-col justify-center">
-                        <h2 className="text-xl font-bold mb-2 hover:text-red-500 transition-colors">
-                          {post.title.rendered}
-                        </h2>
-                        <p className="text-muted-foreground line-clamp-3"
-                          dangerouslySetInnerHTML={{ __html: clean(post.excerpt.rendered) }}
-                        />
+                    </CardContent>
+                  </Link>
+                </Card>
+              ))}
+            </div>
+
+            <div className="space-y-6">
+              {sregularPosts.map((post: any) => (
+                <Card key={post.id} className="overflow-hidden">
+                  <Link href={`/tin-tuc/${post.slug}`}>
+                    <CardContent className="p-4">
+                      <div className="grid md:grid-cols-12 gap-6">
+                        <div className="md:col-span-4">
+                          <Image
+                            src={post.featured_media_url || "/assets/blog.jpeg"}
+                            alt={post.title.rendered}
+                            width={300}
+                            height={200}
+                            className="object-cover w-full h-[200px] rounded-lg" />
+                        </div>
+                        <div className="md:col-span-8 flex flex-col justify-center">
+                          <h2 className="text-xl font-bold mb-2 hover:text-red-500 transition-colors">
+                            {post.title.rendered}
+                          </h2>
+                          <p className="text-muted-foreground line-clamp-3"
+                            dangerouslySetInnerHTML={{ __html: clean(post.excerpt.rendered) }} />
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Link>
-              </Card>
-            ))}
+                    </CardContent>
+                  </Link>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Sidebar */}
+          <div className="md:col-span-4 lg:col-span-3 space-y-6">
+            <Card>
+              <CardTitle className="text-lg font-bold text-[#463266] pb-2">
+                CHUYÊN MỤC BÀI VIẾT
+              </CardTitle>
+              <ul className="space-y-2 bg-white border border-gray-200 rounded-lg p-[15px]">
+                {categories.map((category: any) => (
+                  <li key={category.id} className="flex items-center">
+                    <button
+                      onClick={() => {
+                        router.push(`/tin-tuc?category=${category.slug}`);
+                        setSelectedCategory(category.slug);
+                      }}
+                      className={`text-left w-full hover:text-red-600 ${selectedCategory === category.slug
+                        ? "text-red-600 font-bold"
+                        : ""}`}
+                    >
+                      {category.name} ({category.count || 0})
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+            <RecentPosts posts={posts} />
+            <ConsultationCard />
           </div>
         </div>
-
-        {/* Sidebar */}
-        <div className="md:col-span-4 lg:col-span-3 space-y-6">
-          <Card>
-            <CardTitle className="text-lg font-bold text-[#463266] pb-2">
-              CHUYÊN MỤC BÀI VIẾT
-            </CardTitle>
-            <ul className="space-y-2 bg-white border border-gray-200 rounded-lg p-[15px]">
-              {categories.map((category: any) => (
-                <li key={category.id} className="flex items-center">
-                  <button
-                    onClick={() => {
-                      router.push(`/tin-tuc?category=${category.slug}`);
-                      setSelectedCategory(category.slug);
-                    }}
-                    className={`text-left w-full hover:text-red-600 ${
-                      selectedCategory === category.slug
-                        ? "text-red-600 font-bold"
-                        : ""
-                    }`}
-                  >
-                    {category.name} ({category.count || 0})
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </Card>
-          <RecentPosts posts={posts} />
-          <ConsultationCard />
-        </div>
-      </div>
-    </div>
+      </div></>
   );
 };
