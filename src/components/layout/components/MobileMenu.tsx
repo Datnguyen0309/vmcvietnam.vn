@@ -60,7 +60,7 @@ export default function MobileMenu({ activeLink, logo }: { activeLink: string | 
   };
 
   return (
-    <header className="lg:hidden">
+    <header className="xl:hidden">
       <div className="container mx-auto px-4 pt-200">
         <nav className="flex items-center justify-between h-14">
           <Logo logo={logo} />

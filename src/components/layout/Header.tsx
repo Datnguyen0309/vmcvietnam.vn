@@ -72,7 +72,7 @@ export const Header = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  
+
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
@@ -87,24 +87,24 @@ export const Header = () => {
   return (
     <>
       <header className="bg-white fixed top-0 left-0 w-full z-50 shadow-md header-container">
-        <div className="z-70">
+        <div className="z-70 ">
           <HeaderTop headerTop={homeContent?.acf?.header_top} />
         </div>
-        <nav className="max-w-7xl mx-auto py-3 sm:py-4 bg-white hidden lg:flex items-center justify-between px-6 lg:px-1 z-50">
+        <nav className="max-w-7xl mx-auto py-3 sm:py-4 bg-white hidden xl:flex items-center justify-between px-6 xl:px-1 xl:px-8 z-50  ">
           <Logo logo={homeContent?.acf?.header?.logo} />
           <DesktopMenu activeLink={state.activeLink} isScrolled={state.isScrolled} />
           <form onSubmit={handleSearch} className="relative flex items-center w-[300px] border border-gray-300 rounded-lg px-3 py-2 bg-white">
-          <input
-            type="text"
-            placeholder="Tìm khóa học..."
-            className="w-full focus:outline-none"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button type="submit" className="text-gray-500">
-            <FiSearch className="h-5 w-5" />
-          </button>
-        </form>
+            <input
+              type="text"
+              placeholder="Tìm khóa học..."
+              className="w-full focus:outline-none"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button type="submit" className="text-gray-500">
+              <FiSearch className="h-5 w-5" />
+            </button>
+          </form>
           <motion.button
             className="hidden lg:flex items-center gap-2 bg-gradient-to-r from-[#B7042D] to-[#E65F1D] px-3 py-2 rounded-full text-white text-sm ml-5"
             animate={{ scaleX: [1, 1.2, 1] }}
@@ -124,15 +124,13 @@ export const Header = () => {
           </Link>
         </nav>
       </header>
-      
-      {/* MobileMenu sticky bên dưới HeaderTop */}
-      <div className="lg:hidden bg-white sticky top-[50px] py-5 z-[40]">
+
+      <div className="xl:hidden force-mobile bg-white sticky top-[50px] py-5 md:py-10 lg:py-10 z-[40]">
         <MobileMenu
           logo={homeContent?.acf?.header?.logo}
           activeLink={state.activeLink}
         />
       </div>
-      <div className="pt-[10px] sm:pt-[80px] lg:pt-[120px]"></div>
     </>
   );
 };

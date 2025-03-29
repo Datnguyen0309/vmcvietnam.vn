@@ -13,7 +13,6 @@ const MenuLinkSub = dynamic(() =>
   )
 );
 
-// Component menu chính hiển thị tiêu đề "Khóa học"
 const Menu = ({ title }: { title: string }) => {
   return (
     <Link href={"/khoa-hoc"}>
@@ -66,7 +65,6 @@ const Menu = ({ title }: { title: string }) => {
   );
 };
 
-// Menu cho desktop, bao gồm các link tĩnh và menu "Khóa học" với phân cấp
 export const DesktopMenu = ({
   activeLink,
   isScrolled
@@ -82,7 +80,6 @@ export const DesktopMenu = ({
     })
   );
 
-  // Hàm render các link tĩnh (Trang chủ, Giới thiệu, Blog, Liên hệ)
   const renderMenuLinks = (links: { href: string; label: string }[]) =>
     links.map((link) => (
       <MenuLink
@@ -146,7 +143,7 @@ export const DesktopMenu = ({
   
 
   return (
-    <div className="hidden lg:flex col-start-4 col-end-8 items-center">
+    <div className="hidden xl:flex col-start-4 col-end-8 items-center">
       {renderMenuLinks([
         { href: "/", label: "Trang chủ" },
         { href: "/gioi-thieu", label: "Giới thiệu" }
@@ -154,7 +151,6 @@ export const DesktopMenu = ({
 
       <div className="relative group">
         <Menu title="Khóa học" />
-        {/* Khi hover vào menu "Khóa học", hiển thị danh sách danh mục cấp 1 */}
         <div className="absolute left-0 mt-0 py-4 w-52 bg-white border border-gray-200 rounded shadow-lg opacity-0 group-hover:opacity-100 group-hover:visible transition-opacity duration-300 invisible space-y-3 z-10">
           {data?.data?.map((category: any) => (
             <RecursiveMenuItem key={category.id} category={category} />
@@ -163,7 +159,7 @@ export const DesktopMenu = ({
       </div>
 
       {renderMenuLinks([
-        { href: "/tin-tuc", label: "Blog" },
+        { href: "/tin-tuc", label: "Tin tức" },
         { href: "/lien-he", label: "Liên hệ" }
       ])}
     </div>

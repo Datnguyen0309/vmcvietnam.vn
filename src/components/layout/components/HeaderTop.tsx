@@ -31,6 +31,7 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
   };
   const closeModal = () => setModalOpen(false);
   const toggleAuth = () => setIsLogin((prev) => !prev);
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -48,6 +49,7 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
   ];
 
   const sessionLogId = cookies.session_log_id;
+
   useEffect(() => {
     const handleUserInfoIN = async () => {
       if (sessionLogId != undefined) {
@@ -66,36 +68,38 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
       return null;
     };
     handleUserInfoIN();
-  }, [sessionLogId,router]);
+  }, [sessionLogId, router]);
+
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <header className="bg-[#4A3B63] text-white py-2">
+      <header className="bg-[#4A3B63] text-white py-2 md:py-4">
         <div className="container max-w-7xl mx-auto px-4">
-          <div className="flex  lg:flex-wrap lg:items-center justify-between gap-4">
+          <div className="flex xl:flex-wrap xl:items-center justify-between gap-4">
             <div className="flex items-center gap-6">
               <Link
                 href={`mailto:${headerTop?.mail?.mail_to || "contact@example.com"}`}
                 className="flex items-center gap-2 text-sm hover:text-gray-200"
               >
                 <Mail className="h-4 w-4" />
-                <span className="hidden sm:inline">
+                <span className="hidden md:inline">
                   {headerTop?.mail?.mail_label || "CONTACT"}
                 </span>
               </Link>
-              <div className="flex items-center   gap-2 text-sm">
+              <div className="flex items-center gap-2 text-sm">
                 <Phone className="h-4 w-4" />
                 <span>{headerTop?.phone || "+47 900 99 000"}</span>
               </div>
               <div className="hidden md:flex items-center gap-2 text-sm">
                 <span>{headerTop?.time || "08:00 - 17:00"}</span>
               </div>
-
             </div>
+
             <div className="flex space-x-4 justify-center items-center">
               <div className="flex items-center">
-                <div className="hidden md:flex space-x-2">
+                {/* Phần hiển thị đăng nhập/đăng ký trên PC (xl trở lên) */}
+                <div className="hidden xl:flex space-x-2">
                   {!sessionLogId && (
                     <>
                       <button onClick={() => openAuthModal(true)}>Đăng nhập</button>
@@ -104,7 +108,9 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
                     </>
                   )}
                 </div>
-                <div className="flex md:hidden">
+
+                {/* Phần hiển thị icon đăng nhập + giỏ hàng cho mobile & tablet */}
+                <div className="flex xl:hidden">
                   {!sessionLogId && (
                     <button onClick={() => openAuthModal(true)} className="p-2">
                       <LogIn size={24} />
@@ -125,12 +131,15 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
                   <div className="cursor-pointer flex justify-center items-center w-[32px] h-[32px] xl:w-[50px] xl:h-[50px] rounded-full xl:border-[3px] border-[1px] border-slate-200">
                     <div
                       className="border border-gray-200 bg-cover bg-center w-full h-auto rounded-full aspect-square"
-                      style={{ backgroundImage: `url(${user.image || "/assets/default-kh.jpg"})` }}
+                      style={{
+                        backgroundImage: `url(${user.image || "/assets/default-kh.jpg"})`,
+                      }}
                     ></div>
                   </div>
                   <div
-                    className={`absolute z-[60] left-[-190px] lg:left-[-60px]   right-[-50px] mt-2 xl:w-[300px] w-[240px] bg-white shadow-xl rounded-xl p-4 border border-gray-200 transition-all duration-200 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"
-                      }`}
+                    className={`absolute z-[60] left-[-190px] lg:left-[-60px] right-[-50px] mt-2 xl:w-[300px] w-[240px] bg-white shadow-xl rounded-xl p-4 border border-gray-200 transition-all duration-200 ${
+                      isOpen ? "opacity-100 visible" : "opacity-0 invisible"
+                    }`}
                   >
                     <div>
                       <div className="inline-flex space-x-2">
@@ -171,6 +180,8 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
           </div>
         </div>
       </header>
+
+      {/* Modal đăng nhập/đăng ký */}
       <AuthModal
         openForgot={OpenForgotModel}
         isOpen={isModalOpen}
@@ -178,6 +189,8 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
         isLogin={isLogin}
         toggleAuth={toggleAuth}
       />
+
+      {/* Modal quên mật khẩu */}
       <ForgotPasswordModal
         isOpen={forgotPasswordOpen}
         onClose={() => setForgotPasswordOpen(false)}

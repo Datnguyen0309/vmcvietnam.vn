@@ -90,3 +90,13 @@ html {
     @apply bg-background text-foreground;
   }
 }
+/* styles/globals.css hoặc tương đương */
+@media screen and (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) and (hover: none) and (pointer: coarse) {
+  .force-mobile {
+    display: block !important;
+  }
+
+  .force-desktop {
+    display: none !important;
+  }
+}
