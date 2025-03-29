@@ -19,7 +19,7 @@ export const HotCourses = () => {
   }, [selectedCategory]);
 
   const { data, isLoading } = useQuery("getListCate", () =>
-    getDataSetUp({ root: "product", type: "product-categories" })
+    getDataSetUp({ root: "product", type: "product-categories" , sortType: "zzz"})
   );
 
   const { data: dataCourse, isLoading: isLoadingCourse } = useQuery(
@@ -31,6 +31,7 @@ export const HotCourses = () => {
         categories: selectedCategory,
         perpage: "99",
         page: "1"
+        
       })
   );
 
@@ -90,7 +91,9 @@ export const HotCourses = () => {
               ?.slice(0, page * 8)
               .map((course: any, index: number) => (
                 <div key={index}>
-                  <CourseCard course={course} />
+                  <div className="animate-in fade-in slide-in-from-bottom duration-500 delay-75">
+                    <CourseCard course={course} />
+                  </div>
                 </div>
               ))}
         </div>

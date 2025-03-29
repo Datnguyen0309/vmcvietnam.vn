@@ -67,7 +67,6 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
         });
         const data: { posts: any[]; totalPosts: string } = await res.json();
         const { posts } = data;
-        console.log(data)
         posts?.length && setpostsWp(posts[0]);
       } catch (error) {
         console.log(error);

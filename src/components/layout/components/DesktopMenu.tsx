@@ -94,9 +94,14 @@ export const DesktopMenu = ({
       />
     ));
 
-  // Component đệ quy để render danh mục và các danh mục con
   const RecursiveMenuItem = ({ category }: { category: any }) => {
     const [isHovered, setIsHovered] = useState(false);
+    const validChildren = Array.isArray(category.child_categories)
+      ? category.child_categories.filter(
+          (child: any) => child.id !== category.id // tránh gọi lại chính mình
+        )
+      : [];
+  
     return (
       <div
         className="relative"
@@ -108,41 +113,37 @@ export const DesktopMenu = ({
           label={
             <span className="flex justify-between items-center w-full">
               {category.name}
-              {category.child_categories &&
-                category.child_categories.length > 0 && (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="12"
-                    height="12"
-                    fill="currentColor"
-                    className="bi bi-chevron-right ml-1"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M6.646 1.646a.5.5 0 0 1 .708 0l5 5a.5.5 0 0 1 0 .708l-5 5a.5.5 0 0 1-.708-.708L11.293 7.5 6.646 2.854a.5.5 0 0 1 0-.708"
-                    />
-                  </svg>
-                )}
+              {validChildren.length > 0 && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="12"
+                  height="12"
+                  fill="currentColor"
+                  className="bi bi-chevron-right ml-1"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M6.646 1.646a.5.5 0 0 1 .708 0l5 5a.5.5 0 0 1 0 .708l-5 5a.5.5 0 0 1-.708-.708L11.293 7.5 6.646 2.854a.5.5 0 0 1 0-.708"
+                  />
+                </svg>
+              )}
             </span>
           }
           activeLink={activeLink}
         />
-        {category.child_categories &&
-          category.child_categories.length > 0 &&
-          isHovered && (
-            <div className="absolute left-full top-0 mt-0 py-4 w-52 bg-white border border-gray-200 rounded shadow-lg space-y-3 z-10">
-              {category.child_categories.map((child: any) => (
-                <RecursiveMenuItem
-                  key={child.id}
-                  category={child}
-                />
-              ))}
-            </div>
-          )}
+  
+        {validChildren.length > 0 && isHovered && (
+          <div className="absolute left-full top-0 mt-0 py-4 w-52 bg-white border border-gray-200 rounded shadow-lg space-y-3 z-10">
+            {validChildren.map((child: any) => (
+              <RecursiveMenuItem key={child.id} category={child} />
+            ))}
+          </div>
+        )}
       </div>
     );
   };
+  
 
   return (
     <div className="hidden lg:flex col-start-4 col-end-8 items-center">

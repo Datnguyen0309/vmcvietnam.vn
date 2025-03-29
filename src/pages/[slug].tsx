@@ -11,7 +11,6 @@ import { Loading } from "@/components/Loading";
 const CourseDetail = () => {
   const router = useRouter();
   const { slug } = router.query as { slug: string };
-
   const { data, isLoading } = useQuery(
     [`getKhoaDetailbyslug`, slug],
     () =>
