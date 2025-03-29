@@ -22,7 +22,6 @@ export const Contact = () => {
   }, []);
   return (
     <>
-      <div className=" xl:pt-[120px]"></div>
       <ContactHeader title={pageContent?.acf?.tieu_de_trang} />
       <BusinessSolutions content={pageContent?.acf?.content} />
       <ContactSection

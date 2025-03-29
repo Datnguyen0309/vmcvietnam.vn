@@ -131,6 +131,7 @@ export const Header = () => {
           activeLink={state.activeLink}
         />
       </div>
+      <div className=" xl:pt-[120px]"></div>
     </>
   );
 };
