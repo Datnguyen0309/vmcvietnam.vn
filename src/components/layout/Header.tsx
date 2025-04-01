@@ -86,7 +86,7 @@ export const Header = () => {
   };
   return (
     <>
-      <header className="bg-white fixed top-0 left-0 w-full z-50 shadow-md header-container">
+      <header className={`bg-white fixed top-0 left-0 w-full z-50 header-container transition-shadow duration-300 ${state.isScrolled ? 'shadow-md' : ''}`}>
         <div className="z-70 ">
           <HeaderTop headerTop={homeContent?.acf?.header_top} />
         </div>
@@ -124,14 +124,13 @@ export const Header = () => {
           </Link>
         </nav>
       </header>
-
       <div className="xl:hidden force-mobile bg-white sticky top-[50px] py-5 md:py-10 lg:py-10 z-[40]">
         <MobileMenu
           logo={homeContent?.acf?.header?.logo}
           activeLink={state.activeLink}
         />
       </div>
-      <div className=" xl:pt-[120px]"></div>
+      <div className=" xl:pt-[140px]  pt-[50px]"></div>
     </>
   );
 };

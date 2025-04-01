@@ -23,8 +23,8 @@ export const menus = [
   },
 
   {
-    path: "/blog", // the url
-    title: "Blog",
+    path: "/tin-tuc", // the url
+    title: "Tin tức",
   },
   {
     path: "/lien-he", // the url

@@ -51,7 +51,6 @@ export const Footer = () => {
                       "028 9999 8899 "
                     }
                   >
-                    {" "}
                     {homeContent?.acf?.footer?.list_1?.text_4 ||
                       "028 9999 8899"}{" "}
                   </Link>
@@ -64,7 +63,6 @@ export const Footer = () => {
                       "mailto:sales@trianh.vn"
                     }
                   >
-                    {" "}
                     {homeContent?.acf?.footer?.list_1?.text_6 ||
                       "sales@trianh.vn"}
                   </Link>

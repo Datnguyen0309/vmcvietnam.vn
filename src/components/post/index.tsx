@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { CommentComponent } from "../CommentCard";
 import { CommentForm } from "../CommentForm";
 import { clean } from "../lib/sanitizeHtml";
+import { Share } from "./Share";
 
 export const Post = ({ post }: { post: any }) => {
   const catIds = post?.categories || [];
@@ -169,57 +170,7 @@ export const Post = ({ post }: { post: any }) => {
                   }}
                 />
               </div>
-              <div className="flex gap-2 justify-center mb-8">
-                <div className="relative group inline-block">
-                  <Link
-                    href="#"
-                    className="bg-[#FF4500] p-2.5 rounded-full border border-transparent hover:border-[#446084] hover:bg-[#3a589d] hover:scale-110 transition-all duration-300 flex items-center justify-center"
-                  >
-                    <Facebook className="w-4 h-4 text-white" />
-                  </Link>
-                  <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-                    Share on Facebook
-                    <span className="absolute left-1/2 transform -translate-x-1/2 top-full w-0 h-0 border-t-[6px] border-t-black border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent"></span>
-                  </span>
-                </div>
-                <div className="relative group inline-block">
-                  <Link
-                    href="#"
-                    className="bg-[#FF4500] p-2.5 rounded-full border border-transparent hover:border-[#2478ba] hover:bg-[#2478ba] hover:scale-110 transition-all duration-300 flex items-center justify-center"
-                  >
-                    <Twitter className="w-4 h-4 text-white" />
-                  </Link>
-                  <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-                    Share on Twitter
-                    <span className="absolute left-1/2 transform -translate-x-1/2 top-full w-0 h-0 border-t-[6px] border-t-black border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent"></span>
-                  </span>
-                </div>
-                <div className="relative group inline-block">
-                  <Link
-                    href="#"
-                    className="bg-[#FF4500] p-2.5 rounded-full border border-transparent hover:border-[#0072b7] hover:bg-[#0072b7] hover:scale-110 transition-all duration-300 flex items-center justify-center"
-                  >
-                    <Instagram className="w-4 h-4 text-white" />
-                  </Link>
-                  <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-                    Share on Instagram
-                    <span className="absolute left-1/2 transform -translate-x-1/2 top-full w-0 h-0 border-t-[6px] border-t-black border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent"></span>
-                  </span>
-                </div>
-                <div className="relative group inline-block">
-                  <Link
-                    href="#"
-                    className="bg-[#FF4500] p-2.5 rounded-full border border-transparent hover:border-[#cb2320 ] hover:bg-[#cb2320] hover:scale-110 transition-all duration-300 flex items-center justify-center"
-                  >
-                    <Linkedin className="w-4 h-4 text-white" />
-                  </Link>
-                  <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-                    Share on Linkedin
-                    <span className="absolute left-1/2 transform -translate-x-1/2 top-full w-0 h-0 border-t-[6px] border-t-black border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent"></span>
-                  </span>
-                </div>
-              </div>
-
+              <Share/>
               <div className="bg-[#FDF8F3] p-6 mb-8 flex items-center gap-4 max-w-[768px] mx-auto rounded-[20px]">
                 <Image
                   src="/assets/abc.png"

@@ -8,6 +8,7 @@ import { FaUser } from "react-icons/fa";
 import { useQuery } from "react-query";
 import { CourseCard } from "../khoa-hoc/CourseCard";
 import SectionTitle from "../SectionTitle";
+import { motion } from "framer-motion";
 
 export const HotCourses = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -19,7 +20,7 @@ export const HotCourses = () => {
   }, [selectedCategory]);
 
   const { data, isLoading } = useQuery("getListCate", () =>
-    getDataSetUp({ root: "product", type: "product-categories" , sortType: "zzz"})
+    getDataSetUp({ root: "product", type: "product-categories", sortType: "zzz" })
   );
 
   const { data: dataCourse, isLoading: isLoadingCourse } = useQuery(
@@ -31,7 +32,7 @@ export const HotCourses = () => {
         categories: selectedCategory,
         perpage: "99",
         page: "1"
-        
+
       })
   );
 
@@ -91,9 +92,23 @@ export const HotCourses = () => {
               ?.slice(0, page * 8)
               .map((course: any, index: number) => (
                 <div key={index}>
-                  <div className="animate-in fade-in slide-in-from-bottom duration-500 delay-75">
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 25,
+                      delay: index * 0.05
+                    }}
+                    whileHover={{
+                      scale: 1.05,
+                      transition: { type: "spring", stiffness: 300 }
+                    }}
+                  >
                     <CourseCard course={course} />
-                  </div>
+                  </motion.div>
                 </div>
               ))}
         </div>

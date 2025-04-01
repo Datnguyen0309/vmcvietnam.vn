@@ -57,7 +57,7 @@ export const Banner = (banner: any) => {
         {slides.map((slide) => (
           <SwiperSlide key={slide.id}>
             <div
-              className="relative w-full h-[130px] md:h-[700px] overflow-hidden bg-contain md:bg-cover"
+              className="relative w-full h-[130px] xl:h-[700px] lg:h-[400px] md:h-[300px] overflow-hidden bg-contain md:bg-cover"
               style={{ backgroundImage: `url(${slide.bgImage})` }}
             />
           </SwiperSlide>
