@@ -10,21 +10,21 @@ interface SlideProps {
   title: string
 }
 
-export default function EventSlider() {
+export default function EventSlider(group: any) {
   const slides: SlideProps[] = [
     {
       id: "slide1",
-      imageSrc: "/assets/bg-gioi-thieu-1-1.jpg",
+      imageSrc: group?.group?.banner_1 || "/assets/bg-gioi-thieu-1-1.jpg",
       title: "Sự kiện 1",
     },
     {
       id: "slide2",
-      imageSrc: "/assets/g.webp",
+      imageSrc: group?.group?.banner_2 || "/assets/g.webp",
       title: "Sự kiện 2",
     },
     {
       id: "slide3",
-      imageSrc: "/assets/bg-gioi-thieu-1-1.jpg",
+      imageSrc: group?.group?.banner_3 || "/assets/bg-gioi-thieu-1-1.jpg",
       title: "Sự kiện 3",
     },
   ]
@@ -51,7 +51,7 @@ export default function EventSlider() {
   }, [currentSlide])
 
   return (
-    <div  className="relative w-full h-[130px] md:h-[700px] overflow-hidden bg-contain md:bg-cover"
+    <div className="relative w-full h-[130px] md:h-[700px] overflow-hidden bg-contain md:bg-cover"
     >
 
       <div className="relative h-full">

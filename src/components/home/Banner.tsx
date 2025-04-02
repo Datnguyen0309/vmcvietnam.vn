@@ -57,7 +57,7 @@ export const Banner = (banner: any) => {
         {slides.map((slide) => (
           <SwiperSlide key={slide.id}>
             <div
-              className="relative w-full h-[130px] xl:h-[700px] lg:h-[400px] md:h-[300px] overflow-hidden bg-contain md:bg-cover"
+              className="relative w-full h-[130px] xl:h-[750px] lg:h-[400px] md:h-[300px] overflow-hidden bg-contain md:bg-cover"
               style={{ backgroundImage: `url(${slide.bgImage})` }}
             />
           </SwiperSlide>
@@ -103,7 +103,6 @@ export const Banner = (banner: any) => {
           />
         </svg>
       </button>
-
       <div className="swiper-pagination absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-10" />
     </div>
   );

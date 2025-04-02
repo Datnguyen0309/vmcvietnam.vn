@@ -9,10 +9,7 @@ export default async function handler(
     try {
       const response = await fetch(wpUrl)
       const data = await response.json()
-  
-      // Giả sử mỗi post có acf.event_sections là mảng
       const eventSections = data.map((post: { acf: { event_sections: any } }) => post.acf?.event_sections).flat()
-  
       res.status(200).json({ eventSections })
     } catch (error) {
       console.error('Failed to fetch su-kien:', error)

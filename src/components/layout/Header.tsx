@@ -90,7 +90,7 @@ export const Header = () => {
         <div className="z-70 ">
           <HeaderTop headerTop={homeContent?.acf?.header_top} />
         </div>
-        <nav className="max-w-7xl mx-auto py-3 sm:py-4 bg-white hidden xl:flex items-center justify-between px-6 xl:px-1 xl:px-8 z-50  ">
+        <nav className="max-w-7xl mx-auto py-3 sm:py-4 bg-white hidden xl:flex items-center justify-between px-6 xl:px-1  z-50  ">
           <Logo logo={homeContent?.acf?.header?.logo} />
           <DesktopMenu activeLink={state.activeLink} isScrolled={state.isScrolled} />
           <form onSubmit={handleSearch} className="relative flex items-center w-[300px] border border-gray-300 rounded-lg px-3 py-2 bg-white">

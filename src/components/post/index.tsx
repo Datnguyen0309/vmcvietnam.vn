@@ -150,6 +150,25 @@ export const Post = ({ post }: { post: any }) => {
       console.error("Lỗi khi đăng bình luận:", error);
     }
   };
+
+  const [authorName, setAuthorName] = useState("");
+  
+  useEffect(() => {
+    const fetchAuthor = async () => {
+      if (!post?.author) return;
+
+      try {
+        const res = await fetch(`http://10.10.51.16:8686/wp-json/wp/v2/users/${post.author}`);
+        const data = await res.json();
+        setAuthorName(data.name); // hoặc `data.nickname`, tuỳ cấu hình WP
+      } catch (error) {
+        console.error("Không lấy được tên tác giả:", error);
+      }
+    };
+
+    fetchAuthor();
+  }, [post?.author]);
+
   return (
     <div className="max-w-5xl mx-auto p-6 py-20">
       <article className={styles["post"]}>
@@ -170,7 +189,7 @@ export const Post = ({ post }: { post: any }) => {
                   }}
                 />
               </div>
-              <Share/>
+              <Share url={`tin-tuc/${post.slug}`} />
               <div className="bg-[#FDF8F3] p-6 mb-8 flex items-center gap-4 max-w-[768px] mx-auto rounded-[20px]">
                 <Image
                   src="/assets/abc.png"
@@ -179,7 +198,9 @@ export const Post = ({ post }: { post: any }) => {
                   height={80}
                   className="rounded-full"
                 />
-                <h2 className="text-[#FF4500] text-2xl font-medium">Thiện Lệ</h2>
+                <h2 className="text-[#FF4500] text-2xl font-medium">
+                  {authorName || "Tác giả"}
+                </h2>
               </div>
             </>
           )}

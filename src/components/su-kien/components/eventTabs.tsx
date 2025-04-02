@@ -35,23 +35,23 @@ export default function EventTabs({ eventSections }: EventTabsProps) {
   const now = new Date()
   
   const parseEventTime = (event: Event): { start: Date; end: Date } => {
-    if (!event.date || !event.time) {
-      return {
-        start: new Date(0),
-        end: new Date(0),
-      }
+    try {
+      if (!event.date || !event.time) throw new Error()
+  
+      const [day, month, year] = event.date.split("/").map(Number)
+      const [startTime, endTime] = event.time.split(" - ")
+      const [startHour, startMinute] = startTime.split(":").map(Number)
+      const [endHour, endMinute] = endTime.split(":").map(Number)
+  
+      const start = new Date(year, month - 1, day, startHour, startMinute)
+      const end = new Date(year, month - 1, day, endHour, endMinute)
+  
+      if (isNaN(start.getTime()) || isNaN(end.getTime())) throw new Error()
+  
+      return { start, end }
+    } catch {
+      return { start: new Date(0), end: new Date(0) } // coi như sự kiện đã qua
     }
-  
-    const [day, month, year] = event.date.split("/").map(Number)
-    const [startTime, endTime] = event.time.split(" - ")
-  
-    const [startHour, startMinute] = startTime.split(":").map(Number)
-    const [endHour, endMinute] = endTime.split(":").map(Number)
-  
-    const start = new Date(year, month - 1, day, startHour, startMinute)
-    const end = new Date(year, month - 1, day, endHour, endMinute)
-  
-    return { start, end }
   }
   
 

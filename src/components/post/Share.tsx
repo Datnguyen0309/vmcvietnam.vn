@@ -1,8 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Twitter, Link as LinkIcon } from "lucide-react";
 
 interface ShareProps {
   url?: string;
@@ -10,10 +9,11 @@ interface ShareProps {
 
 export const Share = ({ url = "" }: ShareProps) => {
   const domain = process.env.NEXT_PUBLIC_DOMAIN || "";
+  const fullUrl = `${domain}/${url}`;
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(`${domain}/${url}`);
+      await navigator.clipboard.writeText(fullUrl);
       alert("Link đã được sao chép!");
     } catch (err) {
       alert("Không thể sao chép link, hãy thử lại.");
@@ -21,76 +21,89 @@ export const Share = ({ url = "" }: ShareProps) => {
   };
 
   return (
-    <>
     <div className="flex gap-2 justify-center mb-8">
+      {/* Facebook */}
       <div className="relative group inline-block">
         <Link
-          href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-            `${domain}/${url}`
-          )}`}
-          className="bg-[#FF4500] p-2.5 rounded-full border border-transparent hover:border-[#446084] hover:bg-[#3a589d] hover:scale-110 transition-all duration-300 flex items-center justify-center"
+          href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fullUrl)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-[#1877F2] p-2.5 rounded-full hover:scale-110 transition-all duration-300 flex items-center justify-center"
         >
           <Facebook className="w-4 h-4 text-white" />
         </Link>
-        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-          Share on Facebook
-          <span className="absolute left-1/2 transform -translate-x-1/2 top-full w-0 h-0 border-t-[6px] border-t-black border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent"></span>
-        </span>
+        <span className="tooltip">Share on Facebook</span>
       </div>
+
+      {/* Twitter */}
       <div className="relative group inline-block">
         <Link
-          href={`mailto:?subject=${encodeURIComponent(
-            "Bài viết "
-          )}&body=${encodeURIComponent(`Xem bài viết tại: ${domain}/${url}`)}`}
-          className="bg-[#FF4500] p-2.5 rounded-full border border-transparent hover:border-[#2478ba] hover:bg-[#2478ba] hover:scale-110 transition-all duration-300 flex items-center justify-center"
+          href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(fullUrl)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-[#1DA1F2] p-2.5 rounded-full hover:scale-110 transition-all duration-300 flex items-center justify-center"
         >
           <Twitter className="w-4 h-4 text-white" />
         </Link>
-        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-          Share on Twitter
-          <span className="absolute left-1/2 transform -translate-x-1/2 top-full w-0 h-0 border-t-[6px] border-t-black border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent"></span>
-        </span>
+        <span className="tooltip">Share on Twitter</span>
       </div>
+
+      {/* Instagram - không có URL chia sẻ trực tiếp */}
       <div className="relative group inline-block">
-        <Link
-          href={`mailto:?subject=${encodeURIComponent(
-            "Bài viết "
-          )}&body=${encodeURIComponent(`Xem bài viết tại: ${domain}/${url}`)}`}
-          className="bg-[#FF4500] p-2.5 rounded-full border border-transparent hover:border-[#0072b7] hover:bg-[#0072b7] hover:scale-110 transition-all duration-300 flex items-center justify-center"
+        <button
+          onClick={handleCopyLink}
+          className="bg-[#E1306C] p-2.5 rounded-full hover:scale-110 transition-all duration-300 flex items-center justify-center"
         >
           <Instagram className="w-4 h-4 text-white" />
-        </Link>
-        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-          Share on Instagram
-          <span className="absolute left-1/2 transform -translate-x-1/2 top-full w-0 h-0 border-t-[6px] border-t-black border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent"></span>
-        </span>
+        </button>
+        <span className="tooltip">Copy to share on Instagram</span>
       </div>
+
+      {/* Linkedin */}
       <div className="relative group inline-block">
         <Link
-          href={`mailto:?subject=${encodeURIComponent(
-            "Bài viết "
-          )}&body=${encodeURIComponent(`Xem bài viết tại: ${domain}/${url}`)}`}
-          className="bg-[#FF4500] p-2.5 rounded-full border border-transparent hover:border-[#cb2320 ] hover:bg-[#cb2320] hover:scale-110 transition-all duration-300 flex items-center justify-center"
+          href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(fullUrl)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-[#0077B5] p-2.5 rounded-full hover:scale-110 transition-all duration-300 flex items-center justify-center"
         >
           <Linkedin className="w-4 h-4 text-white" />
         </Link>
-        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-          Share on Linkedin
-          <span className="absolute left-1/2 transform -translate-x-1/2 top-full w-0 h-0 border-t-[6px] border-t-black border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent"></span>
-        </span>
+        <span className="tooltip">Share on LinkedIn</span>
       </div>
-      <button
-        aria-label="link"
-        className="flex items-center justify-center w-10 h-10 rounded-full border p-2 hover:border-orange-500"
-        onClick={handleCopyLink}
-      >
-        <Image
-          src="/assets/s-share.svg"
-          width={40}
-          height={40}
-          alt="share"
-          className="h-6 w-6" />
-      </button>
-    </div></>
+
+      {/* Copy link */}
+      <div className="relative group inline-block">
+        <button
+          onClick={handleCopyLink}
+          className="bg-gray-600 p-2.5 rounded-full hover:scale-110 transition-all duration-300 flex items-center justify-center"
+        >
+          <LinkIcon className="w-4 h-4 text-white" />
+        </button>
+        <span className="tooltip">Copy Link</span>
+      </div>
+
+      <style jsx>{`
+        .tooltip {
+          position: absolute;
+          bottom: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          margin-bottom: 0.75rem;
+          background: black;
+          color: white;
+          font-size: 0.75rem;
+          padding: 0.25rem 0.5rem;
+          border-radius: 0.25rem;
+          opacity: 0;
+          white-space: nowrap;
+          transition: opacity 0.3s ease;
+        }
+
+        .group:hover .tooltip {
+          opacity: 1;
+        }
+      `}</style>
+    </div>
   );
 };
