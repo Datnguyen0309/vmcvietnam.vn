@@ -471,8 +471,6 @@ export const CommentForm: React.FC<CommentFormProps> = ({
                 </Button>
               </div>
             </div>
-
-            {/* Expanded form fields */}
             {(isExpanded || replyTo) && (
               <div className="mt-3 space-y-3 px-1 animate-in fade-in slide-in-from-top-2 duration-200">
                 <div className="grid grid-cols-2 gap-3">

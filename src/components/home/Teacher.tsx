@@ -130,13 +130,12 @@ export default function TeacherList() {
               transform hover:translate-y-[-5px] hover:opacity-90
             `}
               >
-                {/* Khung ảnh được căn chỉnh theo tỷ lệ slide */}
-                <div className="flex items-center justify-center w-full pt-[100%] bg-gray-100 rounded-[8px] rounded-tl-[15px] rounded-br-[15px] overflow-hidden">
+                <div className="relative w-full h-[295px] bg-gray-100 rounded-[8px] rounded-tl-[15px] rounded-br-[15px] overflow-hidden">
                   <Image
                     src={teacher?.image || "/assets/blog.jpeg"}
-                    alt={teacher?.name}
+                    alt={teacher?.name || "Giáo viên"}
                     fill
-                    className="w-full h-full object-cover"
+                    className="object-cover object-top"
                   />
                 </div>
               </div>

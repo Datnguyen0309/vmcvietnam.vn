@@ -33,3 +33,20 @@ export const RecentPosts = ({ posts }: { posts: any[] }) => {
   );
 };
 
+export const RecentPostsSkeleton = () => {
+  return (
+    <Card>
+      <CardTitle className="text-lg font-bold text-[#463266] pb-2">
+        BÀI VIẾT MỚI ĐĂNG
+      </CardTitle>
+      <ul className="space-y-4">
+        {Array.from({ length: 5 } as ArrayLike<unknown>).map((_, i) => (
+          <li key={i} className="flex items-center space-x-4 animate-pulse">
+            <div className="w-[100px] h-[70px] bg-gray-200 rounded flex-shrink-0" />
+            <div className="flex-1 h-4 bg-gray-300 rounded w-3/4" />
+          </li>
+        ))}
+      </ul>
+    </Card>
+  );
+};

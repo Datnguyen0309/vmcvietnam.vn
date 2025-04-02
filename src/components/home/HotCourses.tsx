@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { useQuery } from "react-query";
-import { CourseCard } from "../khoa-hoc/CourseCard";
+import { CourseCard, SkeletonCourseCard } from "../khoa-hoc/CourseCard";
 import SectionTitle from "../SectionTitle";
 import { motion } from "framer-motion";
 
@@ -87,13 +87,17 @@ export const HotCourses = () => {
           </Tabs>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {!isLoadingCourse &&
-            dataCourse?.data?.short_course
+          {isLoadingCourse
+            ? Array.from({ length: 8 }).map((_, index) => (
+              <div key={index}>
+                <SkeletonCourseCard />
+              </div>
+            ))
+            : dataCourse?.data?.short_course
               ?.slice(0, page * 8)
               .map((course: any, index: number) => (
                 <div key={index}>
                   <motion.div
-                    key={index}
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{
