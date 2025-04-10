@@ -12,7 +12,6 @@ import { Trend } from "./Trend";
 
 export const Home = () => {
   const [homeContent, setHomeContent] = useState<any>(null);
-  const [posts, setPosts] = useState<any[]>([]);
 
   useEffect(() => {
     const getHomeContent = async () => {
@@ -29,23 +28,6 @@ export const Home = () => {
     getHomeContent();
   }, []);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const postResponse = await fetch(`/api/posts?page=1`);
-        if (!postResponse.ok) {
-          throw new Error(`Failed to fetch posts: ${postResponse.statusText}`);
-        }
-        const data = await postResponse.json();
-        setPosts(data.posts); // Lưu bài viết vào state
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      }
-    };
-
-    fetchPosts();
-  }, []);
-
   return (
     <>
       <Banner banner={homeContent?.acf?.banner} />
@@ -55,7 +37,7 @@ export const Home = () => {
         <HotCourses />
         <Register section_4={homeContent?.acf?.section_4} />
         <TeacherListAndDetails />
-        <LatestPosts posts={posts} />
+        <LatestPosts />
         <Reviews section_7={homeContent?.acf?.section_7} />
         <Trend section_8={homeContent?.acf?.section_8} />
       </ScrollView>

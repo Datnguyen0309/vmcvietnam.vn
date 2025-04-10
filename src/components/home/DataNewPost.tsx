@@ -1,8 +1,30 @@
 import { FaUser } from "react-icons/fa";
 import { CardPost } from "../CardBlogVert";
 import SectionTitle from "../SectionTitle";
+import { clean } from "../lib/sanitizeHtml";
+import { useEffect, useState } from "react";
 
-export const LatestPosts = ({ posts }: { posts: any[] }) => {
+export const LatestPosts = () => {
+  const [posts, setPosts] = useState<any[]>([]);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const postResponse = await fetch(`/api/posts-api/?type=news&page=1`);
+        if (!postResponse.ok) {
+          throw new Error(`Failed to fetch posts: ${postResponse.statusText}`);
+        }
+        const data = await postResponse.json();
+        setPosts(data.posts || []);
+      } catch (error: any) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+
+
   return (
     <section className="container max-w-7xl mx-auto px-4 lg:py-16">
       <div className="text-center space-y-6 mb-12">
@@ -14,19 +36,16 @@ export const LatestPosts = ({ posts }: { posts: any[] }) => {
         </h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {posts.slice(0, 6).map((post) => (
+        {posts.slice(0, 6).map((post,index) => (
           <CardPost
-            key={post?.id}
-            id={post?.id}
+            key={index}
             slug={post?.slug}
-            imageUrl={post?._embedded?.["wp:featuredmedia"]?.[0]?.source_url || "/assets/blog.jpeg"}
-            title={post?.title?.rendered || "Untitled"}
-            excerpt={post?.excerpt?.rendered?.replace(/<\/?[^>]+(>|$)/g, "") || "No excerpt available"}
+            imageUrl={post?.featured_image || "/assets/blog.jpeg"}
+            title={clean(post?.title.rendered) || "Untitled"}
+            excerpt={clean(post?.excerpt.rendered) || "No excerpt available"}
             content={post?.content?.rendered || ""}
             category={""}
-            date={post?.date || ""}
-
-          />
+            date={post?.date || ""} id={""} />
         ))}
       </div>
     </section>

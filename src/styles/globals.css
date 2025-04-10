@@ -100,3 +100,54 @@ html {
     display: none !important;
   }
 }
+
+
+/* Container của phân trang */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Các nút phân trang */
+.pagination button {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #333;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Khi hover nút phân trang */
+.pagination button:hover {
+  background-color: #007BFF;
+  color: #ffffff;
+  border-color: #0056b3;
+}
+
+/* Nút "Prev" và "Next" */
+.pagination button[disabled] {
+  background-color: #f0f0f0;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+/* Nút trang hiện tại */
+.pagination .current {
+  background-color: #007BFF;
+  color: #fff;
+  border-color: #0056b3;
+}
+
+/* Định dạng số trang */
+.pagination span {
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
+}

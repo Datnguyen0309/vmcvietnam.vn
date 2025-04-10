@@ -156,7 +156,6 @@ export const  CardPost = (props: Post) => {
   const { id, slug, imageUrl, title, excerpt } = props;
   return (
     <Card
-      key={id}
       className="group overflow-hidden hover:shadow-lg transition-shadow"
     >
       <Link href={`/tin-tuc/${slug}`}>

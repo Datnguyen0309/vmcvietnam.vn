@@ -1,50 +1,52 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { fetchAuth } from "@/utils/fetchAuth";
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-type Data = {
-  posts: any[];
-  totalPosts: string;
+const API_URL = 'http://10.10.51.16:8686/wp-json/wp/v2/posts';
+
+export type Post = {
+  slug: any;
+  featured_image: any;
+  id: number;
+  title: { rendered: string };
+  content: { rendered: string };
+  categories: number[];
+  _embedded: {
+    'wp:featuredmedia': [{ source_url: string }];
+    'wp:term': Array<Array<{ id: number; name: string; taxonomy: string }>>;
+  };
 };
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
-  if (req.method !== "GET") {
-    return res.status(405).json({ posts: [], totalPosts: "0" });
-  }
-
-  const page = Number(req.query.page || 1);
-  const api_url = process.env.API_URL || "";
-
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   let posts: any[] = [];
-  let totalPosts: string = "0";
+  let totalPosts = 0;
 
   try {
-    const endPoint = `${api_url}/posts?_embed&per_page=100&status=publish&page=${page}`;
-    const response = await fetchAuth({ url: endPoint, revalidate: 1 });
+    const categoryId = req.query.categoryId ? `&categories=${req.query.categoryId}` : '';
+    const page = req.query.page ? parseInt(req.query.page as string) : 1; // Default to page 1
+    const perPage = req.query.perPage ? parseInt(req.query.perPage as string) : 8; // Default to 8 posts per page
 
-    const totalPostCount = Number(response.headers?.get("X-WP-Total") || "0");
-    totalPosts = totalPostCount > 5 ? String(totalPostCount - 5) : String(totalPostCount);
+    const response = await fetch(`${API_URL}?_embed${categoryId}&page=${page}&per_page=${perPage}`);
+    const postsNotFeatureImage: any[] = await response.json();
+    totalPosts = parseInt(response.headers.get('X-WP-Total') || '0'); // Get total posts from response headers
 
-    const allPosts: any[] = (await response?.json()) || [];
-
-    const excludedSlugs = ["lich-khai-giang", "form-main", "form-poup", "gioi-thieu", "cta","khoa-hoc-vmc"]
-    
-    const excludedCategoryId = 7; 
-    posts = allPosts
-      .filter((post) => 
-        !excludedSlugs.includes(post.slug) &&
-        !post.categories.includes(excludedCategoryId) 
-      )
-      .map((post) => ({
-        ...post,
-        featured_image: post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || null,
-      }));
+    posts = postsNotFeatureImage.length > 0
+      ? postsNotFeatureImage
+          .filter((post: any) => !post.categories.includes(7)) 
+          .map((post: any) => {
+            const featured_image = post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || null;
+            return {
+              ...post,
+              featured_image,
+            };
+          })
+      : [];
   } catch (error) {
-    console.error("Error fetching posts:", error);
+    console.log(error);
   }
 
-  res.status(200).json({ posts, totalPosts });
+  if (req.method === "GET") {
+    res.status(200).json({
+      posts,
+      totalPosts,
+    });
+  }
 }
