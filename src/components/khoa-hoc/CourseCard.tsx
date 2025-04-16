@@ -21,9 +21,9 @@ export const CourseCard = ({ course }: { course: any }) => {
           <Image
             src={course?.image}
             alt={course?.name || "aaaa"}
-            width={400}
+            className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
+            width={600}
             height={400}
-            className="w-full aspect-square object-cover transition-transform"
           />
         </div>
         <CardContent className="p-4">

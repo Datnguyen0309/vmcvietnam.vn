@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Image from "next/image"
+import { BreadCrumb } from "@/components/BreadCrumb"
 import type { CartItem } from "@/redux/features/cartSlice"
 import { useAppDispatch, useAppSelector } from "@/redux/store"
 import { useDispatch } from "react-redux"
@@ -15,14 +16,14 @@ import {
   deleteFromCartThunk,
   removePromotionThunk,
 } from "@/redux/thunks/oderThunks"
+import { toast } from "react-toastify"
 import { applyPromotion } from "@/redux/features/promotionSlice"
-import { Gift, Percent, X, ShoppingBag, Trash2, Tag, ChevronRight, CheckCircle } from "lucide-react"
+import { Gift, Percent, X, ShoppingBag, Trash2, Tag, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { ToastContainer, ToastOptions } from "../ui/a"
 
 export default function ShoppingCart() {
   const cartItems: CartItem[] = useAppSelector((state) => state.cart.cartItems)
@@ -30,9 +31,9 @@ export default function ShoppingCart() {
     state.order.items.filter((item) => item.is_reward_line === true),
   )
   const totalAmount: number = useAppSelector((state) => state.cart.totalAmount)
+  const totalPrice: number = useAppSelector((state) => state.order.total_price)
   const [promotions, setPromotions] = useState<Promotion[]>([])
   const dispatchApp = useAppDispatch()
-  const [promoSuccess, setPromoSuccess] = useState(false)
 
   const dispatch = useDispatch()
   const router = useRouter()
@@ -42,14 +43,6 @@ export default function ShoppingCart() {
   const closeModal = () => setModalOpen(false)
   const order_id = useAppSelector((state) => state.order.order_id)
   const promotion = useAppSelector((state) => state.promotion.currentPromotion)
-  const [totalPrice, setTotalPrice] = useState<number>(0);
-
-  // Create a safe way to show toasts
-  const showToast = (options: ToastOptions) => {
-    if (typeof window !== "undefined" && (window as any).showToast) {
-      ;(window as any).showToast(options)
-    }
-  }
 
   useEffect(() => {
     const handleCallPromotion = async () => {
@@ -74,10 +67,7 @@ export default function ShoppingCart() {
     } catch (error) {
       console.error("Lỗi khi áp dụng chương trình khuyến mãi:", error)
     }
-    showToast({
-      message: "Đã áp dụng chương trình khuyến mãi thành công!",
-      type: "success",
-    })
+    toast.success("Đã áp dụng chương trình khuyến mãi thành công!")
     setModalOpen(false)
   }
 
@@ -90,10 +80,7 @@ export default function ShoppingCart() {
         console.error("Lỗi khi tạo đơn hàng:", error)
       }
     } else if (cartItems.length === 0) {
-      showToast({
-        message: "Bạn cần thêm sản phẩm vào trong giỏ hàng",
-        type: "error",
-      })
+      toast.error("Bạn cần thêm sản phẩm vào trong giỏ hàng")
       return
     }
     router.push("/xac-nhan-thong-tin")
@@ -108,30 +95,12 @@ export default function ShoppingCart() {
         console.error("Lỗi khi tạo đơn hàng:", error)
       }
     }
-    
     try {
       const response = await dispatchApp(applyPromoCodeThunk(promo_code))
       if (response.payload.success) {
-        setPromoSuccess(true)
-        setTimeout(() => setPromoSuccess(false), 3000)
-        showToast({
-          message: "Áp dụng mã khuyến mãi thành công.",
-          type: "success",
-        })
-        
-        // Cập nhật lại tổng tiền sau khi áp dụng mã khuyến mãi
-        const totalAfterPromo = cartItems.reduce(
-          (total, item) => total + item.price_unit * item.quantity,
-          0
-        )
-        const discount = rewardItems.reduce((sum, item) => sum + item.price_unit * item.quantity, 0)
-        setTotalPrice(totalAfterPromo - discount)
-  
+        toast.success("Áp dụng mã khuyến mãi thành công.")
       } else {
-        showToast({
-          message: "Mã khuyến mãi không hợp lệ.",
-          type: "error",
-        })
+        toast.error("Mã khuyến mãi không hợp lệ.")
       }
       console.log("Áp dụng mã khuyến mãi thành công.")
     } catch (error) {
@@ -139,43 +108,24 @@ export default function ShoppingCart() {
     }
     setModalOpen(false)
   }
-  
+
   const handleDeleteFromCart = async ({ product_id }: { product_id: number }) => {
     try {
       await dispatchApp(deleteFromCartThunk(product_id))
-      showToast({
-        message: "Sản phẩm đã được xóa khỏi giỏ hàng thành công.",
-        type: "success",
-      })
+      console.log("Sản phẩm đã được xóa khỏi giỏ hàng thành công.")
     } catch (error) {
       console.error("Lỗi khi xóa sản phẩm khỏi giỏ hàng:", error)
-      showToast({
-        message: "Có lỗi xảy ra khi xóa sản phẩm.",
-        type: "error",
-      })
     }
   }
 
   const handleRemovePromotion = async () => {
     try {
       await dispatchApp(removePromotionThunk())
-      showToast({
-        message: "Đã xóa khuyến mãi thành công.",
-        type: "info",
-      })
-  
-      // Cập nhật lại tổng tiền sau khi xóa chương trình khuyến mãi
-      const totalAfterRemoval = cartItems.reduce(
-        (total, item) => total + item.price_unit * item.quantity,
-        0
-      )
-      setTotalPrice(totalAfterRemoval)
-  
     } catch (error) {
       console.error("Lỗi khi xóa khuyến mãi:", error)
     }
   }
-  
+
   const handleOpenModalCTKM = async () => {
     if (!order_id) {
       try {
@@ -193,7 +143,6 @@ export default function ShoppingCart() {
   return (
     <>
       <div className="bg-[#f9f7fc] py-20">
-        <ToastContainer />
         <div className="max-w-[1320px] mx-auto px-4 xl:px-6 pt-12 pb-16">
           <div className="flex items-center mb-8">
             <ShoppingBag className="w-6 h-6 mr-2 text-[rgb(74,59,99)]" />
@@ -407,20 +356,13 @@ export default function ShoppingCart() {
                         <div className="flex flex-col gap-2">
                           <h3 className="font-medium text-[rgb(74,59,99)] mb-1">Mã giảm giá</h3>
                           <div className="flex">
-                            <div className="relative flex-1">
-                              <Input
-                                type="text"
-                                placeholder="Nhập mã giảm giá"
-                                value={promoCode}
-                                onChange={(e) => setPromoCode(e.target.value)}
-                                className="rounded-r-none border-r-0 focus-visible:ring-[rgb(74,59,99)]"
-                              />
-                              {promoSuccess && (
-                                <div className="absolute right-3 top-0 bottom-0 flex items-center text-green-500">
-                                  <CheckCircle className="w-5 h-5" />
-                                </div>
-                              )}
-                            </div>
+                            <Input
+                              type="text"
+                              placeholder="Nhập mã giảm giá"
+                              value={promoCode}
+                              onChange={(e) => setPromoCode(e.target.value)}
+                              className="rounded-r-none border-r-0 focus-visible:ring-[rgb(74,59,99)]"
+                            />
                             <Button
                               disabled={!promoCode}
                               onClick={() => {

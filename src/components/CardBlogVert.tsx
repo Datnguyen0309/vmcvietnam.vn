@@ -182,3 +182,16 @@ export const  CardPost = (props: Post) => {
     </Card>
   );
 };
+
+
+export const SkeletonCardPost = () => (
+  <Card className="group overflow-hidden hover:shadow-lg transition-shadow animate-pulse">
+    <div className="relative overflow-hidden">
+      <div className="w-full h-[256px] bg-gray-300" /> {/* Placeholder for image */}
+    </div>
+    <div className="p-6">
+      <div className="w-full h-6 bg-gray-300 mb-2" /> {/* Placeholder for title */}
+      <div className="w-full h-4 bg-gray-300" /> {/* Placeholder for excerpt */}
+    </div>
+  </Card>
+);

@@ -23,7 +23,7 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
     const handleScroll = () => {
       if (!stickyRef.current || !containerRef.current) return;
       const containerRect = containerRef.current.getBoundingClientRect();
-      if (containerRect.top < 20) {
+      if (containerRect.top < 15) {
         setIsSticky(true);
       } else {
         setIsSticky(false);
@@ -249,16 +249,16 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className={`bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 border border-gray-100 hover:shadow-xl ${isSticky ? "lg:sticky lg:top-4" : ""
+            className={`bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 border border-gray-100 hover:shadow-xl ${isSticky ? "lg:sticky lg:top-[180px]" : ""
               }`}
           >
             <div className="relative">
-              <div className="absolute top-4 left-4 z-10">
+              {/* <div className="absolute top-4 left-4 z-10">
                 <Badge className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold px-3 py-1">Khóa học nổi bật</Badge>
-              </div>
+              </div> */}
               <div className="relative overflow-hidden group">
                 <Image
-                  src={CourseData?.image || "/placeholder.svg?height=400&width=600"}
+                  src={CourseData?.image || "/assets/blog.jpeg"}
                   alt="Course thumbnail"
                   className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
                   width={600}
@@ -270,14 +270,14 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
 
             <div className="p-6">
               <h2 className="text-xl font-bold mb-4 text-gray-800">{CourseData?.name}</h2>
-
               <div className="flex justify-between items-center mb-6 bg-gray-50 p-4 rounded-xl">
                 <div>
                   <span className="text-gray-500 line-through text-sm">
-                    {Number(
-                      CourseData?.price || "0"
-                    ).toLocaleString("vi-VN")}{" "}
-                    đ
+                    {CourseData?.price_promo ? (
+                      <span className="text-gray-500 line-through text-sm">
+                        {Number(CourseData?.price_promo).toLocaleString("vi-VN")} đ
+                      </span>
+                    ) : null}
                   </span>
                 </div>
                 <span className="text-2xl font-bold text-[#4A306D]">   {Number(
@@ -299,7 +299,11 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
                   <BookOpen className="w-6 h-6 text-yellow-500 mr-4 flex-shrink-0" />
                   <div className="flex justify-between w-full">
                     <span className="text-gray-600">Số bài học</span>
-                    <span className="font-medium text-gray-900">{CourseData?.lessons || ""}</span>
+                    <span className="font-medium text-gray-900">
+                      {CourseData?.number_of_lessons ? (
+                        Number(CourseData.number_of_lessons).toLocaleString("vi-VN") + " Bài học"
+                      ) : null}
+                    </span>
                   </div>
                 </div>
 
@@ -307,7 +311,7 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
                   <Users className="w-6 h-6 text-yellow-500 mr-4 flex-shrink-0" />
                   <div className="flex justify-between w-full">
                     <span className="text-gray-600">Học viên</span>
-                    <span className="font-medium text-gray-900">31 người</span>
+                    <span className="font-medium text-gray-900">{CourseData?.number_of_student || ""}</span>
                   </div>
                 </div>
 
@@ -344,7 +348,6 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
                   </span>
                   <span className="group-hover:mr-8 transition-all duration-300">MUA NGAY</span>
                 </Button>
-
                 <button
                   onClick={handleAddToCart}
                   className="w-full bg-[#f55500] hover:bg-[#d94c00] font-bold text-lg border-none p-2 text-white h-14 transition-all duration-300 relative group overflow-hidden"
@@ -360,10 +363,6 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
                     THÊM VÀO GIỎ HÀNG
                   </span>
                 </button>
-              </div>
-
-              <div className="mt-6 text-center">
-                <p className="text-sm text-gray-500">Đảm bảo hoàn tiền trong 30 ngày</p>
               </div>
             </div>
           </motion.div>
