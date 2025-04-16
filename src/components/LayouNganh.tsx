@@ -37,9 +37,9 @@ const fetchAllCourses = async (category: string) => {
   return allCourses;
 };
 
-export const LayoutNganh = ({ category, titles }: LayoutNganhProps) => {
+export const LayoutNganh = ({ category }: LayoutNganhProps) => {
   const [inputKey, setInputKey] = useState("");
-  const [sortOption, setSortOption] = useState("default");
+  const [sortOption, ] = useState("default");
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
   const keyWord = decodeURIComponent((router?.query?.key as string) || "");
@@ -48,7 +48,6 @@ export const LayoutNganh = ({ category, titles }: LayoutNganhProps) => {
     "allCourses",
     category,
   ], () => fetchAllCourses(category), { keepPreviousData: true });
-
   useEffect(() => {
     setCurrentPage(1);
   }, [category, keyWord]);

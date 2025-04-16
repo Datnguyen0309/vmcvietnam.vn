@@ -41,7 +41,7 @@ export const LatestPosts = () => {
             key={index}
             slug={post?.slug}
             imageUrl={post?.featured_image || "/assets/blog.jpeg"}
-            title={clean(post?.title.rendered) || "Untitled"}
+            title={clean(post?.title.rendered) || ""}
             excerpt={clean(post?.excerpt.rendered) || "No excerpt available"}
             content={post?.content?.rendered || ""}
             category={""}

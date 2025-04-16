@@ -10,7 +10,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  //lấy dữ liệu form từ wordpress
   const slug = req?.query?.slug || "";
   const api_url = process.env.API_URL || "";
 
@@ -18,35 +17,33 @@ export default async function handler(
   let totalPosts: string = "0";
 
   try {
-    const endPoint = `http://10.10.51.16:8686/wp-json/wp/v2/posts?slug=${slug}`;
+    const endPoint = `http://10.10.51.16:8686/wp-json/wp/v2/posts?slug=${slug}&_embed=true`;
 
-    const res = await fetch(endPoint, {
-      next: { revalidate: 1 }
+    const response = await fetch(endPoint, {
+      next: { revalidate: 1 },
     });
-    if (!res.ok) {
-      throw new Error(`Posts fetch failed with status: ${res.statusText}`);
+
+    if (!response.ok) {
+      throw new Error(`Posts fetch failed with status: ${response.statusText}`);
     }
-    const postsNotFeatureImage: any[] = (await res?.json()) || [];
-    posts =
-      postsNotFeatureImage?.length > 0
-        ? postsNotFeatureImage?.map((post: any) => {
-            const featured_image =
-              post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || null;
 
-            return {
-              ...post,
-              featured_image
-            };
-          })
-        : [];
+    const postsWithEmbed: any[] = await response.json();
+
+    posts = postsWithEmbed?.map((post: any) => {
+      const featured_image =
+        post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || null;
+
+      return {
+        ...post,
+        featured_image,
+      };
+    }) || [];
   } catch (error) {
-    console.log(error);
+    console.log("Fetch posts error:", error);
   }
 
-  if (req.method === "GET") {
-    res.status(200).json({
-      posts,
-      totalPosts
-    });
-  }
+  res.status(200).json({
+    posts,
+    totalPosts,
+  });
 }

@@ -11,7 +11,8 @@ import { Loading } from "@/components/Loading";
 const CourseDetail = () => {
   const router = useRouter();
   const { slug } = router.query as { slug: string };
-  const { data, isLoading } = useQuery(
+
+  const { data, isLoading, isError } = useQuery(
     [`getKhoaDetailbyslug`, slug],
     () =>
       getSingleModel({
@@ -23,14 +24,6 @@ const CourseDetail = () => {
       enabled: !!slug, 
     }
   );
-
-  useEffect(() => {
-    if (!isLoading && (!data || !data.data)) {
-      router.push("/");
-    }
-  }, [data, isLoading, router]);
-
-  if (isLoading || !data) return <div><Loading/></div>;
 
   return (
     <>

@@ -159,12 +159,13 @@ export const  CardPost = (props: Post) => {
       className="group overflow-hidden hover:shadow-lg transition-shadow"
     >
       <Link href={`/tin-tuc/${slug}`}>
-        <div className="relative h-48 overflow-hidden">
+        <div className="relative  overflow-hidden">
           <Image
             src={imageUrl || "/assets/blog.jpeg"}
             alt={title}
-            fill
-            className="object-cover transition-transform group-hover:scale-105"
+            width={400}
+            height={225}
+            className="object-cover transition-transform group-hover:scale-105 w-full h-[256px]"
           />
         </div>
 

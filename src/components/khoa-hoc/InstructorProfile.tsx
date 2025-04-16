@@ -8,22 +8,46 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { clean } from "../lib/sanitizeHtml";
 import { Loading } from "../Loading";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css"; // Import stylesheet for skeleton
 
 export function formatPrice(price: number) {
   return new Intl.NumberFormat("vi-VN", {
     style: "currency",
     currency: "VND",
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0
+    maximumFractionDigits: 0,
   }).format(price);
 }
 
 export const InstructorProfile = ({ teacher_info }: { teacher_info: any }) => {
   if (!teacher_info) {
-      return (
-        <Loading/>
-      );
-    }
+    return (
+      <div className="bg-[#fff7f5] py-8 w-full">
+        <div className="container max-w-7xl mx-auto px-4">
+          <h2 className="text-2xl font-bold text-[#4A306D] mb-6">
+            <Skeleton width={200} height={30} />
+          </h2>
+
+          <Card className="border-none bg-transparent">
+            <CardContent className="p-0">
+              <div className="flex flex-col md:flex-row gap-6">
+                <div className="md:w-48 h-48 relative">
+                  <Skeleton circle width={192} height={192} />
+                </div>
+                <div className="flex-1 space-y-4">
+                  <Skeleton width={120} height={24} />
+                  <Skeleton count={3} />
+                  <Skeleton width={100} height={20} />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="bg-[#fff7f5] py-8 w-full">
@@ -35,7 +59,7 @@ export const InstructorProfile = ({ teacher_info }: { teacher_info: any }) => {
           <Card className="border-none bg-transparent">
             <CardContent className="p-0">
               <div className="flex flex-col md:flex-row gap-6">
-                <div className=" md:w-48 h-48 relative">
+                <div className="md:w-48 h-48 relative">
                   <Image
                     src={teacher_info?.image || ""}
                     alt={teacher_info?.name || ""}
@@ -47,7 +71,7 @@ export const InstructorProfile = ({ teacher_info }: { teacher_info: any }) => {
                       borderTopLeftRadius: "34px",
                       borderBottomRightRadius: "34px",
                       objectFit: "cover",
-                      height:"192px",
+                      height: "192px",
                     }}
                   />
                 </div>
@@ -60,7 +84,7 @@ export const InstructorProfile = ({ teacher_info }: { teacher_info: any }) => {
                     dangerouslySetInnerHTML={{
                       __html: clean(
                         teacher_info?.description || "Mô tả giáo viên"
-                      )
+                      ),
                     }}
                   />
                   {teacher_info && (
@@ -78,7 +102,6 @@ export const InstructorProfile = ({ teacher_info }: { teacher_info: any }) => {
           </Card>
         </div>
       </div>
-      ;
     </>
   );
 };
