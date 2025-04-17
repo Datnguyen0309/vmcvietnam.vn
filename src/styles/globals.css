@@ -151,3 +151,45 @@ html {
   color: #333;
   font-weight: bold;
 }
+
+/* Đảm bảo video có tỷ lệ khung hình chuẩn cho tất cả thiết bị */
+/* Video container để đảm bảo tỷ lệ khung hình 16:9 */
+.video-container {
+  position: relative;
+  width: 100%; /* Chiếm toàn bộ chiều rộng */
+  padding-bottom: 56.25%; /* Tạo tỷ lệ 16:9 (56.25% là tỷ lệ của 16:9) */
+  height: 0;
+  overflow: hidden;
+  background: #000; /* Để video có nền đen khi không có video */
+}
+
+.video-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Media Query cho thiết bị di động */
+@media (max-width: 768px) {
+  .video-container {
+    padding-bottom: 56.25%; /* Tỷ lệ 16:9 */
+  }
+}
+
+/* Media Query cho iPad và tablet */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .video-container {
+    padding-bottom: 56.25%; /* Tỷ lệ 16:9 */
+  }
+}
+
+/* Media Query cho PC */
+@media (min-width: 1025px) {
+  .video-container {
+    padding-bottom: 56.25%; /* Tỷ lệ 16:9 */
+  }
+}
+

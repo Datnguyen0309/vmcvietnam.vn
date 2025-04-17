@@ -2,13 +2,12 @@
 import type { CartItem } from "@/redux/features/cartSlice"
 import { useAppDispatch } from "@/redux/store"
 import { addToCartThunk } from "@/redux/thunks/oderThunks"
-import { motion, AnimatePresence } from "framer-motion"
-import { Award, BookOpen, ChevronDown, ChevronUp, Clock, ShoppingCart, Users, Star, Check } from "lucide-react"
+import { AnimatePresence, motion } from "framer-motion"
+import { Award, BookOpen, Check, ChevronDown, ChevronUp, Clock, ShoppingCart, Star, Users } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { useEffect, useRef, useState } from "react"
 import { clean } from "../lib/sanitizeHtml"
-import { Badge } from "../ui/badge"
 
 export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
   const [isSticky, setIsSticky] = useState(false)
@@ -17,6 +16,7 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
+  const { slug } = useRouter().query;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,22 +76,68 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
     router.push("/mua-ngay?type=mua-ngay")
   }
 
-  const { slug } = router.query
   useEffect(() => {
     const getpostsWp = async () => {
       try {
         const res = await fetch(`/api/post-course/?slug=${slug}`, {
           next: { revalidate: 3 },
-        })
-        const data: { posts: any[]; totalPosts: string } = await res.json()
-        const { posts } = data
-        posts?.length && setpostsWp(posts[0])
+        });
+        const data = await res.json();
+        const { posts } = data;
+        if (posts?.length) setpostsWp(posts[0]);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-    getpostsWp()
-  }, [slug])
+    };
+    getpostsWp();
+  }, [slug]);
+
+  if (!postsWp) {
+    return (
+      <div className="container max-w-7xl mx-auto px-4 py-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Skeleton for the main course section */}
+          <div className="lg:w-2/3">
+            <div className="bg-gray-200 rounded-lg overflow-hidden shadow-md mb-6 h-[450px] animate-pulse"></div>
+            <div className="p-6">
+              {/* Skeleton for tab buttons */}
+              <div className="flex mb-6">
+                <div className="w-32 h-10 bg-gray-300 rounded-md mr-2 animate-pulse"></div>
+                <div className="w-32 h-10 bg-gray-300 rounded-md animate-pulse"></div>
+              </div>
+              {/* Skeleton for content */}
+              <div className="h-[200px] bg-gray-300 animate-pulse"></div>
+            </div>
+          </div>
+
+          {/* Skeleton for the sticky sidebar */}
+          <div className="lg:w-1/3">
+            <div className="bg-gray-200 rounded-lg shadow-md overflow-hidden animate-pulse">
+              <div className="w-full h-[200px] bg-gray-300 animate-pulse"></div>
+              <div className="p-6">
+                <div className="w-40 h-6 bg-gray-300 mb-4 animate-pulse"></div>
+                <div className="flex justify-between items-center mb-4">
+                  <div className="w-20 h-6 bg-gray-300 animate-pulse"></div>
+                  <div className="w-20 h-6 bg-gray-300 animate-pulse"></div>
+                  <div className="w-20 h-6 bg-gray-300 animate-pulse"></div>
+                  <div className="w-20 h-6 bg-gray-300 animate-pulse"></div>
+                  <div className="w-20 h-6 bg-gray-300 animate-pulse"></div>
+                </div>
+                <div className="space-y-3">
+                  <button className="w-full bg-gray-300 p-2 rounded-md animate-pulse"></button>
+                  <button className="w-full bg-gray-300 p-2 rounded-md animate-pulse"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+
+  // Lấy URL video từ trường ACF
+  const videoUrl = postsWp.acf?.video_url;
 
   // Skeleton loader for the page while data is loading
   if (!CourseData) {
@@ -138,7 +184,7 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
   }
 
   return (
-    <div className="container max-w-7xl mx-auto px-4 py-12">
+    <div className="container max-w-7xl mx-auto py-12">
       <div className="flex flex-col lg:flex-row gap-10" ref={containerRef}>
         <div className="lg:w-2/3">
           <motion.div
@@ -147,6 +193,19 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
             transition={{ duration: 0.6 }}
             className="bg-white rounded-2xl overflow-hidden shadow-xl mb-8 border border-gray-100"
           >
+            {videoUrl && (
+              <div className="video-container mb-8">
+                <iframe
+                  className="video-iframe"
+                  src={`https://www.youtube.com/embed/${videoUrl.split("v=")[1]}`}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            )}
+
+            {/* 
             <div className="relative">
               <Image
                 src={postsWp?.featured_image || "/assets/blog.jpeg"}
@@ -156,14 +215,14 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
                 height={200}
               />
               <div className="absolute top-4 left-4">
-                {/* <Badge className="bg-[#4A306D] hover:bg-[#3a2557] text-white font-bold px-4 py-1.5 rounded-full shadow-lg">
+                <Badge className="bg-[#4A306D] hover:bg-[#3a2557] text-white font-bold px-4 py-1.5 rounded-full shadow-lg">
                   Khóa học nổi bật
-                </Badge> */}
+                </Badge>
               </div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent h-24"></div>
-            </div>
+            </div> */}
 
-            <div className="p-8">
+            <div className="px-8 pb-8">
               <div className="mb-8">
                 <div className="flex rounded-xl overflow-hidden shadow-md">
                   <button
@@ -325,35 +384,40 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
               <motion.div
                 initial={{ scale: 1 }}
                 animate={{ scale: [1, 1.03, 1] }}
-                transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY, repeatDelay: 5 }}
+                transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY, repeatDelay: 1 }}
                 className="relative mb-8 py-6"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#4A306D] to-[#3a2557] rounded-2xl shadow-lg"></div>
+                <div className="absolute inset-0 bg-[#f55500] rounded-2xl shadow-lg"></div>
                 <div className="absolute inset-0 bg-[#f55500] rounded-2xl opacity-10"></div>
+                <div className="absolute top-0  right-0 w-4 h-4 bg-[red] rounded-full animate-ping"></div>
 
                 <div className="relative flex justify-between items-center px-6 py-2">
                   <div className="flex flex-col">
                     {CourseData?.price_promo ? (
                       <div className="flex items-center gap-2">
                         <span className="text-gray-100 line-through text-lg">
-                          {Number(CourseData?.price_promo).toLocaleString("vi-VN")} đ
+                          {Number(CourseData?.price || "0").toLocaleString("vi-VN")} đ
                         </span>
                       </div>
                     ) : null}
-                    <span className="text-white text-sm font-medium">Giá ưu đãi</span>
                   </div>
 
                   <div className="flex flex-col items-end">
                     <div className="relative">
                       <span className="text-4xl font-extrabold text-white drop-shadow-md">
-                        {Number(CourseData?.price || "0").toLocaleString("vi-VN")} đ
+                        {CourseData?.price_promo
+                          ? Number(CourseData?.price_promo).toLocaleString("vi-VN") // Hiển thị giá khuyến mại nếu có
+                          : Number(CourseData?.price).toLocaleString("vi-VN")} đ  {/* Hiển thị giá học nếu không có khuyến mại */}
                       </span>
-                      <div className="absolute -top-2 -right-2 w-4 h-4 bg-[#f55500] rounded-full animate-ping"></div>
                     </div>
+                    <span className="text-white text-sm font-medium">
+                      {CourseData?.price_promo ? "Giá ưu đãi" : "Giá học"} {/* Thay đổi nhãn tùy theo giá */}
+                    </span>
                   </div>
                 </div>
 
-                <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-white px-4 py-1 rounded-full border-2 border-[#4A306D] shadow-md">
+
+                <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-white px-4 py-1 rounded-full border-2 border-[#f55500] shadow-md">
                   <span className="text-[#4A306D] font-bold text-sm">Giá tốt nhất hôm nay</span>
                 </div>
               </motion.div>
