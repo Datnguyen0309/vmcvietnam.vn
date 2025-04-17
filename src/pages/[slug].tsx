@@ -1,12 +1,10 @@
-import { useEffect } from "react";
-import { useRouter } from "next/router";
-import { useQuery } from "react-query";
 import { CourseDetails } from "@/components/khoa-hoc/CourseDetails";
 import { InstructorProfile } from "@/components/khoa-hoc/InstructorProfile";
 import { OtherCourse } from "@/components/khoa-hoc/OtherCourse";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { getSingleModel } from "@/utils/fetch-auth-odoo";
-import { Loading } from "@/components/Loading";
+import { useRouter } from "next/router";
+import { useQuery } from "react-query";
 
 const CourseDetail = () => {
   const router = useRouter();

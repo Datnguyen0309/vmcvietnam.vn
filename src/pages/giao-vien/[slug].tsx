@@ -1,4 +1,4 @@
-import { CourseCard } from "@/components/khoa-hoc/CourseCard";
+import { CourseCard, SkeletonCourseCard } from "@/components/khoa-hoc/CourseCard";
 import { defautlHtmlCourseDetail } from "@/components/khoa-hoc/CourseDetails";
 import { clean } from "@/components/lib/sanitizeHtml";
 import {
@@ -39,42 +39,20 @@ const TeacherProfile = () => {
   );
 
   return (
-    <div className="container max-w-7xl mx-auto px-4 py-8">
+    <div className="container max-w-7xl mx-auto px-4 py-10 xl:py-20">
       <div className="flex flex-col md:flex-row items-center justify-center md:justify-between mb-8 gap-4">
         <div className="flex items-center justify-center gap-2 text-[16px] text-gray-600">
           <Link href="/" className="hover:text-[#4A306D]">
             TRANG CHỦ
           </Link>
           <span>/</span>
-          <span className="font-[900] text-[#222]">GIÁO VIÊN</span>
+          <Link href="/giao-vien" className="hover:text-[#4A306D]">
+            GIÁO VIÊN
+          </Link>
           <span>/</span>
           <span className="font-[900] text-[#222] uppercase">
             {data?.data?.short_course[0]?.teacher?.name}
           </span>
-        </div>
-
-        <div className="w-full md:w-[180px] flex justify-center">
-          <Select defaultValue="default">
-            <SelectTrigger>
-              <SelectValue placeholder="Thứ tự mặc định" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="default">Thứ tự mặc định</SelectItem>
-              <SelectItem value="popularity">
-                Thứ tự theo mức độ phổ biến
-              </SelectItem>
-              <SelectItem value="rating">
-                Thứ tự theo điểm đánh giá
-              </SelectItem>
-              <SelectItem value="newest">Mới nhất</SelectItem>
-              <SelectItem value="price-asc">
-                Thứ tự theo giá: thấp đến cao
-              </SelectItem>
-              <SelectItem value="price-desc">
-                Thứ tự theo giá: cao xuống thấp
-              </SelectItem>
-            </SelectContent>
-          </Select>
         </div>
       </div>
 
@@ -100,28 +78,32 @@ const TeacherProfile = () => {
             {data?.data?.short_course[0]?.teacher?.name}
           </h1>
           <div className="prose prose-gray max-w-none">
-
             <p dangerouslySetInnerHTML={{
               __html: clean(data?.data?.short_course[0]?.teacher?.description || defautlHtmlCourseDetail),
             }} />
           </div>
         </div>
       </div>
-
       <div className="mt-12">
         <h2 className="text-[25px] font-[700] text-[#4A306D] mb-6  uppercase">
-          DANH SÁCH CÁC KHÓA HỌC CỦA
-          {data?.data?.short_course[0]?.teacher?.name}
+          DANH SÁCH CÁC KHÓA HỌC CỦA {data?.data?.short_course[0]?.teacher?.name}
         </h2>
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8">
-          {data?.data?.short_course
-            ?.slice(0, page * 8)
-            .map((course: any, index: number) => (
+        
+        {isLoading ? (
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8">
+            {Array.from({ length: 16 }).map((_, idx) => (
+              <div key={idx}><SkeletonCourseCard /></div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8">
+            {data?.data?.short_course.slice(0, page * 8).map((course:any, index:number) => (
               <div key={index}>
                 <CourseCard course={course} />
               </div>
             ))}
-        </div>
+          </div>
+        )}
         {!isLoading && page * 8 < data?.data?.total_documents && (
           <div className="py-12 flex justify-center items-center">
             <button

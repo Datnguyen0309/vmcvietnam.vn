@@ -44,7 +44,7 @@ export const HotCourses = () => {
             <SectionTitle title={"KHÓA HỌC"} icon={<FaUser />} />
           </div>
           <h2 className="lg:text-3xl md:text-xl font-bold text-[#4A306D]">
-            Các khóa học Hot nhất 2023
+            Các khóa học Hot nhất 2025
           </h2>
           <Tabs defaultValue="all" className="w-fit mx-auto">
             <TabsList

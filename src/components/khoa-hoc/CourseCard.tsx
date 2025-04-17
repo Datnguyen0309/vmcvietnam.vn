@@ -21,7 +21,7 @@ export const CourseCard = ({ course }: { course: any }) => {
           <Image
             src={course?.image}
             alt={course?.name || "aaaa"}
-            className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-[205px] object-cover group-hover:scale-105 transition-transform duration-500"
             width={600}
             height={400}
           />
@@ -33,8 +33,11 @@ export const CourseCard = ({ course }: { course: any }) => {
 
           <div className="mt-4 space-y-2 flex justify-between">
             <div className="text-gray-500 line-through mt-3">
-              {Number(course?.price).toLocaleString("vi-VN")} đ
+              {course?.price_promo !== 0 && course?.price_promo ?
+                Number(course.price_promo).toLocaleString("vi-VN") + " đ"
+                : null}
             </div>
+
             <div
               className="text-[15px] font-bold text-[#fff]"
               style={{

@@ -34,6 +34,7 @@
     "eslint-config-next": "14.2.3",
     "framer-motion": "^11.2.6",
     "html-react-parser": "^5.1.10",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.460.0",
     "next": "^14.2.24",
     "next-seo": "^6.6.0",
@@ -64,6 +65,7 @@
   "devDependencies": {
     "@shadcn/ui": "^0.0.4",
     "@types/crypto-js": "^4.2.2",
+    "@types/lodash": "^4.17.16",
     "@types/nodemailer": "^6.4.17",
     "@types/react-scroll": "^1.8.10",
     "@types/react-slick": "^0.23.13",
