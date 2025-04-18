@@ -83,7 +83,6 @@ export const Footer = () => {
                 </div>
               </div>
             </div>
-
             <div>
               <h2 className="text-xl font-semibold mb-4">
                 {homeContent?.acf?.footer?.list_2?.text_1 ||
@@ -99,21 +98,21 @@ export const Footer = () => {
                 ))}
               </div>
             </div>
-
             <div className="">
               <h2 className="text-lg font-bold mb-4">
                 {homeContent?.acf?.footer?.list_3?.title ||
                   "Chính sách và quy định chung"}
               </h2>
-              <div className="divide-y divide-white/50">
-              {homeContent?.acf?.footer?.list_3?.group?.map((item: any, index: number) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <Link href={item.url || "#"} target="_blank" rel="noopener noreferrer" >
+              <div className="divide-y divide-white/50  pb-4 text-white">
+                {homeContent?.acf?.footer?.list_3?.group?.map((item: any, index: number) => (
+                  <div key={index} className="flex items-center gap-2 py-2">
+                    <Link href={item.url || "#"} target="_blank" rel="noopener noreferrer">
                       {item.title || "Mặc định tên"}
                     </Link>
                   </div>
                 ))}
               </div>
+
             </div>
           </div>
         </div>

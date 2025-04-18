@@ -19,8 +19,7 @@ const CourseDetail = () => {
         slug: slug,
       }),
     {
-      enabled: !!slug, 
-    }
+      enabled: !!slug,     }
   );
 
   return (

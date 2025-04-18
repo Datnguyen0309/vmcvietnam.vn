@@ -11,9 +11,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const response = await fetch(API_URL);
     const categories = await response.json();
-
+    const excludeIds = [7, 8];
     // Lọc bỏ danh mục có id = 7
-    const filteredCategories = categories.filter((category: Category) => category.id !== 7);
+    const filteredCategories = categories.filter(
+      (category: Category) => !excludeIds.includes(category.id)
+    );
 
     res.status(200).json(filteredCategories);
   } catch (error) {

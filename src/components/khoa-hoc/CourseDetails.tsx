@@ -380,22 +380,21 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
 
             <div className="p-8">
               <h2 className="text-2xl font-bold mb-4 text-gray-800 leading-tight">{CourseData?.name}</h2>
-
               <motion.div
                 initial={{ scale: 1 }}
                 animate={{ scale: [1, 1.03, 1] }}
                 transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY, repeatDelay: 1 }}
-                className="relative mb-8 py-6"
+                className="relative mb-8 py-4 sm:py-6"
               >
                 <div className="absolute inset-0 bg-[#f55500] rounded-2xl shadow-lg"></div>
                 <div className="absolute inset-0 bg-[#f55500] rounded-2xl opacity-10"></div>
-                <div className="absolute top-0  right-0 w-4 h-4 bg-[red] rounded-full animate-ping"></div>
+                <div className="absolute top-0 right-0 w-3 h-3 sm:w-4 sm:h-4 bg-[red] rounded-full animate-ping"></div>
 
-                <div className="relative flex justify-between items-center px-6 py-2">
+                <div className="relative flex justify-between items-center px-3 sm:px-6 py-2">
                   <div className="flex flex-col">
                     {CourseData?.price_promo ? (
-                      <div className="flex items-center gap-2">
-                        <span className="text-gray-100 line-through text-lg">
+                      <div className="flex items-center gap-1 sm:gap-2">
+                        <span className="text-gray-100 line-through text-sm sm:text-lg">
                           {Number(CourseData?.price || "0").toLocaleString("vi-VN")} đ
                         </span>
                       </div>
@@ -404,21 +403,22 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
 
                   <div className="flex flex-col items-end">
                     <div className="relative">
-                      <span className="text-4xl font-extrabold text-white drop-shadow-md">
+                      <span className="text-2xl sm:text-4xl font-extrabold text-white drop-shadow-md">
                         {CourseData?.price_promo
-                          ? Number(CourseData?.price_promo).toLocaleString("vi-VN") // Hiển thị giá khuyến mại nếu có
-                          : Number(CourseData?.price).toLocaleString("vi-VN")} đ  {/* Hiển thị giá học nếu không có khuyến mại */}
+                          ? Number(CourseData?.price_promo).toLocaleString("vi-VN")
+                          : Number(CourseData?.price).toLocaleString("vi-VN")}{" "}
+                        đ
                       </span>
                     </div>
-                    <span className="text-white text-sm font-medium">
-                      {CourseData?.price_promo ? "Giá ưu đãi" : "Giá học"} {/* Thay đổi nhãn tùy theo giá */}
+
+                    <span className="text-white text-xs sm:text-sm font-medium">
+                      {CourseData?.price_promo ? "Giá ưu đãi" : "Giá học"}
                     </span>
                   </div>
                 </div>
 
-
-                <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-white px-4 py-1 rounded-full border-2 border-[#f55500] shadow-md">
-                  <span className="text-[#4A306D] font-bold text-sm">Giá tốt nhất hôm nay</span>
+                <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-white px-3 sm:px-4 py-1 rounded-full border-2 border-[#f55500] shadow-md">
+                  <span className="text-[#4A306D] font-bold text-xs sm:text-sm whitespace-nowrap">Giá tốt nhất hôm nay</span>
                 </div>
               </motion.div>
 

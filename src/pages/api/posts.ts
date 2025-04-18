@@ -28,9 +28,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const postsNotFeatureImage: any[] = await response.json();
     totalPosts = parseInt(response.headers.get('X-WP-Total') || '0'); // Get total posts from response headers
 
+    const excludeCategoryIds = [7, 8];
+
     posts = postsNotFeatureImage.length > 0
       ? postsNotFeatureImage
-          .filter((post: any) => !post.categories.includes(7)) 
+          .filter((post: any) => !post.categories.some((catId: number) => excludeCategoryIds.includes(catId)))
           .map((post: any) => {
             const featured_image = post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || null;
             return {
@@ -39,6 +41,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             };
           })
       : [];
+    
+  
   } catch (error) {
     console.log(error);
   }
