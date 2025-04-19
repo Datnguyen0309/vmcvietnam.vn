@@ -7,8 +7,8 @@ import { HotCourses } from "./HotCourses";
 import { Register } from "./Register";
 import { Reviews } from "./Reviews";
 import { Majors } from "./System";
-import TeacherListAndDetails from "./Teacher";
 import { Trend } from "./Trend";
+import TeacherList from "./Teacher";
 
 export const Home = () => {
   const [homeContent, setHomeContent] = useState<any>(null);
@@ -34,9 +34,9 @@ export const Home = () => {
       <Majors section_1={homeContent?.acf?.section_1} />
       <ScrollView>
         <ListBenefit section_2={homeContent?.acf?.section_2} />
-        <HotCourses />
+        <HotCourses section_3={homeContent?.acf?.section_3}/>
         <Register section_4={homeContent?.acf?.section_4} />
-        <TeacherListAndDetails />
+        <TeacherList  section_5={homeContent?.acf?.section_5}/>
         <LatestPosts />
         <Reviews section_7={homeContent?.acf?.section_7} />
         <Trend section_8={homeContent?.acf?.section_8} />

@@ -45,8 +45,8 @@ const Page = ({ post }: { post: any }) => {
   return (
     <>
       <NextSeo
-        title="Chính sách bảo mật "
-        description="Chính sách bảo mật"
+        title="Chính sách hoàn tiền  "
+        description="Chính sách hoàn tiền"
       />
       <Policy post={post} />
     </>

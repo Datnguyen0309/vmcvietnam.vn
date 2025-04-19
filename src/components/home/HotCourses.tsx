@@ -10,7 +10,7 @@ import { CourseCard, SkeletonCourseCard } from "../khoa-hoc/CourseCard";
 import SectionTitle from "../SectionTitle";
 import { motion } from "framer-motion";
 
-export const HotCourses = () => {
+export const HotCourses = (section_3: any) => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [page, setPage] = useState(1);
   const router = useRouter();
@@ -41,10 +41,10 @@ export const HotCourses = () => {
       <section className="container max-w-7xl mx-auto px-4 py-16">
         <div className="text-center space-y-6 mb-12">
           <div className="flex justify-center mb-8">
-            <SectionTitle title={"KHÓA HỌC"} icon={<FaUser />} />
+            <SectionTitle title={section_3?.section_3?.desc || "KHÓA HỌC."} icon={<FaUser />} />
           </div>
           <h2 className="lg:text-3xl md:text-xl font-bold text-[#4A306D]">
-            Các khóa học Hot nhất 2025
+            {section_3?.section_3?.title || " Các khóa học Hot nhất 2025."}
           </h2>
           <Tabs defaultValue="all" className="w-fit mx-auto">
             <TabsList
