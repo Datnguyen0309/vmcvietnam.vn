@@ -20,7 +20,7 @@ export const HotCourses = (section_3: any) => {
   }, [selectedCategory]);
 
   const { data, isLoading } = useQuery("getListCate", () =>
-    getDataSetUp({ root: "product", type: "product-categories", sortType: "zzz" })
+    getDataSetUp({ root: "product", type: "product-categories" })
   );
 
   const { data: dataCourse, isLoading: isLoadingCourse } = useQuery(
@@ -68,21 +68,24 @@ export const HotCourses = (section_3: any) => {
               >
                 Tất cả
               </TabsTrigger>
-              {data?.data?.map((category: any) => (
-                <TabsTrigger
-                  key={category.id}
-                  value={category.slug}
-                  onClick={() => setSelectedCategory(category.slug)}
-                  style={{
-                    borderRadius: "8px",
-                    borderTopLeftRadius: "15px",
-                    borderBottomRightRadius: "15px"
-                  }}
-                  className="text-[#555c70] text-[15px] rounded-full px-4 font-bold data-[state=active]:bg-[#FF8162] data-[state=active]:text-white hover:bg-[#FF8162] hover:text-white transition-all duration-300"
-                >
-                  {category.name}
-                </TabsTrigger>
-              ))}
+              {data?.data
+                ?.find((group: any) => group.group_name.trim() === "Hot")
+                ?.data?.map((category: any) => (
+                  <TabsTrigger
+                    key={category.id}
+                    value={category.slug}
+                    onClick={() => setSelectedCategory(category.slug)}
+                    style={{
+                      borderRadius: "8px",
+                      borderTopLeftRadius: "15px",
+                      borderBottomRightRadius: "15px"
+                    }}
+                    className="text-[#555c70] text-[15px] rounded-full px-4 font-bold data-[state=active]:bg-[#FF8162] data-[state=active]:text-white hover:bg-[#FF8162] hover:text-white transition-all duration-300"
+                  >
+                    {category.name}
+                  </TabsTrigger>
+                ))}
+
             </TabsList>
           </Tabs>
         </div>

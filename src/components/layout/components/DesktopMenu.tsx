@@ -75,8 +75,7 @@ export const DesktopMenu = ({
   const { data } = useQuery("getListCate", () =>
     getDataSetUp({
       root: "product",
-      type: "product-categories",
-      sortType: "zzz"
+      type: "product-categories"
     })
   );
 
@@ -95,10 +94,10 @@ export const DesktopMenu = ({
     const [isHovered, setIsHovered] = useState(false);
     const validChildren = Array.isArray(category.child_categories)
       ? category.child_categories.filter(
-          (child: any) => child.id !== category.id // tránh gọi lại chính mình
+          (child: any) => child.id !== category.id
         )
       : [];
-  
+
     return (
       <div
         className="relative"
@@ -129,7 +128,7 @@ export const DesktopMenu = ({
           }
           activeLink={activeLink}
         />
-  
+
         {validChildren.length > 0 && isHovered && (
           <div className="absolute left-full top-0 mt-0 py-4 w-52 bg-white border border-gray-200 rounded shadow-lg space-y-3 z-10">
             {validChildren.map((child: any) => (
@@ -140,7 +139,11 @@ export const DesktopMenu = ({
       </div>
     );
   };
-  
+
+  // Lấy danh sách category từ group "All"
+  const allCategories =
+    data?.data?.find((group: any) => group.group_name?.trim() === "All")?.data ||
+    [];
 
   return (
     <div className="hidden xl:flex col-start-4 col-end-8 items-center">
@@ -152,7 +155,7 @@ export const DesktopMenu = ({
       <div className="relative group">
         <Menu title="Khóa học" />
         <div className="absolute left-0 mt-0 py-4 w-52 bg-white border border-gray-200 rounded shadow-lg opacity-0 group-hover:opacity-100 group-hover:visible transition-opacity duration-300 invisible space-y-3 z-10">
-          {data?.data?.map((category: any) => (
+          {allCategories.map((category: any) => (
             <RecursiveMenuItem key={category.id} category={category} />
           ))}
         </div>

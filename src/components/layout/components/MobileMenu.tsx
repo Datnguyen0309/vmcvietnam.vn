@@ -1,21 +1,21 @@
 "use client";
 
 import { Logo } from "@/components/Logo";
-import { ChevronDown, ChevronRight, Menu, X, LogIn } from "lucide-react";
+import { getDataSetUp } from "@/utils/fetch-auth-odoo";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown, ChevronRight, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { getDataSetUp } from "@/utils/fetch-auth-odoo";
-import { motion, AnimatePresence } from "framer-motion";
 
 export default function MobileMenu({ activeLink, logo }: { activeLink: string | null; logo: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [openSubMenus, setOpenSubMenus] = useState<Record<number, boolean>>({});
+
   const { data } = useQuery("getListCates", () =>
     getDataSetUp({
       root: "product",
       type: "product-categories",
-      sortType: "zzz"
     })
   );
 
@@ -23,7 +23,9 @@ export default function MobileMenu({ activeLink, logo }: { activeLink: string | 
     setOpenSubMenus((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  // Component đệ quy cho menu mobile
+  const allCategories =
+    data?.data?.find((group: any) => group.group_name?.trim() === "All")?.data || [];
+
   const MobileRecursiveMenuItem = ({ category }: { category: any }) => {
     return (
       <div key={category.id}>
@@ -69,6 +71,7 @@ export default function MobileMenu({ activeLink, logo }: { activeLink: string | 
           </button>
         </nav>
       </div>
+
       <AnimatePresence>
         {isOpen && (
           <>
@@ -87,13 +90,12 @@ export default function MobileMenu({ activeLink, logo }: { activeLink: string | 
               className="fixed top-0 left-0 h-full top-[48px] w-3/4 max-w-xs bg-white z-50 shadow-lg overflow-y-auto p-5 rounded-r-lg"
             >
               <div className="flex justify-between items-center mb-5">
-                <div className="flex items-center gap-2">
-                  <Logo logo={logo} />
-                </div>
+                <Logo logo={logo} />
                 <button onClick={() => setIsOpen(false)} className="p-2 text-gray-700 hover:text-gray-900 transition-all">
                   <X className="h-6 w-6" />
                 </button>
               </div>
+
               <nav className="space-y-4">
                 <Link href="/" className="block text-lg font-medium text-gray-800">
                   Trang chủ
@@ -103,7 +105,6 @@ export default function MobileMenu({ activeLink, logo }: { activeLink: string | 
                 </Link>
 
                 <div>
-                  {/* Nút toggle cho menu "Khóa học" */}
                   <button onClick={() => toggleSubMenu(-1)} className="flex justify-between w-full text-lg font-medium text-gray-800 py-2 border-b">
                     Khóa học {openSubMenus[-1] ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
                   </button>
@@ -115,7 +116,7 @@ export default function MobileMenu({ activeLink, logo }: { activeLink: string | 
                         exit={{ opacity: 0, height: 0 }}
                         className="pl-4 mt-2 space-y-2"
                       >
-                        {data?.data?.map((category: any) => (
+                        {allCategories.map((category: any) => (
                           <MobileRecursiveMenuItem key={category.id} category={category} />
                         ))}
                       </motion.div>
@@ -124,7 +125,7 @@ export default function MobileMenu({ activeLink, logo }: { activeLink: string | 
                 </div>
 
                 <Link href="/tin-tuc" className="block text-lg font-medium text-gray-800">
-                  Blog
+                  Tin tức
                 </Link>
                 <Link href="/lien-he" className="block text-lg font-medium text-gray-800">
                   Liên hệ
