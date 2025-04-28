@@ -77,7 +77,7 @@ const TeacherProfile = () => {
           <h1 className="text-3xl font-bold text-[#0f0f0f]">
             {data?.data?.short_course[0]?.teacher?.name}
           </h1>
-          <div className="prose prose-gray max-w-none">
+          <div className="prose prose-gray max-w-none whitespace-pre">
             <p dangerouslySetInnerHTML={{
               __html: clean(data?.data?.short_course[0]?.teacher?.description || defautlHtmlCourseDetail),
             }} />
