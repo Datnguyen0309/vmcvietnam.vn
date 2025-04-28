@@ -1,13 +1,6 @@
 import { CourseCard, SkeletonCourseCard } from "@/components/khoa-hoc/CourseCard";
 import { defautlHtmlCourseDetail } from "@/components/khoa-hoc/CourseDetails";
 import { clean } from "@/components/lib/sanitizeHtml";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "@/components/ui/select";
 import { getListModel } from "@/utils/fetch-auth-odoo";
 import Image from "next/image";
 import Link from "next/link";
@@ -77,8 +70,8 @@ const TeacherProfile = () => {
           <h1 className="text-3xl font-bold text-[#0f0f0f]">
             {data?.data?.short_course[0]?.teacher?.name}
           </h1>
-          <div className="prose prose-gray max-w-none whitespace-pre">
-            <p dangerouslySetInnerHTML={{
+          <div className="text-gray-700 whitespace-pre-line">
+            <div dangerouslySetInnerHTML={{
               __html: clean(data?.data?.short_course[0]?.teacher?.description || defautlHtmlCourseDetail),
             }} />
           </div>
@@ -88,7 +81,7 @@ const TeacherProfile = () => {
         <h2 className="text-[25px] font-[700] text-[#4A306D] mb-6  uppercase">
           DANH SÁCH CÁC KHÓA HỌC CỦA {data?.data?.short_course[0]?.teacher?.name}
         </h2>
-        
+
         {isLoading ? (
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8">
             {Array.from({ length: 16 }).map((_, idx) => (
@@ -97,7 +90,7 @@ const TeacherProfile = () => {
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8">
-            {data?.data?.short_course.slice(0, page * 8).map((course:any, index:number) => (
+            {data?.data?.short_course.slice(0, page * 8).map((course: any, index: number) => (
               <div key={index}>
                 <CourseCard course={course} />
               </div>
