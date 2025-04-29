@@ -10,18 +10,17 @@ import "swiper/css/pagination";
 export const Banner = (banner: any) => {
   const slides = banner?.banner
     ? Object.entries(banner.banner)
-        .filter(([key, value]) => value)
-        .map(([key, value], index) => ({
-          id: index + 1,
-          bgImage: value as string
-        }))
+      .filter(([key, value]) => value)
+      .map(([key, value], index) => ({
+        id: index + 1,
+        bgImage: value as string
+      }))
     : [
-        { id: 1, bgImage: "/assets/slide-img2.webp" },
-        { id: 2, bgImage: "/assets/slide-img2.webp"  }
-      ];
+      { id: 1, bgImage: "/assets/b1.jpg" },
+      { id: 2, bgImage: "/assets/b2.jpg" }
+    ];
 
   let swiperInstance: any = null;
-
   const handleNavigation = (
     e: React.MouseEvent,
     direction: "next" | "prev"

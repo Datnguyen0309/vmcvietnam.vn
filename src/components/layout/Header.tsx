@@ -1,5 +1,3 @@
-"use client";
-
 import { useAppSelector } from "@/redux/store";
 import { motion } from "framer-motion";
 import { Phone } from "lucide-react";
@@ -13,23 +11,23 @@ import { HeaderTop } from "./components/HeaderTop";
 import MobileMenu from "./components/MobileMenu";
 
 const Logo = dynamic(() => import("@/components/Logo").then((mod) => mod.Logo));
-
 const DesktopMenu = dynamic(() =>
-  import("@/components/layout/components/DesktopMenu").then(
-    (mod) => mod.DesktopMenu
-  )
+  import("@/components/layout/components/DesktopMenu").then((mod) => mod.DesktopMenu)
 );
 
 export const Header = () => {
   const [state, setState] = useState({
     activeLink: null as string | null,
     isMenuOpen: false,
-    isScrolled: false
+    isScrolled: false,
   });
 
-  const router = useRouter();
   const [homeContent, setHomeContent] = useState<any>(null);
   const totalQuantity = useAppSelector((state) => state.cart.totalQuantity);
+  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
 
   useEffect(() => {
     const getHomeContent = async () => {
@@ -48,7 +46,7 @@ export const Header = () => {
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {
-      setState((prevState) => ({ ...prevState, activeLink: url }));
+      setState((prev) => ({ ...prev, activeLink: url }));
     };
 
     handleRouteChange(router.pathname);
@@ -60,9 +58,10 @@ export const Header = () => {
   }, [router]);
 
   useEffect(() => {
+    setIsClient(true);
     const handleScroll = () => {
-      setState((prevState) => ({
-        ...prevState,
+      setState((prev) => ({
+        ...prev,
         isScrolled: window.scrollY > 40
       }));
     };
@@ -73,8 +72,6 @@ export const Header = () => {
     };
   }, []);
 
-  const [searchQuery, setSearchQuery] = useState("");
-
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -84,13 +81,14 @@ export const Header = () => {
       });
     }
   };
+
   return (
     <>
       <header className={`bg-white fixed top-0 left-0 w-full z-50 header-container transition-shadow duration-300 ${state.isScrolled ? 'shadow-md' : ''}`}>
-        <div className="z-70 ">
+        <div className="z-70">
           <HeaderTop headerTop={homeContent?.acf?.header_top} />
         </div>
-        <nav className="max-w-7xl mx-auto py-3 sm:py-4 bg-white hidden xl:flex items-center justify-between px-6 xl:px-1  z-50  ">
+        <nav className="max-w-7xl mx-auto py-3 sm:py-4 bg-white hidden xl:flex items-center justify-between px-6 xl:px-1 z-50">
           <Logo logo={homeContent?.acf?.header?.logo} />
           <DesktopMenu activeLink={state.activeLink} isScrolled={state.isScrolled} />
           <form onSubmit={handleSearch} className="relative flex items-center w-[300px] border border-gray-300 rounded-lg px-3 py-2 bg-white">
@@ -120,17 +118,19 @@ export const Header = () => {
             {homeContent?.acf?.header?.phone || "028 9999 8899"}
           </motion.button>
           <Link href="/gio-hang" className="relative">
-            <ShoppingCartButton itemCount={totalQuantity} />
+          {isClient && <ShoppingCartButton itemCount={totalQuantity} />}
           </Link>
         </nav>
       </header>
+
       <div className="xl:hidden force-mobile bg-white sticky top-[50px] py-5 md:py-10 lg:py-10 z-[40]">
         <MobileMenu
           logo={homeContent?.acf?.header?.logo}
           activeLink={state.activeLink}
         />
       </div>
-      <div className=" xl:pt-[140px]  pt-[50px]"></div>
+
+      <div className="xl:pt-[140px] pt-[50px]"></div>
     </>
   );
 };

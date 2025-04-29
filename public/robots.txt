@@ -4,4 +4,4 @@ Disallow: /private/
 Allow: /public/
 
 
-Sitemap: https://ednu.vn/sitemap.xml
+Sitemap: https://ome.edu.vn/sitemap.xml

@@ -3,7 +3,6 @@
 import { OrderHistoryPage } from "@/components/orderHistory";
 import { NextSeo } from "next-seo";
 
-
 const OrderHistory = () => {
   return (
     <>

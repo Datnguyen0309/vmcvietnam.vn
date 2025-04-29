@@ -1,17 +1,17 @@
 "use client";
 
 import { BankTransferDetails } from "@/components/BankTranferDetail";
-import { FiCheckCircle } from "react-icons/fi";
-import { FaRegCreditCard } from "react-icons/fa6";
-import { GoPackage } from "react-icons/go";
 import { Card, CardContent, CardHeader } from "@/components/ComponentsUI";
-import { FaCheckCircle } from "react-icons/fa";
-import { useRouter } from "next/router";
-import { decryptOrderId } from "@/utils/decodeOrderID";
-import { useEffect, useState } from "react";
-import { fetchConfirmPayment, fetchOrderDetails } from "@/utils/fetch-auth-odoo";
-import { useDispatch } from "react-redux";
 import { clearCart } from "@/redux/features/cartSlice";
+import { decryptOrderId } from "@/utils/decodeOrderID";
+import { fetchOrderDetails } from "@/utils/fetch-auth-odoo";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { FaCheckCircle } from "react-icons/fa";
+import { FaRegCreditCard } from "react-icons/fa6";
+import { FiCheckCircle } from "react-icons/fi";
+import { GoPackage } from "react-icons/go";
+import { useDispatch } from "react-redux";
 
 export const PaymentProcessingPage = () => {
   const router = useRouter();
@@ -58,8 +58,8 @@ export const PaymentProcessingPage = () => {
   };
 
   const bankInfo = {
-    bankName: "Ngân hàng Thương Mại Cổ Phần Quân Đội (MB)",
-    accountNumber: "3121238888",
+    bankName: " TPBank – CN: Hoàn Kiếm ",
+    accountNumber: "39395556789",
     accountHolder: "Họ tên, SĐT, ngày sinh",
     amount: orderDetails?.total_price || 0,
     branch: "Công ty Cổ phần tư vấn dịch vụ Đào tạo AUM Việt Nam",

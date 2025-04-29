@@ -1,9 +1,8 @@
 import Image from "next/image";
-import { FiCheckCircle } from "react-icons/fi";
-import { useState } from "react";
-import { FiCopy } from "react-icons/fi";
-import { FaCheck } from "react-icons/fa6";
 import Link from "next/link";
+import { useState } from "react";
+import { FaCheck } from "react-icons/fa6";
+import { FiCheckCircle, FiCopy } from "react-icons/fi";
 import { Card, CardContent, CardHeader } from "./ComponentsUI";
 import { CountdownTimer } from "./CountDown";
 
@@ -40,7 +39,7 @@ export function BankTransferDetails({
           <h2 className="text-lg font-medium">Thanh toán chuyển khoản ngân hàng</h2>
           <div className="text-neutral-600 text-[14px] flex items-center gap-2 my-2">
             <p>Giao dịch hết hạn sau : </p> <CountdownTimer initialMinutes={1} />
-          </div>{" "}
+          </div>
           <div className="rounded-lg bg-yellow-50 p-4">
             <div className="flex items-start gap-3">
               <FiCheckCircle className="mt-0.5 h-5 w-5 text-yellow-600" />
@@ -52,10 +51,10 @@ export function BankTransferDetails({
                   trên website. Trường hợp đã thanh toán nhưng chưa nhận kết quả của thanh công vui
                 </p>
                 <p>
-                  lòng gọi hotline{" "}
+                  lòng gọi hotline
                   <Link href={`tel:0966000643`}>
                     <span className="font-bold">0966.000.643</span>
-                  </Link>{" "}
+                  </Link>
                   (8:00 - 17:00) để được hỗ trợ
                 </p>
               </div>
@@ -66,7 +65,7 @@ export function BankTransferDetails({
           <div className="space-y-6">
             <div className="flex items-center gap-4">
               <Image
-                src="/assets/bank1.png"
+                src="/assets/maprfinal.jpg"
                 alt="Techcombank"
                 width={120}
                 height={40}
@@ -129,7 +128,7 @@ export function BankTransferDetails({
 
             <div className="flex flex-col items-center gap-4">
               <div className="relative h-48 w-48">
-                <Image src="/assets/qr.png" alt="QR Code" fill className="object-contain" />
+                <Image src="/assets/maprfinal1.jpg" alt="QR Code" fill className="object-contain" />
               </div>
               <p className="text-center text-sm text-gray-500">
                 Dùng ứng dụng ngân hàng quét QR để chuyển khoản

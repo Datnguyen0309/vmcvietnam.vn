@@ -1,68 +1,47 @@
-"server only";
+// pages/sitemap.xml.tsx
+import { GetServerSideProps } from "next";
 
-import { TMenus, menus } from "@/router";
-import { fetchAuth } from "@/utils/fetchAuth";
-import { NextApiResponse } from "next";
+const Sitemap = () => {}; // Không render
 
-const URL = process.env.NEXT_PUBLIC_DOMAIN;
-const getAllPaths = (menus: TMenus) => {
-  const paths: string[] = [];
-  menus.forEach((menu) => {
-    if (menu.path !== "#") paths.push(menu.path);
-    if (menu?.childs) {
-      paths.push(...getAllPaths(menu?.childs));
-    }
-  });
-  return paths;
-};
-
-const generateSiteMap = (posts: any[]) => {
-  const staticPaths = getAllPaths(menus);
-  return `<?xml version="1.0" encoding="UTF-8"?>
-   <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
-      <!-- Add the static URLs manually -->
-      ${staticPaths?.map(
-        (staticPath: string) =>
-          `<url>
-            <loc>${URL}${staticPath}</loc>
-          </url>`
-      )}
-     ${posts
-       ?.map(({ slug }) => {
-         return `
-           <url>
-               <loc>${`${URL}/${slug}`}</loc>
-           </url>
-         `;
-       })
-       .join("")}
-   </urlset>
- `;
-};
-
-export const getServerSideProps = async ({ res }: { res: NextApiResponse }) => {
-  const api_url = process.env.API_URL;
+export const getServerSideProps: GetServerSideProps = async ({ res }) => {
+  const apiUrl = `https://admin.ome.edu.vn/wp-json/wp/v2/posts`;
   let posts: any[] = [];
-  try {
-    const resData = await fetchAuth({
-      url: `${api_url}/posts?_embed&per_page=100&status=publish&page=${1}`,
-      revalidate: 3600
-    });
+  let page = 1;
+  let hasMorePosts = true;
 
-    posts = (await resData?.json()) || [];
-  } catch (error) {
-    console.log(error);
+  while (hasMorePosts) {
+    const response = await fetch(`${apiUrl}?status=publish&page=${page}&per_page=100&_embed`);
+    const data = await response.json();
+    if (!Array.isArray(data) || data.length === 0) {
+      hasMorePosts = false;
+    } else {
+      posts = [...posts, ...data];
+      page++;
+    }
   }
 
-  const sitemap = generateSiteMap(posts);
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://ome.edu.vn/</loc><priority>0.5</priority></url>
+  <url><loc>https://ome.edu.vn/gioi-thieu/</loc><priority>0.5</priority></url>
+  <url><loc>https://ome.edu.vn/khoa-hoc/</loc><priority>0.5</priority></url>
+  <url><loc>https://ome.edu.vn/tin-tuc/</loc><priority>0.5</priority></url>
+  <url><loc>https://ome.edu.vn/lien-he/</loc><priority>0.5</priority></url>
+  ${posts
+    .map((post) => {
+      const categories = post._embedded?.["wp:term"]?.[0] || []; // lấy danh sách categories đã _embed
+      const firstCategory = categories[0]?.slug || "tin-tuc"; // fallback nếu không có
+      let loc = post.link.replace("https://ome.edu.vn//", `https://ome.edu.vn/${firstCategory}/`);
+      return `<url><loc>${loc}</loc><priority>0.5</priority></url>`;
+    })
+    .join("")}
+</urlset>`;
+
   res.setHeader("Content-Type", "text/xml");
   res.write(sitemap);
   res.end();
-  return {
-    props: {}
-  };
+
+  return { props: {} };
 };
 
-const SiteMap = () => {};
-
-export default SiteMap;
+export default Sitemap;

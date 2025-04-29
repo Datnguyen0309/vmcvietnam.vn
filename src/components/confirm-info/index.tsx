@@ -320,9 +320,13 @@ export const ConfirmInfo = () => {
 
                       <div className="space-y-2">
                         <Label className="text-gray-500 flex items-center">
+
                           <Phone className="w-4 h-4 mr-2" />
                           Số điện thoại
                         </Label>
+                        <p className="text-black-700 text-[11px] mt-0 italic">
+                          *Vui lòng điền đúng số điện thoại để chúng tôi có thể liên hệ với bạn
+                        </p>
                         <div className="p-3 bg-gray-50 rounded-lg border border-gray-200 font-medium">
                           {user?.phone}
                         </div>
@@ -369,9 +373,11 @@ export const ConfirmInfo = () => {
 
                       <div className="space-y-2">
                         <Label htmlFor="phone" className="flex items-center">
+
                           <Phone className="w-4 h-4 mr-2" />
                           Số điện thoại
                         </Label>
+
                         <Input
                           id="phone"
                           type="tel"
