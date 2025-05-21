@@ -9,11 +9,10 @@ import { FiSearch } from "react-icons/fi";
 import ShoppingCartButton from "../ui/CartButton";
 import { HeaderTop } from "./components/HeaderTop";
 import MobileMenu from "./components/MobileMenu";
+import { Logo } from "../Logo";
+import { DesktopMenu } from "./components/DesktopMenu";
 
-const Logo = dynamic(() => import("@/components/Logo").then((mod) => mod.Logo));
-const DesktopMenu = dynamic(() =>
-  import("@/components/layout/components/DesktopMenu").then((mod) => mod.DesktopMenu)
-);
+
 
 export const Header = () => {
   const [state, setState] = useState({

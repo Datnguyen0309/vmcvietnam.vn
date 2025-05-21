@@ -5,6 +5,12 @@ export const paymentMethods = [
     image: "/assets/image-bank.png",
     disabled: false,
   },
+    {
+    value: "vnpay",
+    label: "Thanh toán qua VNPAY",
+    image: "/assets/image-vnpay.png",
+    disabled: false,
+  },
   {
     value: "momo",
     label: "Thanh toán qua Momo",
@@ -17,12 +23,7 @@ export const paymentMethods = [
     image: "/assets/image-zalopay.png",
     disabled: true,
   },
-  {
-    value: "vnpay",
-    label: "Thanh toán qua VNPAY",
-    image: "/assets/image-vnpay.png",
-    disabled: true,
-  },
+
   {
     value: "shopeepay",
     label: "Thanh toán qua Shopeepay",
