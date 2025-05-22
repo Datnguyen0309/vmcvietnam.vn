@@ -1,9 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import crypto from "crypto";
-import moment from "moment";
 import qs from "qs";
 import config from "../../../../src/utils/default.json";
-
+import moment from "moment-timezone";
 interface VnpayParams {
   vnp_Version: string;
   vnp_Command: string;
@@ -58,8 +57,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const ipAddr = (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress || "";
 
     // Build params
-    const createDate = moment().format("YYYYMMDDHHmmss");
-    const vnp_ExpireDate = moment().add(30, "minutes").format("YYYYMMDDHHmmss");
+   const TIMEZONE = "Asia/Ho_Chi_Minh";
+    const createDate = moment().tz(TIMEZONE).format("YYYYMMDDHHmmss");
+    const vnp_ExpireDate = moment().tz(TIMEZONE).add(30, "minutes").format("YYYYMMDDHHmmss");
+
 
     const orderInfo = `Thanh toan cho ma GD: ${orderId}`;
     const locale = "vn";
