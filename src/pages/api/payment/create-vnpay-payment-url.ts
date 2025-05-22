@@ -62,7 +62,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const vnp_ExpireDate = moment().tz(TIMEZONE).add(30, "minutes").format("YYYYMMDDHHmmss");
 
 
-    const orderInfo = `Thanh toan cho ma GD: ${orderId}`;
+    const orderInfo = `OME-Thanh toan cho ma GD: ${orderId}`;
     const locale = "vn";
     const currCode = "VND";
 

@@ -1,6 +1,6 @@
 import CryptoJS from "crypto-js";
 
-const SECRET_KEY = "VSTEP"; // Lưu khóa bí mật vào biến môi trường
+const SECRET_KEY = "OME"; // Lưu khóa bí mật vào biến môi trường
 
 // Mã hóa order_id
 export const encryptOrderId = (order_id: string) => {
