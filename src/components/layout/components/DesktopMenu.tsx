@@ -3,15 +3,8 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useState } from "react";
 import { useQuery } from "react-query";
+import { MenuLink, MenuLinkSub } from "./MenuLink";
 
-const MenuLink = dynamic(() =>
-  import("@/components/layout/components/MenuLink").then((mod) => mod.MenuLink)
-);
-const MenuLinkSub = dynamic(() =>
-  import("@/components/layout/components/MenuLink").then(
-    (mod) => mod.MenuLinkSub
-  )
-);
 
 const Menu = ({ title }: { title: string }) => {
   return (
