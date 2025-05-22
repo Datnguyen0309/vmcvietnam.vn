@@ -1,0 +1,106 @@
+/* purgecss start ignore */
+
+@tailwind base;
+@tailwind components;
+
+html {
+  font-family: "Roboto", sans-serif;
+}
+body {
+  @apply bg-white;
+}
+p {
+  @apply text-gray-500;
+}
+.animation-hover:after {
+  background: none repeat scroll 0 0 transparent;
+  content: "";
+  height: 2px;
+  transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  @apply w-0 bg-orange-500 left-1/2 block bottom-0 absolute;
+}
+.animation-active:after {
+  @apply left-0 w-full;
+}
+.animation-hover:hover:after {
+  @apply left-0 w-full;
+}
+
+li.custom-list:before {
+  content: "\2022"; /* bullet point, for screen readers */
+  text-indent: -9999999px; /* move the bullet point out of sight */
+
+  width: 0.4em;
+  height: 1em;
+  background-repeat: no-repeat;
+
+  background-size: 0.4em 0.7em;
+  background-position: 0 0.3em;
+  font-size: 300%;
+  top: -0.35em;
+  @apply absolute block;
+}
+li.circle-check:before {
+  background-image: url("/assets/Icon/checklist.svg");
+  left: -0.7em;
+  top: -0.4em;
+}
+li.check:before {
+  left: -0.5em;
+  background-image: url("/assets/Icon/jam_check.svg");
+  top: -0.5em;
+  font-size: 400%;
+}
+/* Slideshow */
+.slick-dots li {
+  @apply inline-block;
+}
+.slick-dots span {
+  @apply bg-gray-500;
+}
+.slick-dots .slick-active span {
+  @apply bg-orange-500 rounded-l-full rounded-r-full w-12;
+}
+
+/* purgecss end ignore */
+@tailwind utilities;
+/* purgecss start ignore */
+/* purgecss end ignore */
+/* Header Styles */
+.header-container {
+  @apply bg-white fixed top-0 left-0 w-full z-50 shadow-md;
+}
+
+.nav-container {
+  @apply max-w-7xl mx-auto py-3 sm:py-4 bg-white hidden lg:flex items-center justify-between px-6 lg:px-8 z-50; 
+}
+
+/* Ô tìm kiếm */
+.search-box {
+  @apply relative flex items-center border border-gray-300 rounded-full px-3 py-2 bg-white transition-all duration-300;
+}
+.search-box input {
+  @apply ml-2 outline-none w-40 text-sm text-gray-700;
+}
+.search-box:hover {
+  @apply border-gray-500;
+}
+.search-box input:focus {
+  @apply ring-2 ring-purple-500 border-purple-500;
+}
+
+
+
+
+/* Icons (User, Cart) */
+.icon-btn {
+  @apply text-gray-600 text-2xl mx-3 transition-all duration-300;
+}
+.icon-btn:hover {
+  @apply text-purple-600 scale-110;
+}
+
+/* Giỏ hàng Badge */
+.cart-badge {
+  @apply absolute -top-2 -right-2 bg-red-500 text-white text-xs font-semibold rounded-full px-1;
+}
