@@ -4,8 +4,6 @@ import qs from "qs";
 import { randomUUID } from "crypto";
 import config from "../../../utils/default.json";
 
-// import { fetchAuthOdoo } from "@/utils/fetch-auth-odoo";
-
 const resultMap = new Map();
 export const errorMessages: Record<string, string> = {
   "00": "Giao dịch thành công",
