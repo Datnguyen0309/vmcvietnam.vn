@@ -1,18 +1,28 @@
+"use client";
 import Image from "next/image";
 import { FaSignOutAlt, FaLock, FaShoppingCart, FaEdit, FaUserCircle } from "react-icons/fa";
 import nookies from "nookies"; // To handle cookies
 import { useQuery } from "react-query";
 import { handleUserInfo } from "@/utils/fetch-auth-odoo";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import Link from "next/link";
 
 export const ProfileSideBar = () => {
   const cookies = nookies.get();
   const sessionLogId = cookies.session_log_id;
+  const router = useRouter();
 
   const { data, isLoading } = useQuery(`getUserInfoSideBar,${sessionLogId}`, () =>
     handleUserInfo({
       session_log_id: sessionLogId,
     })
   );
+  useEffect(() => {
+    if (!isLoading && data?.detail?.error) {
+      router.push("/");
+    }
+  }, [data, isLoading, router]);
   return (
     <div className="xl:w-[330px] mx-[10px] xl:mx-0 flex-shrink-0 ">
       <div className="sticky top-8 space-y-4">
@@ -23,13 +33,20 @@ export const ProfileSideBar = () => {
               <Image src="/assets/avata.png" alt="Profile" layout="fill" objectFit="cover" />
             </div>
           </div>
-          <div className="pt-14 pb-6 px-4  text-center">
+          <div className="pt-14 pb-6 px-4 text-center">
             <h2 className="text-xl font-semibold">
               {data?.user_info?.user_info?.name || "user Name"}
             </h2>
             <p className="text-sm text-gray-500">
               {data?.user_info?.user_info?.career || "Career"}
             </p>
+            <div className="mt-4 flex justify-center">
+              <Link href="https://lms.ome.edu.vn/login/" target="_blank">
+                <button className="flex items-center gap-2 bg-gradient-to-r from-[#B7042D] to-[#E65F1D] px-4 py-2 rounded-full text-white text-sm font-semibold shadow-md">
+                  CLICK VÀO ĐỂ HỌC
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
         <div className="bg-white rounded-lg border border-[#e9ecef] overflow-hidden">

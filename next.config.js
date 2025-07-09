@@ -24,8 +24,8 @@ const nextConfig = {
         pathname: "**"
       },
       {
-        protocol: "http",
-        hostname: "10.10.51.16",
+        protocol: "https",
+        hostname: "admindsome.devlab.info.vn",
         pathname: "/wp-content/uploads/**"
       }
     ]

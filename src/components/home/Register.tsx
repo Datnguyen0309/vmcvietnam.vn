@@ -71,7 +71,7 @@ export const Register = (section_4: any) => {
           </div>
           <div className="relative h-full min-h-[500px] lg:absolute lg:right-0 lg:w-1/2 lg:h-full">
             <Image
-              src="/assets/bg_module_about.webp"
+               src={section_4?.section_4?.list_2?.image ||"/assets/bg_module_about.webp"}
               alt="Students at Mew Academy"
               layout="fill"
               objectFit="cover"

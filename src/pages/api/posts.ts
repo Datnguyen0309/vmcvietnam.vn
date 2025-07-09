@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-const API_URL = 'http://10.10.51.16:8686/wp-json/wp/v2/posts';
+const API_URL = 'https://admindsome.devlab.info.vn/wp-json/wp/v2/posts';
 
 export type Post = {
   slug: any;
@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const postsNotFeatureImage: any[] = await response.json();
     totalPosts = parseInt(response.headers.get('X-WP-Total') || '0'); // Get total posts from response headers
 
-    const excludeCategoryIds = [7, 8];
+    const excludeCategoryIds = [7, 8, 9];
 
     posts = postsNotFeatureImage.length > 0
       ? postsNotFeatureImage

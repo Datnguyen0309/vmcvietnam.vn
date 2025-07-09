@@ -1,10 +1,12 @@
 .post {
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
-/* đoạn css cho các bài viết */
 .post__main p {
   padding-bottom: 12px;
+  line-height: 1.7;
 }
 
 .post__main h1,
@@ -13,6 +15,7 @@
 .post__main h4 {
   font-weight: bold;
   padding-bottom: 8px;
+  line-height: 1.4;
 }
 
 .post__main h1 {
@@ -31,8 +34,14 @@
   font-size: 1rem;
 }
 
-.post__main li {
+.post__main ul,
+.post__main ol {
   margin-left: 25px;
+  margin-bottom: 12px;
+  list-style: initial;
+}
+
+.post__main li {
   padding-bottom: 8px;
 }
 
@@ -43,46 +52,63 @@
 
 .post__main img {
   display: block;
-  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+  margin: 1em auto;
 }
 
 .post__main figcaption {
-  padding-top: 5px;
+  padding: 5px 0 8px;
   text-align: center;
   font-weight: 400;
-  padding-bottom: 8px;
   font-style: italic;
 }
 
-.post__main table,
-.post__main th,
-.post__main td {
-  border: 1px solid black;
+.post__main table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
 }
 
 .post__main th,
 .post__main td {
+  border: 1px solid black;
   padding: 6px;
+  text-align: left;
 }
 
 .post__heading {
   padding-bottom: 12px;
-  margin-bottom: 24px;
+  margin: 0 16px 24px;
+  /* mobile default */
   color: black;
   font-weight: 700;
-  margin-left: 75px;
-  margin-right: 75px;
+}
+
+@media (min-width: 768px) {
+  .post__heading {
+    margin: 0 40px 24px;
+    /* tablet */
+  }
+}
+
+@media (min-width: 1280px) {
+  .post__heading {
+    margin: 0 75px 24px;
+    /* desktop */
+  }
 }
 
 .post__heading h1 {
   font-size: 30px;
   font-weight: 700;
-  text-align: "center";
-  padding-bottom: "16px";
+  text-align: center;
+  padding-bottom: 16px;
 }
 
 .not-found {
   padding-top: 62px;
+  text-align: center;
 }
 
 .not-found p {

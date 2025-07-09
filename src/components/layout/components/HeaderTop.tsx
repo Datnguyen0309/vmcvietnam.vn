@@ -1,9 +1,12 @@
+"use client";
+
 import ForgotPasswordModal from "@/components/ForgotPasswordModal";
 import AuthModal from "@/components/LoginModal";
 import ShoppingCartButton from "@/components/ui/CartButton";
 import { logout, User } from "@/redux/features/loginSlice";
 import { useAppSelector } from "@/redux/store";
 import { handleUserInfo } from "@/utils/fetch-auth-odoo";
+import { motion } from "framer-motion";
 import { Mail, Phone, LogIn } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -14,31 +17,17 @@ import { PiNotePencilBold } from "react-icons/pi";
 import { useDispatch } from "react-redux";
 
 export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [sessionLogId, setSessionLogId] = useState<string | null>(null);
+  const [isClient, setIsClient] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
-  const OpenForgotModel = () => (setModalOpen(false), setForgotPasswordOpen(true));
-  const cookies = nookies.get();
-  const [user, setUser] = useState<User>(useAppSelector((state) => state.login.user));
-  const router = useRouter();
-  const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
+
   const totalQuantity = useAppSelector((state) => state.cart.totalQuantity);
-
-  const openAuthModal = (loginMode: boolean) => {
-    setModalOpen(true);
-    setIsLogin(loginMode);
-  };
-  const closeModal = () => setModalOpen(false);
-  const toggleAuth = () => setIsLogin((prev) => !prev);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const list = [
     {
@@ -48,57 +37,114 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
     },
   ];
 
-  const sessionLogId = cookies.session_log_id;
+  useEffect(() => {
+    setIsClient(true);
+    const cookies = nookies.get();
+    if (cookies.session_log_id) {
+      setSessionLogId(cookies.session_log_id);
+    }
+  }, []);
 
   useEffect(() => {
-    const handleUserInfoIN = async () => {
-      if (sessionLogId != undefined) {
-        const dataUser = await handleUserInfo({ session_log_id: sessionLogId });
-        setUser({
-          name: dataUser?.user_info?.user_info?.name,
-          email: dataUser?.user_info?.user_info?.email,
-          image: dataUser?.user_info?.user_info?.image,
-          age: dataUser?.user_info?.user_info?.age,
-          phone: dataUser?.user_info?.user_info?.phone,
-          gender: dataUser?.user_info?.user_info?.gender,
-          career: dataUser?.user_info?.user_info?.career,
-        });
-        return dataUser;
-      }
-      return null;
-    };
-    handleUserInfoIN();
-  }, [sessionLogId, router]);
+    if (sessionLogId) {
+      handleUserInfo({ session_log_id: sessionLogId }).then((dataUser) => {
+        const info = dataUser?.user_info?.user_info;
+        if (info) {
+          setUser({
+            name: info.name,
+            email: info.email,
+            image: info.image,
+            age: info.age,
+            phone: info.phone,
+            gender: info.gender,
+            career: info.career,
+          });
+        }
+      });
+    }
+  }, [sessionLogId]);
 
-  const [isOpen, setIsOpen] = useState(false);
+  const openAuthModal = (loginMode: boolean) => {
+    setModalOpen(true);
+    setIsLogin(loginMode);
+  };
+
+  const closeModal = () => setModalOpen(false);
+  const toggleAuth = () => setIsLogin((prev) => !prev);
+  const OpenForgotModel = () => {
+    setModalOpen(false);
+    setForgotPasswordOpen(true);
+  };
+
+  if (!isClient) return null;
 
   return (
     <>
       <header className="bg-[#4A3B63] text-white py-2 md:py-4">
         <div className="container max-w-7xl mx-auto px-4">
           <div className="flex xl:flex-wrap xl:items-center justify-between gap-4">
-            <div className="flex items-center gap-6">
-              <Link
-                href={`mailto:${headerTop?.mail?.mail_to || "contact@example.com"}`}
-                className="flex items-center gap-2 text-sm hover:text-gray-200"
-              >
-                <Mail className="h-4 w-4" />
-                <span className="hidden md:inline">
-                  {headerTop?.mail?.mail_label || "CONTACT"}
-                </span>
-              </Link>
-              <div className="flex items-center gap-2 text-sm">
-                <Phone className="h-4 w-4" />
-                <span>{headerTop?.phone || "+47 900 99 000"}</span>
+            {!headerTop ? (
+              <div className="flex items-center gap-6 animate-pulse">
+                {[1, 2, 3].map((_, i) => (
+                  <div key={i} className="flex items-center gap-2 text-sm">
+                    <div className="h-4 w-4 bg-gray-400 rounded-full" />
+                    <div className="h-3 w-24 bg-gray-300 rounded" />
+                  </div>
+                ))}
               </div>
-              <div className="hidden md:flex items-center gap-2 text-sm">
-                <span>{headerTop?.time || "08:00 - 17:00"}</span>
+            ) : (
+              <div className="flex items-center gap-6">
+                <Link
+                  href={`mailto:${headerTop?.mail?.mail_to}`}
+                  className="flex items-center gap-2 text-sm hover:text-gray-200"
+                >
+                  <Mail className="h-4 w-4" />
+                  <span className="hidden md:inline">
+                    {headerTop?.mail?.mail_label || "Contact"}
+                  </span>
+                </Link>
+                <div className="flex items-center gap-2 text-sm">
+                  <Phone className="h-4 w-4" />
+                  <span>{headerTop?.phone || "0123456789"}</span>
+                </div>
+                <div className="hidden md:flex items-center gap-2 text-sm">
+                  <span>{headerTop?.time || "08:00 - 17:00"}</span>
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="flex space-x-4 justify-center items-center">
               <div className="flex items-center">
-                {/* Phần hiển thị đăng nhập/đăng ký trên PC (xl trở lên) */}
+                <Link
+                  href="https://lms.ome.edu.vn/login/"
+                  target="_blank"
+                  className="md:hidden mr-3"
+                >
+                  <button className="flex items-center gap-1 px-3 py-1 rounded-full bg-[#E65F1D] text-white text-xs shadow-sm">
+                    📘 Học
+                  </button>
+                </Link>
+
+                <Link
+                  href="https://lms.ome.edu.vn/login/"
+                  target="_blank"
+                  className="hidden md:flex mr-8"
+                >
+                  <motion.button
+                    className="flex items-center gap-2 bg-gradient-to-r from-[#B7042D] to-[#E65F1D] px-4 py-2 rounded-full text-white text-sm font-semibold shadow-md"
+                    animate={{ scaleX: [1, 1.2, 1] }}
+                    initial={{ scaleX: 1 }}
+                    transition={{
+                      duration: 1,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                    }}
+                  >
+                    CLICK VÀO ĐỂ HỌC
+                  </motion.button>
+                </Link>
+
                 <div className="hidden xl:flex space-x-2">
                   {!sessionLogId && (
                     <>
@@ -109,7 +155,6 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
                   )}
                 </div>
 
-                {/* Phần hiển thị icon đăng nhập + giỏ hàng cho mobile & tablet */}
                 <div className="flex xl:hidden">
                   {!sessionLogId && (
                     <button onClick={() => openAuthModal(true)} className="p-2">
@@ -122,7 +167,7 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
                 </div>
               </div>
 
-              {sessionLogId && (
+              {sessionLogId && user && (
                 <div
                   className="relative"
                   onMouseEnter={() => setIsOpen(true)}
@@ -137,21 +182,18 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
                     ></div>
                   </div>
                   <div
-                    className={`absolute z-[60] left-[-190px] lg:left-[-60px] right-[-50px] mt-2 xl:w-[300px] w-[240px] bg-white shadow-xl rounded-xl p-4 border border-gray-200 transition-all duration-200 ${
-                      isOpen ? "opacity-100 visible" : "opacity-0 invisible"
-                    }`}
+                    className={`absolute z-[60] left-[-190px] lg:left-[-60px] right-[-50px] mt-2 xl:w-[300px] w-[240px] bg-white shadow-xl rounded-xl p-4 border border-gray-200 transition-all duration-200 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"
+                      }`}
                   >
-                    <div>
-                      <div className="inline-flex space-x-2">
-                        <div className="flex flex-col space-y-1">
-                          <span className="text-green-600 text-base xl:text-lg font-semibold">
-                            {user.name}
-                          </span>
-                          <span className="text-gray-500 text-xs">{user.email}</span>
-                        </div>
+                    <div className="inline-flex space-x-2">
+                      <div className="flex flex-col space-y-1">
+                        <span className="text-green-600 text-base xl:text-lg font-semibold">
+                          {user.name}
+                        </span>
+                        <span className="text-gray-500 text-xs">{user.email}</span>
                       </div>
-                      <div className="border-t border-gray-300 my-2"></div>
                     </div>
+                    <div className="border-t border-gray-300 my-2"></div>
                     {list.map((item, index) => (
                       <a
                         key={index}
@@ -165,8 +207,11 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
                     <div
                       onClick={() => {
                         dispatch(logout());
-                        setCookie(null, "session_log_id", "", { maxAge: -1, path: "/" });
-                        router.push("/");
+                        setCookie(null, "session_log_id", "", {
+                          path: "/",
+                          maxAge: -1,
+                        });
+                        router.reload(); // 💥 reload lại giao diện
                       }}
                       className="flex items-center space-x-2 py-2 px-4 xl:text-[16px] text-[14px] rounded-md bg-gray-100 hover:bg-gray-200 cursor-pointer transition"
                     >
@@ -181,7 +226,6 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
         </div>
       </header>
 
-      {/* Modal đăng nhập/đăng ký */}
       <AuthModal
         openForgot={OpenForgotModel}
         isOpen={isModalOpen}
@@ -190,7 +234,6 @@ export const HeaderTop = ({ headerTop }: { headerTop: any }) => {
         toggleAuth={toggleAuth}
       />
 
-      {/* Modal quên mật khẩu */}
       <ForgotPasswordModal
         isOpen={forgotPasswordOpen}
         onClose={() => setForgotPasswordOpen(false)}

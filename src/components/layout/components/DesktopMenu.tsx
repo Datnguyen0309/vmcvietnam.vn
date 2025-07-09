@@ -1,10 +1,18 @@
+import { useProductCategories } from "@/hooks/useProductCategories";
 import { getDataSetUp } from "@/utils/fetch-auth-odoo";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { MenuLink, MenuLinkSub } from "./MenuLink";
 
+const MenuLink = dynamic(() =>
+  import("@/components/layout/components/MenuLink").then((mod) => mod.MenuLink)
+);
+const MenuLinkSub = dynamic(() =>
+  import("@/components/layout/components/MenuLink").then(
+    (mod) => mod.MenuLinkSub
+  )
+);
 
 const Menu = ({ title }: { title: string }) => {
   return (
@@ -65,14 +73,9 @@ export const DesktopMenu = ({
   activeLink: string | null;
   isScrolled: boolean;
 }) => {
-  const { data } = useQuery("getListCate", () =>
-    getDataSetUp({
-      root: "product",
-      type: "product-categories"
-    })
-  );
+  const { data } = useProductCategories();;
 
-  const renderMenuLinks = (links: { href: string; label: string }[]) =>
+  const renderMenuLinks = (links: { href: string; label: string, target?: string; }[]) =>
     links.map((link) => (
       <MenuLink
         key={link.href}
@@ -80,15 +83,15 @@ export const DesktopMenu = ({
         label={link.label}
         activeLink={activeLink}
         isScrolled={isScrolled}
-      />
+        target={link.label === "Sự kiện" ? "_blank" : undefined} />
     ));
 
   const RecursiveMenuItem = ({ category }: { category: any }) => {
     const [isHovered, setIsHovered] = useState(false);
     const validChildren = Array.isArray(category.child_categories)
       ? category.child_categories.filter(
-          (child: any) => child.id !== category.id
-        )
+        (child: any) => child.id !== category.id
+      )
       : [];
 
     return (
@@ -98,7 +101,7 @@ export const DesktopMenu = ({
         onMouseLeave={() => setIsHovered(false)}
       >
         <MenuLinkSub
-          href={`/khoa-hoc?type=${category.slug}`}
+          href={`/${category.slug}`}
           label={
             <span className="flex justify-between items-center w-full">
               {category.name}
@@ -156,7 +159,9 @@ export const DesktopMenu = ({
 
       {renderMenuLinks([
         { href: "/tin-tuc", label: "Tin tức" },
-        { href: "/lien-he", label: "Liên hệ" }
+        { href: "/lien-he", label: "Liên hệ" },
+        { href: "https://ome.edu.vn/su-kien", label: "Sự kiện", target: "_blank" },
+
       ])}
     </div>
   );

@@ -1,17 +1,26 @@
+"use client";
 import { useQuery } from "react-query";
 import { handleUserInfo } from "@/utils/fetch-auth-odoo";
 import nookies from "nookies"; // To handle cookies
 import { ProfileSideBar } from "./ProfileSideBar";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 export const MyProfilePage = () => {
+  
   const cookies = nookies.get();
   const sessionLogId = cookies.session_log_id;
-
+  const router = useRouter();
   const { data, isLoading } = useQuery(`getUserInfo,${sessionLogId}`, () =>
     handleUserInfo({
       session_log_id: sessionLogId,
     })
   );
+  useEffect(() => {
+    if (!isLoading && data?.detail?.error) {
+      router.push("/");
+    }
+  }, [data, isLoading, router]);
   const Gender = [
     {
       value: "male",
@@ -26,6 +35,9 @@ export const MyProfilePage = () => {
       label: "Khác",
     },
   ];
+  useEffect(() => {
+    if (!sessionLogId) router.push("/");
+  }, [router, sessionLogId]);
   return (
     <>
       <div className="bg-[#fafafa] py-20">

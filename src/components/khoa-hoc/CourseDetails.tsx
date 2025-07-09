@@ -8,6 +8,7 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 import { useEffect, useRef, useState } from "react"
 import { clean } from "../lib/sanitizeHtml"
+import styles from "@/styles/Post.module.css";
 
 export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
   const [isSticky, setIsSticky] = useState(false)
@@ -17,6 +18,13 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const { slug } = useRouter().query;
+  const now = Date.now();
+  const isValidExtra = !!CourseData?.descriptions_khoahoc?.replace(/<[^>]+>/g, '').trim();
+
+  const isPromoValid =
+    CourseData?.event_end_date && !isNaN(Date.parse(CourseData.event_end_date))
+      ? new Date(CourseData.event_end_date).getTime() >= now
+      : false;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,6 +84,24 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
     router.push("/mua-ngay?type=mua-ngay")
   }
 
+  const handleBuyNowTrial = () => {
+    const data: CartItem = {
+      product_id: Number(CourseData.id),
+      name: CourseData.name + " (Học thử)",
+      image: CourseData.image,
+      price_unit: 100000,
+      quantity: 1,
+    };
+    localStorage.setItem("mua_ngay_item", JSON.stringify(data));
+    router.push("/mua-ngay?type=trial");
+  };
+
+  useEffect(() => {
+    if (!isValidExtra && activeTab === "extra") {
+      setActiveTab("info")
+    }
+  }, [isValidExtra, activeTab])
+
   useEffect(() => {
     const getpostsWp = async () => {
       try {
@@ -91,6 +117,10 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
     };
     getpostsWp();
   }, [slug]);
+
+  const stripEmptyP = (html: string) => {
+    return html.replace(/<p>\s*<\/p>/g, "");
+  };
 
   if (!postsWp) {
     return (
@@ -204,24 +234,6 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
                 ></iframe>
               </div>
             )}
-
-            {/* 
-            <div className="relative">
-              <Image
-                src={postsWp?.featured_image || "/assets/blog.jpeg"}
-                alt="Course banner"
-                className="w-full h-[450px] object-cover"
-                width={400}
-                height={200}
-              />
-              <div className="absolute top-4 left-4">
-                <Badge className="bg-[#4A306D] hover:bg-[#3a2557] text-white font-bold px-4 py-1.5 rounded-full shadow-lg">
-                  Khóa học nổi bật
-                </Badge>
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent h-24"></div>
-            </div> */}
-
             <div className="px-8 pb-8">
               <div className="mb-8">
                 <div className="flex rounded-xl overflow-hidden shadow-md">
@@ -245,9 +257,23 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
                     <Clock className={`w-5 h-5 ${activeTab === "content" ? "text-white" : "text-[#4A306D]"}`} />
                     Nội dung khóa học
                   </button>
+                  {isValidExtra && isPromoValid && (
+                    <button
+                      className={`relative px-6 py-4 text-md font-semibold flex-1 flex items-center justify-center gap-2 transition-all duration-300 border ${activeTab === "extra"
+                        ? "bg-gradient-to-r from-[#e84e0f] to-[#d3380f] text-white shadow-lg scale-105 border-none"
+                        : "bg-white text-[#e84e0f] border-[#e84e0f] hover:bg-[#fff3eb]"
+                        } rounded-xl`}
+                      onClick={() => setActiveTab("extra")}
+                    >
+                      <BookOpen
+                        className={`w-5 h-5 ${activeTab === "extra" ? "text-white" : "text-[#e84e0f]"
+                          }`}
+                      />
+                      Số bài học thử 100k
+                    </button>
+                  )}
                 </div>
               </div>
-
               <AnimatePresence mode="wait">
                 {activeTab === "info" && (
                   <motion.div
@@ -267,12 +293,13 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
                           : "linear-gradient(to bottom, black 80%, transparent 100%)",
                       }}
                     >
-                      <div
-                        className="text-gray-700 text-lg leading-relaxed"
-                        dangerouslySetInnerHTML={{
-                          __html: clean(CourseData?.description || defautlHtmlCourseDetail),
-                        }}
-                      />
+                      <div className={styles["post__main"]}>
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: stripEmptyP(clean(CourseData?.description || defautlHtmlCourseDetail)),
+                          }}
+                        />
+                      </div>
                     </div>
                     <div className="flex justify-center mt-6">
                       <button
@@ -311,12 +338,13 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
                           : "linear-gradient(to bottom, black 80%, transparent 100%)",
                       }}
                     >
-                      <div
-                        className="text-gray-700 text-lg leading-relaxed"
-                        dangerouslySetInnerHTML={{
-                          __html: clean(postsWp?.content?.rendered || defautlHtmlCourseDetail),
-                        }}
-                      />
+                      <div className={styles["post__main"]}>
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: clean(postsWp?.content?.rendered || defautlHtmlCourseDetail),
+                          }}
+                        />
+                      </div>
                     </div>
                     <div className="flex justify-center mt-6">
                       <button
@@ -337,6 +365,50 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
                   </motion.div>
                 )}
               </AnimatePresence>
+              {activeTab === "extra" && isPromoValid && (
+
+                <motion.div
+                  key="extra"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div
+                    ref={contentRef}
+                    className={`overflow-hidden transition-all duration-500 prose prose-[#4A306D] max-w-none ${isExpanded ? "max-h-full" : "max-h-[700px]"}`}
+                    style={{
+                      maskImage: isExpanded ? "none" : "linear-gradient(to bottom, black 80%, transparent 100%)",
+                      WebkitMaskImage: isExpanded ? "none" : "linear-gradient(to bottom, black 80%, transparent 100%)",
+                    }}
+                  >
+                    <div className={styles["post__main"]}>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: stripEmptyP(clean(CourseData?.descriptions_khoahoc || defautlHtmlCourseDetail)),
+                        }}
+                      />
+                    </div>
+
+                  </div>
+                  <div className="flex justify-center mt-6">
+                    <button
+                      onClick={() => setIsExpanded(!isExpanded)}
+                      className="flex items-center gap-2 px-6 py-3 text-white font-medium bg-gradient-to-r from-[#4A306D] to-[#3a2557] hover:from-[#3a2557] hover:to-[#2a1a40] rounded-full shadow-md transition-all duration-300 transform hover:scale-105"
+                    >
+                      {isExpanded ? (
+                        <>
+                          Thu gọn <ChevronUp size={18} />
+                        </>
+                      ) : (
+                        <>
+                          Xem thêm <ChevronDown size={18} />
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </motion.div>
+              )}
             </div>
           </motion.div>
         </div>
@@ -377,7 +449,6 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
                 </div>
               </div>
             </div>
-
             <div className="p-8">
               <h2 className="text-2xl font-bold mb-4 text-gray-800 leading-tight">{CourseData?.name}</h2>
               <motion.div
@@ -471,12 +542,10 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
                   className="w-full bg-gradient-to-r from-[#f55500] to-[#e04e00] hover:from-[#e04e00] hover:to-[#cc4700] font-bold text-lg border-none p-2 text-white h-14 transition-all duration-300 relative group overflow-hidden rounded-xl shadow-lg"
                   onClick={handleBuyNow}
                 >
-                  {/* <span className="absolute right-0 h-full aspect-square bg-[#cc4700]/30 flex items-center justify-center -mr-2 group-hover:mr-0 transition-all duration-300">
-                    🛒
-                  </span> */}
-                  <span className="group-hover:mr-8 transition-all duration-300">MUA NGAY  🛒</span>
+                  <span className="group-hover:mr-8 transition-all duration-300">
+                    {CourseData?.price_promo ? "NHẬN ƯU ĐÃI 🎁" : "MUA NGAY 🛒"}
+                  </span>
                 </motion.button>
-
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
@@ -490,28 +559,17 @@ export const CourseDetails = ({ CourseData }: { CourseData: any }) => {
                     THÊM VÀO GIỎ HÀNG
                   </span>
                 </motion.button>
+                {isPromoValid && isValidExtra && (
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handleBuyNowTrial}
+                    className="w-full bg-gradient-to-r from-[#ff8c00] to-[#e36c00] hover:from-[#e36c00] hover:to-[#c65a00] text-lg font-bold h-14 rounded-xl shadow-lg text-white transition-all duration-300"
+                  >
+                    HỌC THỬ 100K 🎓
+                  </motion.button>
+                )}
               </div>
-
-              {/* <div className="mt-6 p-4 bg-[#f8f5ff] rounded-xl border border-[#e0d6f2]">
-                <div className="flex items-start gap-3">
-                  <div className="mt-1 text-[#4A306D]">
-                    <Check className="w-5 h-5" />
-                  </div>
-                  <p className="text-sm text-gray-700">Học mọi lúc, mọi nơi trên mọi thiết bị</p>
-                </div>
-                <div className="flex items-start gap-3 mt-2">
-                  <div className="mt-1 text-[#4A306D]">
-                    <Check className="w-5 h-5" />
-                  </div>
-                  <p className="text-sm text-gray-700">Truy cập khóa học trọn đời</p>
-                </div>
-                <div className="flex items-start gap-3 mt-2">
-                  <div className="mt-1 text-[#4A306D]">
-                    <Check className="w-5 h-5" />
-                  </div>
-                  <p className="text-sm text-gray-700">Hỗ trợ học tập 24/7</p>
-                </div>
-              </div> */}
             </div>
           </motion.div>
         </div>

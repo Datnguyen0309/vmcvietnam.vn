@@ -3,20 +3,32 @@ import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { FaUser } from "react-icons/fa";
 import SectionTitle from "../SectionTitle";
+import { ConsultationPopup } from "./ConsultationPopup";
+import { useState } from "react";
+import Link from "next/link";
 export const ConsultationSection = ({
   consultation
 }: {
   consultation: any;
 }) => {
+  const [isPopupOpen, setIsPopupOpen] = useState(false)
+
+  const handleButtonClick = () => {
+    setIsPopupOpen(true)
+  }
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false)
+  }
+
   return (
-    <section className="relative py-16 overflow-hidden">
+    <><section className="relative py-16 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-[#C41230] to-[#E65525]" />
       <div className="container max-w-7xl mx-auto px-4 relative">
         <div className="flex justify-center mb-8">
           <SectionTitle
             title={consultation?.section_title || "CẦN TÌM GIẢI PHÁP PHÙ HỢP?"}
-            icon={<FaUser />}
-          />
+            icon={<FaUser />} />
         </div>
         <div className="text-center space-y-6 mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-white">
@@ -32,8 +44,7 @@ export const ConsultationSection = ({
                   alt="Tư vấn khách hàng"
                   width={64}
                   height={67}
-                  className="text-indigo-700"
-                />
+                  className="text-indigo-700" />
                 <h3 className="text-[#333399] text-[19px] font-bold">
                   {consultation?.content?.contact_1?.text_line_1 ||
                     "Hotline tư vấn"}
@@ -55,8 +66,7 @@ export const ConsultationSection = ({
                   alt="Tư vấn khách hàng"
                   width={64}
                   height={67}
-                  className="text-blue-500"
-                />
+                  className="text-blue-500" />
                 <h3 className="text-[#00aae7] text-[19px] font-bold">
                   {consultation?.content?.contact_2?.text_line_1 ||
                     "Tư vấn khách hàng"}
@@ -64,9 +74,15 @@ export const ConsultationSection = ({
                   {consultation?.content?.contact_2?.text_line_2 || "chat zalo"}
                 </h3>
               </div>
-              <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 text-lg">
-                {consultation?.content?.contact_2?.button || "Chat zalo ngay"}
-              </Button>
+              <div className="flex justify-center w-full">
+                <Link href="https://zalo.me/0919194784" target="_blank" rel="noreferrer">
+                  <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 text-lg">
+                    {consultation?.content?.contact_2?.button || "Chat zalo ngay"}
+                  </Button>
+                </Link>
+              </div>
+
+
             </CardContent>
           </Card>
 
@@ -78,8 +94,7 @@ export const ConsultationSection = ({
                   alt="Tư vấn khách hàng"
                   width={64}
                   height={67}
-                  className="text-blue-500"
-                />
+                  className="text-blue-500" />
                 <h3 className="text-[#33cccc] text-[19px] font-bold">
                   {consultation?.content?.contact_3?.text_line_1 ||
                     "Để lại thông tin"}
@@ -88,13 +103,14 @@ export const ConsultationSection = ({
                     "chúng tôi gọi lại"}
                 </h3>
               </div>
-              <Button className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 text-lg">
+              <Button onClick={handleButtonClick} className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 text-lg">
                 {consultation?.content?.contact_3?.button || "Yêu cầu liên hệ"}
               </Button>
             </CardContent>
           </Card>
         </div>
       </div>
-    </section>
+    </section><ConsultationPopup isOpen={isPopupOpen} onClose={handleClosePopup} /></>
+
   );
 };

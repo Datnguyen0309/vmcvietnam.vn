@@ -20,7 +20,7 @@ WORKDIR /app
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
-ENV API_URL http://10.10.51.16:8686/wp-json/wp/v2
+ENV API_URL https://admindsome.devlab.info.vn/wp-json/wp/v2
 ENV ODOO_URL http://10.10.51.16:10026
 ENV ODOO_URL_PAYMENT https://eaof.aumpilot.com
 ENV API_RMS_URL https://ednu.aum.edu.vn/wp-json/rankmath/v1/getHead?url=https://ednu.aum.edu.vn

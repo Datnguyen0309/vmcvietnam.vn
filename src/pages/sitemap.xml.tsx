@@ -1,10 +1,10 @@
 // pages/sitemap.xml.tsx
 import { GetServerSideProps } from "next";
 
-const Sitemap = () => {}; // Không render
+const Sitemap = () => { }; // Không render gì
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
-  const apiUrl = `https://admin.ome.edu.vn/wp-json/wp/v2/posts`;
+  const apiUrl = "https://admindsome.devlab.info.vn/wp-json/wp/v2/posts";
   let posts: any[] = [];
   let page = 1;
   let hasMorePosts = true;
@@ -28,13 +28,22 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   <url><loc>https://ome.edu.vn/tin-tuc/</loc><priority>0.5</priority></url>
   <url><loc>https://ome.edu.vn/lien-he/</loc><priority>0.5</priority></url>
   ${posts
-    .map((post) => {
-      const categories = post._embedded?.["wp:term"]?.[0] || []; // lấy danh sách categories đã _embed
-      const firstCategory = categories[0]?.slug || "tin-tuc"; // fallback nếu không có
-      let loc = post.link.replace("https://ome.edu.vn//", `https://ome.edu.vn/${firstCategory}/`);
-      return `<url><loc>${loc}</loc><priority>0.5</priority></url>`;
-    })
-    .join("")}
+      .map((post) => {
+        const originalLink = post.link.replace("https://admindsome.devlab.info.vn", "https://ome.edu.vn");
+        const slug = post.slug;
+        const categories = post._embedded?.["wp:term"]?.[0] || [];
+        const catSlugs = categories.map((cat:any) => cat.slug);
+
+        let path = `https://ome.edu.vn/tin-tuc/${slug}`;
+        if (catSlugs.includes("seo-khoa-hoc")) {
+          path = `https://ome.edu.vn/${slug}`;
+        } else if (catSlugs.includes("khoa-hoc-vmc")) {
+          path = `https://ome.edu.vn/khoa-hoc/${slug}`;
+        }
+
+        return `<url><loc>${path}</loc><priority>0.5</priority></url>`;
+      })
+      .join("")}
 </urlset>`;
 
   res.setHeader("Content-Type", "text/xml");

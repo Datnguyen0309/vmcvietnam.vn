@@ -1,20 +1,19 @@
-import KhoaHocByCate from "@/components/khoa-hoc-by-cate";
-import { GetServerSideProps } from "next";
+import { DangkyTc } from "@/components/dang-ky-thanh-cong";
 import { fetchSeo } from "@/utils/seo";
-import { useEffect, useState } from "react";
-import Head from "next/head";
 import { replaceSeoRM } from "@/utils/seoRankMath";
 import ReactHtmlParser from "html-react-parser";
+import { GetServerSideProps } from "next";
+import Head from "next/head";
+import { useEffect, useState } from "react";
 
 
 interface IPostPage {
   post: any;
   head: string;
 }
-
 export const getServerSideProps: GetServerSideProps = async () => {
   const api_rm_url = process.env.API_RMS_URL || "";
-  const api_url = `${api_rm_url}/khoa-hoc`;
+  const api_url = `${api_rm_url}/gioi-thieu`;
 
   try {
     const res = await fetchSeo({ url: api_url, revalidate: 3600 });
@@ -32,10 +31,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
     };
   }
 };
-
 export default function Page(props: IPostPage) {
-  const { head } = props;
-
+  const {  head } = props;
+  
   // Function to extract title from meta
   const getTitleFromMeta = (head: string) => {
     const match = head.match(/<meta\s+property="og:title"\s+content="([^"]*)"/);
@@ -53,7 +51,6 @@ export default function Page(props: IPostPage) {
     }
   }, [head]);
   return (
-
     <>
       {head && (
         <Head>
@@ -61,7 +58,7 @@ export default function Page(props: IPostPage) {
           <title>{ogTitleContent}</title>
         </Head>
       )}
-      <KhoaHocByCate />
+        <DangkyTc />
     </>
   );
 }

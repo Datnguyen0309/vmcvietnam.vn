@@ -1,18 +1,15 @@
 import { useAppSelector } from "@/redux/store";
 import { motion } from "framer-motion";
 import { Phone } from "lucide-react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
+import { Logo } from "../Logo";
 import ShoppingCartButton from "../ui/CartButton";
+import { DesktopMenu } from "./components/DesktopMenu";
 import { HeaderTop } from "./components/HeaderTop";
 import MobileMenu from "./components/MobileMenu";
-import { Logo } from "../Logo";
-import { DesktopMenu } from "./components/DesktopMenu";
-
-
 
 export const Header = () => {
   const [state, setState] = useState({

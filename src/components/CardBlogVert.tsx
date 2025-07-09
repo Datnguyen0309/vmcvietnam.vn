@@ -153,7 +153,7 @@ export const CardBlogVertA = ({
 };
 
 export const  CardPost = (props: Post) => {
-  const { id, slug, imageUrl, title, excerpt } = props;
+  const {  slug, imageUrl, title, excerpt } = props;
   return (
     <Card
       className="group overflow-hidden hover:shadow-lg transition-shadow"
@@ -165,14 +165,16 @@ export const  CardPost = (props: Post) => {
             alt={title}
             width={400}
             height={225}
-            className="object-cover transition-transform group-hover:scale-105 w-full h-[256px]"
+            className="object-contain transition-transform group-hover:scale-105 w-full h-[256px]"
           />
         </div>
 
         <CardContent className="p-6">
-          <h3 className="font-semibold text-lg text-[#4A306D] line-clamp-2 mb-2">
-            {title}
-          </h3>
+          <h3 className="font-semibold text-lg text-[#4A306D] line-clamp-2 mb-2" 
+            dangerouslySetInnerHTML={{ __html: clean(title) }}
+          />
+            
+         
           <p
             className="text-gray-600 text-sm line-clamp-3"
             dangerouslySetInnerHTML={{ __html: clean(excerpt) }}

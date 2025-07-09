@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { Banner } from "./Banner";
 import { Majors } from "./System";
+import { HotCoursesNew } from "./HotCoursesNew";
 
 const ScrollView = dynamic(() => import("../ScrollView").then((mod) => mod.ScrollView), {
   loading: () => <p className="loading loading-spinner loading-md"></p>,
@@ -55,18 +56,21 @@ export const Home = () => {
 
   return (
     <>
-      <Banner banner={homeContent?.acf?.banner} />
-      <Majors section_1={homeContent?.acf?.section_1} />
-      <ScrollView>
-        <ListBenefit section_2={homeContent?.acf?.section_2} />
-        <HotCourses section_3={homeContent?.acf?.section_3} />
-        <Register section_4={homeContent?.acf?.section_4} />
-        <TeacherList section_5={homeContent?.acf?.section_5} />
-        <LatestPosts />
-        <Reviews section_7={homeContent?.acf?.section_7} />
-        <Scroll section_2={homeContent?.acf?.section_2} />
-        <Trend section_8={homeContent?.acf?.section_8} />
-      </ScrollView>
+      <section className="w-full max-w-[1920px] mx-auto">
+        <Banner banner={homeContent?.acf?.banner} />
+        <Majors section_1={homeContent?.acf?.section_1} />
+        <ScrollView>
+          <HotCoursesNew />
+          <ListBenefit section_2={homeContent?.acf?.section_2} />
+          <HotCourses section_3={homeContent?.acf?.section_3} />
+          <Register section_4={homeContent?.acf?.section_4} />
+          <TeacherList section_5={homeContent?.acf?.section_5} />
+          <LatestPosts />
+          <Reviews section_7={homeContent?.acf?.section_7} />
+          <Scroll section_2={homeContent?.acf?.section_2} />
+          <Trend section_8={homeContent?.acf?.section_8} />
+        </ScrollView></section>
+
     </>
   );
 };

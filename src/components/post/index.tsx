@@ -3,7 +3,6 @@
 import styles from "@/styles/Post.module.css";
 import { buildCommentTree } from "@/utils/comments";
 import { fetchComments, postComment } from "@/utils/fetch-auth";
-import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -158,7 +157,7 @@ export const Post = ({ post }: { post: any }) => {
       if (!post?.author) return;
 
       try {
-        const res = await fetch(`http://10.10.51.16:8686/wp-json/wp/v2/users/${post.author}`);
+        const res = await fetch(`https://admindsome.devlab.info.vn/wp-json/wp/v2/users/${post.author}`);
         const data = await res.json();
         setAuthorName(data.name); // hoặc `data.nickname`, tuỳ cấu hình WP
       } catch (error) {
@@ -170,7 +169,7 @@ export const Post = ({ post }: { post: any }) => {
   }, [post?.author]);
 
   return (
-    <div className="max-w-5xl mx-auto p-6 py-20">
+    <div className="max-w-5xl mx-auto p-6 lg:py-20">
       <article className={styles["post"]}>
         <main>
           {post && (
@@ -189,7 +188,7 @@ export const Post = ({ post }: { post: any }) => {
                   }}
                 />
               </div>
-              <Share url={`tin-tuc/${post.slug}`} />
+              <Share url={`tin-tuc/tin-tuc/${post.slug}`} />
               <div className="bg-[#FDF8F3] p-6 mb-8 flex items-center gap-4 max-w-[768px] mx-auto rounded-[20px]">
                 <Image
                   src="/assets/abc.png"

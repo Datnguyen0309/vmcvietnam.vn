@@ -1,4 +1,3 @@
-/* styles/Content.module.css */
 .wp-content {
   margin: 0 auto;
   padding: 16px;
@@ -52,7 +51,22 @@
   margin: 0.8rem 0;
 }
 
-/* Danh sách: giảm padding và margin để không quá cách biệt */
+/* Căn giữa <p><em>...</em></p> như chú thích ảnh */
+.wp-content p > em {
+  display: block;
+  text-align: center;
+  font-style: italic;
+  padding-top: 5px;
+  padding-bottom: 8px;
+}
+
+/* Nếu nằm trong <figure> */
+.wp-content figure p > em {
+  display: block;
+  text-align: center;
+}
+
+/* Danh sách */
 .wp-content ul,
 .wp-content ol {
   margin: 0.8rem 0;
@@ -67,7 +81,6 @@
   list-style-type: disc;
 }
 
-/* Mỗi mục danh sách */
 .wp-content li {
   margin: 0.4rem 0;
 }
@@ -78,7 +91,20 @@
   color: #000;
 }
 
-/* Responsive: giảm kích cỡ và padding cho màn hình nhỏ */
+.wp-content img {
+  display: block;
+  margin: 0 auto;
+}
+
+.wp-content figcaption {
+  padding-top: 5px;
+  text-align: center;
+  font-weight: 400;
+  padding-bottom: 8px;
+  font-style: italic;
+}
+
+/* Responsive cho mobile */
 @media (max-width: 768px) {
   .wp-content {
     padding: 12px;
@@ -102,4 +128,10 @@
   .wp-content h6 {
     font-size: 1rem;
   }
+}
+
+/* Căn giữa <em> có align center hoặc text-align inline style */
+.wp-content [style*="text-align"] em,
+.wp-content .aligncenter em {
+  display: inline-block;
 }

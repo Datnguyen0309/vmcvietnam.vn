@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Building2, Mail, Phone } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 export const getIframeSrc = (iframeString: string) => {
   // Sử dụng regex để lấy giá trị của thuộc tính src
@@ -19,6 +21,46 @@ export const ContactSection = ({
   contact: any;
   mapFrame: string;
 }) => {
+
+  const [formData, setFormData] = useState({
+    fullName: "",
+    phone: "",
+    email: "",
+    field: "",
+    content: "",
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const data = new URLSearchParams();
+    data.append("fullName", formData.fullName);
+    data.append("phone", formData.phone);
+    data.append("email", formData.email);
+    data.append("field", formData.field);
+    data.append("content", formData.content);
+    data.append("time", new Date().toISOString());
+
+    try {
+      await fetch(
+        "https://script.google.com/macros/s/AKfycbwn9-F3tVpiogm5tnl9ACdNmncMAS6o3Xr0tZ-AzCH0cY7O2lDn60oTH4EkY_dFuH9vpw/exec",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+      toast.success("✅ Gửi thông tin thành công!");
+      setFormData({
+        fullName: "",
+        phone: "",
+        email: "",
+        field: "",
+        content: "",
+      });
+    } catch (err) {
+      toast.error("❌ Gửi thất bại. Vui lòng thử lại.");
+    }
+  };
   const iframeSrc = mapFrame
     ? getIframeSrc(mapFrame)
     : "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7838.509980996889!2d106.680564!3d10.791772!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752ecfe5d3904f%3A0x24a2e89bd76055e0!2sTriAnh%20Solutions!5e0!3m2!1sen!2sus!4v1732326520569!5m2!1sen!2sus";
@@ -84,9 +126,8 @@ export const ContactSection = ({
                 <div className="flex items-center gap-2 text-gray-600">
                   <Mail className="w-5 h-5 flex-shrink-0" />
                   <Link
-                    href={`mailto:${
-                      contact?.contact_info?.info_4 || "sales@trianh.vn"
-                    }`}
+                    href={`mailto:${contact?.contact_info?.info_4 || "sales@trianh.vn"
+                      }`}
                     className="hover:text-[#4A306D]"
                   >
                     {contact?.contact_info?.info_4 || "sales@trianh.vn"}
@@ -108,14 +149,31 @@ export const ContactSection = ({
                 </p>
               </div>
 
-              <form className="space-y-4">
+              <form className="space-y-4" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Input placeholder="Họ và tên" className="border-gray-300" />
                   <Input
-                    placeholder="Số điện thoại"
-                    type="tel"
+                    placeholder="Họ và tên"
                     className="border-gray-300"
+                    value={formData.fullName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, fullName: e.target.value })
+                    }
+                    required
                   />
+                  <Input
+                    type="tel"
+                    inputMode="numeric" // gợi ý bàn phím số trên mobile
+                    pattern="[0-9]*"     // chặn ký tự chữ nếu form có kiểm tra
+                    placeholder="Số điện thoại"
+                    className="border-gray-300"
+                    value={formData.phone}
+                    onChange={(e) => {
+                      const onlyNums = e.target.value.replace(/\D/g, "");
+                      setFormData({ ...formData, phone: onlyNums });
+                    }}
+                    required
+                  />
+
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -123,16 +181,29 @@ export const ContactSection = ({
                     placeholder="Địa chỉ email"
                     type="email"
                     className="border-gray-300"
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
+                    required
                   />
                   <Input
                     placeholder="Lĩnh vực hoạt động"
                     className="border-gray-300"
+                    value={formData.field}
+                    onChange={(e) =>
+                      setFormData({ ...formData, field: e.target.value })
+                    }
                   />
                 </div>
 
                 <Textarea
                   placeholder="Nội dung"
                   className="min-h-[150px] border-gray-300"
+                  value={formData.content}
+                  onChange={(e) =>
+                    setFormData({ ...formData, content: e.target.value })
+                  }
                 />
 
                 <Button

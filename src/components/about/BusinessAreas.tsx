@@ -1,8 +1,20 @@
 import Image from "next/image";
 import { FaUser } from "react-icons/fa";
 import SectionTitle from "../SectionTitle";
+import { ConsultationPopup } from "./ConsultationPopup";
+import { useState } from "react";
 
 export const BusinessAreas = ({ busi }: { busi: any }) => {
+  const [isPopupOpen, setIsPopupOpen] = useState(false)
+
+  const handleButtonClick = () => {
+    setIsPopupOpen(true)
+  }
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false)
+  }
+
   const services = [
     {
       title: busi?.content?.service_1?.content?.title || "Viễn thông internet",
@@ -40,7 +52,7 @@ export const BusinessAreas = ({ busi }: { busi: any }) => {
   ];
 
   return (
-    <section className="container max-w-7xl mx-auto px-4 py-16">
+    <><section className="container max-w-7xl mx-auto px-4 py-16">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div className="space-y-8">
           {services.map((service, index) => (
@@ -53,8 +65,7 @@ export const BusinessAreas = ({ busi }: { busi: any }) => {
                   src={service.icon}
                   alt={service.title}
                   width={80}
-                  height={83}
-                />
+                  height={83} />
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-gray-800 group-hover:text-red-600 transition">
@@ -83,14 +94,13 @@ export const BusinessAreas = ({ busi }: { busi: any }) => {
               alt="Business Woman"
               width={600}
               height={400}
-              className="rounded-3xl"
-            />
+              className="rounded-3xl" />
           </div>
         </div>
       </div>
       <div className="flex justify-center mt-8">
         <div className="relative flex justify-center items-center">
-          <button className="relative px-6 py-2 border-2 border-orange-500 rounded-full transition bg-gradient-to-r from-white to-white hover:from-[#BC0D2C] hover:to-[#E65F1E] group overflow-hidden ">
+          <button  onClick={handleButtonClick}  className="relative px-6 py-2 border-2 border-orange-500 rounded-full transition bg-gradient-to-r from-white to-white hover:from-[#BC0D2C] hover:to-[#E65F1E] group overflow-hidden ">
             <div className="flex items-center justify-center gap-2 transition-all duration-300 whitespace-nowrap">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#BC0D2C] to-[#E65F1E] font-[700] transition-all duration-300 group-hover:translate-x-[-10px] hover:from-[#BC0D2C] group-hover:text-white group-hover:stroke-white">
                 {busi?.content?.button || "Xem các giải pháp của chúng tôi"}
@@ -105,13 +115,15 @@ export const BusinessAreas = ({ busi }: { busi: any }) => {
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  d="M9 5l7 7-7 7"
-                />
+                  d="M9 5l7 7-7 7" />
               </svg>
             </div>
           </button>
         </div>
       </div>
     </section>
+      <ConsultationPopup isOpen={isPopupOpen} onClose={handleClosePopup} />
+    </>
+
   );
 };

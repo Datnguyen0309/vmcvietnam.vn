@@ -22,9 +22,9 @@ export default function MuaNgayPage() {
     const rewardItems = order.items.filter((item) => item.is_reward_line === true)
     const [item, setItem] = useState<CartItem | null>(null)
     const totalPrice = item
-    ? item.price_unit * item.quantity -
-    rewardItems.reduce((sum, ri) => sum - ri.price_unit * ri.quantity, 0)
-    : 0
+        ? item.price_unit * item.quantity -
+        rewardItems.reduce((sum, ri) => sum - ri.price_unit * ri.quantity, 0)
+        : 0
     const [promoCode, setPromoCode] = useState("")
     const [promotions, setPromotions] = useState<Promotion[]>([])
     const [isModalOpen, setModalOpen] = useState(false)
@@ -38,16 +38,20 @@ export default function MuaNgayPage() {
         }
     }
 
-    const isMuaNgay = router.query?.type === "mua-ngay"
+    const isTrial = router.query?.type === "trial"
+    const isMuaNgay = router.query?.type === "mua-ngay" || isTrial
 
     useEffect(() => {
         if (isMuaNgay) {
             const stored = localStorage.getItem("mua_ngay_item")
             if (stored) {
                 const parsed: CartItem = JSON.parse(stored)
+                if (isTrial) {
+                    parsed.price_unit = 100000
+                    parsed.name
+                }
                 setItem(parsed)
 
-                // Reset order hoàn toàn thủ công để tránh conflict
                 dispatch(
                     setOrder({
                         order_id: null,
@@ -57,7 +61,8 @@ export default function MuaNgayPage() {
                 )
             }
         }
-    }, [isMuaNgay, dispatch])
+    }, [isMuaNgay, isTrial, dispatch])
+
 
     useEffect(() => {
         const handleCreate = async () => {
@@ -203,7 +208,7 @@ export default function MuaNgayPage() {
                                     <span className="text-gray-600">Giá gốc:</span>
                                     <span className="text-lg">{item.price_unit.toLocaleString("vi-VN")} đ</span>
                                 </div>
-                                {rewardItems.length > 0 && (
+                                {!isTrial && rewardItems.length > 0 && (
                                     <div className="flex justify-between items-center py-2 border-b border-gray-100">
                                         <div className="flex items-center text-green-600">
                                             <CheckCircle className="w-4 h-4 mr-2" />
@@ -227,46 +232,42 @@ export default function MuaNgayPage() {
                                     <span className="text-2xl font-bold text-[#4A306D]">{totalPrice.toLocaleString("vi-VN")} đ</span>
                                 </div>
                             </div>
-
-                            {/* Promo Code Section */}
-                            <div className="bg-gray-50 p-4 rounded-xl mb-6">
-                                <p className="font-medium text-[#4A306D] mb-3">Mã khuyến mãi</p>
-                                <div className="flex gap-2">
-                                    <div className="relative flex-1">
-                                        <input
-                                            type="text"
-                                            className="border border-gray-200 px-4 py-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-[#4A306D]"
-                                            placeholder="Nhập mã khuyến mãi"
-                                            value={promoCode}
-                                            onChange={(e) => setPromoCode(e.target.value)}
-                                        />
-                                        {promoSuccess && (
-                                            <div className="absolute right-0 top-0 bottom-0 flex items-center pr-3 text-green-500">
-                                                <CheckCircle className="w-5 h-5" />
-                                            </div>
-                                        )}
+                            {!isTrial && (
+                                <div className="bg-gray-50 p-4 rounded-xl mb-6">
+                                    <p className="font-medium text-[#4A306D] mb-3">Mã khuyến mãi</p>
+                                    <div className="flex gap-2">
+                                        <div className="relative flex-1">
+                                            <input
+                                                type="text"
+                                                className="border border-gray-200 px-4 py-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-[#4A306D]"
+                                                placeholder="Nhập mã khuyến mãi"
+                                                value={promoCode}
+                                                onChange={(e) => setPromoCode(e.target.value)}
+                                            />
+                                            {promoSuccess && (
+                                                <div className="absolute right-0 top-0 bottom-0 flex items-center pr-3 text-green-500">
+                                                    <CheckCircle className="w-5 h-5" />
+                                                </div>
+                                            )}
+                                        </div>
+                                        <Button
+                                            onClick={() => handleApplyPromoCode(promoCode)}
+                                            disabled={!promoCode}
+                                            className="bg-[#4A306D] hover:bg-[#5b3d85]"
+                                        >
+                                            Áp dụng
+                                        </Button>
                                     </div>
-                                    <Button
-                                        onClick={() => handleApplyPromoCode(promoCode)}
-                                        disabled={!promoCode}
-                                        className="bg-[#4A306D] hover:bg-[#5b3d85]"
-                                    >
-                                        Áp dụng
-                                    </Button>
+                                    {promoSuccess && <p className="text-green-500 text-sm mt-2">Áp dụng mã thành công!</p>}
                                 </div>
-                                {promoSuccess && <p className="text-green-500 text-sm mt-2">Áp dụng mã thành công!</p>}
-                            </div>
-
-                            {/* Promotions Button */}
-                            <Button
+                            )}
+                            {!isTrial && (<Button
                                 variant="outline"
                                 className="w-full mb-6 border-[#4A306D] text-[#4A306D] hover:bg-[#4A306D] hover:text-white"
                                 onClick={openModal}
                             >
                                 <Tag className="w-4 h-4 mr-2" /> Xem chương trình khuyến mãi
-                            </Button>
-
-                            {/* Checkout Button */}
+                            </Button>)}
                             <Button
                                 className="w-full py-6 text-lg bg-[#4A306D] hover:bg-[#5b3d85] transition-all duration-300 shadow-lg hover:shadow-xl"
                                 style={{
@@ -281,7 +282,6 @@ export default function MuaNgayPage() {
                     </div>
                 </div>
             </div>
-
             <PromotionModal
                 isOpen={isModalOpen}
                 onClose={closeModal}

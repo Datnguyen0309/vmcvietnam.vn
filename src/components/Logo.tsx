@@ -5,7 +5,7 @@ export const Logo = ({ logo }: { logo: string }) => {
   return (
     <Link href="/">
       <Image
-        src={logo || "/assets/blog.jpeg"}
+        src={logo || "/assets/logoome.webp"}
         width={270}
         height={80}
         alt="Logo"

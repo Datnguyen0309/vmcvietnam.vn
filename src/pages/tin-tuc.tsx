@@ -7,6 +7,7 @@ import ReactHtmlParser from "html-react-parser";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import xss from "xss";
 
 interface IPostPage {
   post: any;
@@ -34,7 +35,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 export default function Page(props: IPostPage) {
-  const { post, head } = props;
+  const { head } = props;
 
   // Function to extract title from meta
   const getTitleFromMeta = (head: string) => {
@@ -57,7 +58,7 @@ export default function Page(props: IPostPage) {
       {head && (
         <Head>
           {ReactHtmlParser(replaceSeoRM(head))}
-          <title>{ogTitleContent}</title>
+          <title>{xss(ogTitleContent || "")}</title>
         </Head>
       )}
       <Blog />

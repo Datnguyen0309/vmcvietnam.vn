@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import Image from "next/image"
 import { decryptOrderId } from "@/utils/decodeOrderID"
-import { fetchOrderDetails, handleCreateTransaction } from "@/utils/fetch-auth-odoo"
+import { fetchOrderDetails } from "@/utils/fetch-auth-odoo"
 import { paymentMethods } from "@/data/payment-methods"
 import {
   CheckCircle,
@@ -22,30 +22,7 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { toast } from "react-toastify"
-import { clearCart } from "@/redux/features/cartSlice"
-import { useDispatch } from "react-redux";
 
-export const createVnpayPaymentUrl = async (orderId: string, totalAmount: number) => {
-  try {
-    const response = await fetch("/api/payment/create-vnpay-payment-url", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ orderId, totalAmount }),
-    });
-    const data = await response.json();
-    if (data?.paymentUrl) {
-      return data.paymentUrl;
-    } else {
-      throw new Error("Không nhận được URL thanh toán từ backend");
-    }
-  } catch (error) {
-    console.error("Lỗi khi tạo URL thanh toán VNPAY:", error);
-    return null;
-  }
-};
 export const PaymentMethod = () => {
   const [selectedMethod, setSelectedMethod] = useState("bank")
   const router = useRouter()
@@ -53,48 +30,12 @@ export const PaymentMethod = () => {
   const orderId = decryptOrderId(orderQuery)
   const [orderDetails, setOrderDetails] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const dispatch = useDispatch();
 
-  
-
-     const handleCreateTransactionChooseMethod = async () => {
-    if (orderId) {
-      const data = await handleCreateTransaction({
-        order_id: orderId,
-        transaction_date: new Date().toISOString(),
-        amount: orderDetails?.total_price || 0,
-        payment_method: selectedMethod,
-        customer_phone: orderDetails?.partner_phone || "0987654321",
-        source: "OME",
-      });
-      if (data?.detail?.error) {
-        toast.error(data?.detail?.error);
-      }
-    }
-  };
-
-  
   const handleChooseMethod = async () => {
-    sessionStorage.removeItem("order_created");
-    handleCreateTransactionChooseMethod();
-    if (selectedMethod === "bank") {
-      dispatch(clearCart());
-
-      router.push(`/tien-hanh-thanh-toan?order_id=${encodeURIComponent(orderQuery)}`);
-    } else if (selectedMethod === "vnpay") {
-      dispatch(clearCart());
-
-      const paymentUrl = await createVnpayPaymentUrl(orderId, total_amount); // Gọi hàm API để tạo URL thanh toán
-
-      // Chuyển hướng đến URL thanh toán VNPAY
-      if (paymentUrl) {
-        router.push(paymentUrl); // Chuyển hướng người dùng đến URL thanh toán VNPAY
-      } else {
-        console.error("Không thể tạo URL thanh toán VNPAY");
-      }
-    }
-  };
-
+    setIsLoading(true)
+    sessionStorage.removeItem("order_created")
+    router.push(`/tien-hanh-thanh-toan?order_id=${encodeURIComponent(orderQuery)}`)
+  }
 
   useEffect(() => {
     sessionStorage.removeItem("order_created")

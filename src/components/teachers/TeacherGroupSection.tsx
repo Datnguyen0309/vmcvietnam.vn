@@ -26,7 +26,6 @@ export default function TeacherGroupSection({ group, searchTerm = "" }: Props) {
     if (!data?.data || !Array.isArray(data.data)) return []
 
     const groupData = data.data.find((g: any) => g?.group_name === group)
-    console.log("API data:", data?.data)
 
     if (!groupData || !Array.isArray(groupData.teachers)) return []
 

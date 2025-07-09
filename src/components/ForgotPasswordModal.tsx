@@ -32,7 +32,7 @@ const ForgotPasswordModal = ({ isOpen, onClose }: ForgotPasswordModalProps) => {
         email: email,
         text: `Xin chào,  ${email} ! Đây là email xác nhận cấp lại mật khẩu của bạn.
           Mật khẩu mới của bạn là : ${password}
-          Hãy click vào link này để kích hoạt tài khoản của bạn:  http://10.10.51.16:3333/cap-lai-mat-khau?em=${email}&mk=${CryptoJS.SHA256(
+          Hãy click vào link này để kích hoạt tài khoản của bạn:  https://ome.edu.vn/cap-lai-mat-khau?em=${email}&mk=${CryptoJS.SHA256(
           password
         ).toString()}`,
       });

@@ -1,24 +1,16 @@
 "use client";
 
 import { Logo } from "@/components/Logo";
-import { getDataSetUp } from "@/utils/fetch-auth-odoo";
+import { useProductCategories } from "@/hooks/useProductCategories";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronRight, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { useQuery } from "react-query";
 
 export default function MobileMenu({ activeLink, logo }: { activeLink: string | null; logo: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [openSubMenus, setOpenSubMenus] = useState<Record<number, boolean>>({});
-
-  const { data } = useQuery("getListCates", () =>
-    getDataSetUp({
-      root: "product",
-      type: "product-categories",
-    })
-  );
-
+  const { data } = useProductCategories();;
   const toggleSubMenu = (id: number) => {
     setOpenSubMenus((prev) => ({ ...prev, [id]: !prev[id] }));
   };
@@ -30,7 +22,7 @@ export default function MobileMenu({ activeLink, logo }: { activeLink: string | 
     return (
       <div key={category.id}>
         <div className="flex justify-between items-center py-2 border-b">
-          <Link href={`/khoa-hoc?type=${category.slug}`} className="text-lg font-medium text-gray-800">
+          <Link href={`/${category.slug}`} className="text-lg font-medium text-gray-800">
             {category.name}
           </Link>
           {category.child_categories && category.child_categories.length > 0 && (

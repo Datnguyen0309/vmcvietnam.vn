@@ -5,22 +5,26 @@ export const MenuLink = ({
   href,
   label,
   activeLink,
-  isScrolled
+  isScrolled,
+  target,
 }: {
   href: string;
   label: string;
   activeLink: string | null;
   isScrolled: boolean;
+  target?: string;
 }) => (
   <div className="relative">
-    <Link href={href}>
-      <span
+    <Link href={href} passHref legacyBehavior>
+      <a
         className={`menu-link ${activeLink === href ? "active" : ""} ${
           isScrolled ? "text-black" : "text-white"
         }`}
+        target={target}
+        rel={target === "_blank" ? "noopener noreferrer" : undefined}
       >
         {label}
-      </span>
+      </a>
     </Link>
     <style jsx>{`
       .menu-link {
@@ -51,7 +55,7 @@ export const MenuLink = ({
 
       .menu-link:hover,
       .menu-link.active {
-        color: #463266; /* text-orange-500 */
+        color: #463266;
       }
     `}</style>
   </div>

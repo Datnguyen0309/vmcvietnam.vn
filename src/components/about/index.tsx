@@ -1,10 +1,23 @@
-import { useState, useEffect } from "react";
-import { HeroBanner } from "./Banner";
-import { Solution } from "./Solution";
-import { BusinessAreas } from "./BusinessAreas";
-import { ConsultationSection } from "./ConsultationSection";
-import { Necessary } from "./Necessary";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 
+const HeroBanner = dynamic(() =>
+  import("@/components/about/Banner").then((mod) => mod.HeroBanner)
+);
+const Solution = dynamic(() =>
+  import("@/components/about/Solution").then((mod) => mod.Solution)
+);
+const BusinessAreas = dynamic(() =>
+  import("@/components/about/BusinessAreas").then((mod) => mod.BusinessAreas)
+);
+const ConsultationSection = dynamic(() =>
+  import("@/components/about/ConsultationSection").then(
+    (mod) => mod.ConsultationSection
+  )
+);
+const Necessary = dynamic(() =>
+  import("@/components/about/Necessary").then((mod) => mod.Necessary)
+);
 
 export const About = () => {
   const [pageContent, setPageContent] = useState<any>(null);

@@ -56,7 +56,6 @@ export const Blog = () => {
         setIsLoading(true) // Bắt đầu loading
         const res = await fetch(`/api/posts?categoryId=${selectedCategory}&page=${currentPage}&perPage=${postsPerPage}`)
         const data = await res.json()
-        console.log(data)
         setPosts(data.posts)
         setTotalPosts(data.totalPosts)
         setIsLoading(false)
@@ -83,68 +82,69 @@ export const Blog = () => {
             {isLoading
               ? Array.from({ length: 6 }).map((_, index) => <SkeletonCard key={index} />) // Hiển thị skeletons
               : posts.slice(0, 6).map((post: any) => (
-                  <Card key={post.id} className="overflow-hidden">
-                    <Link href={`/tin-tuc/${post.slug}`}>
-                      <CardContent className="p-0">
-                        <div className="relative">
-                          <Image
-                            src={post.featured_image || "/assets/blog.jpeg"}
-                            alt={post.title.rendered}
-                            width={400}
-                            height={225}
-                            className="object-cover w-full h-[256px]"
+                <Card key={post.id} className="overflow-hidden">
+                  <Link href={`/tin-tuc/${post.slug}`}>
+                    <CardContent className="p-0">
+                      <div className="relative">
+                        <Image
+                          src={post.featured_image || "/assets/blog.jpeg"}
+                          alt={post.title.rendered}
+                          width={400}
+                          height={225}
+                          className="object-contain w-full h-[256px]"
+                        />
+                        <div className="py-4 px-4">
+                          <h2 className="text-xl font-bold mb-2 hover:text-red-500 transition-colors"
+                            dangerouslySetInnerHTML={{ __html: clean(post.title.rendered) }}
+
                           />
-                          <div className="py-4 px-4">
-                            <h2 className="text-xl font-bold mb-2 hover:text-red-500 transition-colors">
-                              {post.title.rendered}
-                            </h2>
-                            <p
-                              className="text-sm text-muted-foreground line-clamp-2"
-                              dangerouslySetInnerHTML={{
-                                __html: clean(post.excerpt.rendered),
-                              }}
-                            />
-                          </div>
+                          <p
+                            className="text-sm text-muted-foreground line-clamp-2"
+                            dangerouslySetInnerHTML={{
+                              __html: clean(post.excerpt.rendered),
+                            }}
+                          />
                         </div>
-                      </CardContent>
-                    </Link>
-                  </Card>
-                ))}
+                      </div>
+                    </CardContent>
+                  </Link>
+                </Card>
+              ))}
           </div>
 
           <div className="space-y-6">
             {isLoading
               ? Array.from({ length: 3 }).map((_, index) => <SkeletonCard key={index} />) // Hiển thị skeletons
               : posts.slice(6, 12).map((post: any) => (
-                  <Card key={post.id} className="overflow-hidden">
-                    <Link href={`/tin-tuc/${post.slug}`}>
-                      <CardContent className="p-4">
-                        <div className="grid md:grid-cols-12 gap-6">
-                          <div className="md:col-span-4">
-                            <Image
-                              src={post.featured_image || "/assets/blog.jpeg"}
-                              alt={post.title.rendered}
-                              width={300}
-                              height={200}
-                              className="object-cover w-full h-[200px] rounded-lg"
-                            />
-                          </div>
-                          <div className="md:col-span-8 flex flex-col justify-center">
-                            <h2 className="text-xl font-bold mb-2 hover:text-red-500 transition-colors">
-                              {post.title.rendered}
-                            </h2>
-                            <p
-                              className="text-muted-foreground line-clamp-3"
-                              dangerouslySetInnerHTML={{
-                                __html: clean(post.excerpt.rendered),
-                              }}
-                            />
-                          </div>
+                <Card key={post.id} className="overflow-hidden">
+                  <Link href={`/tin-tuc/${post.slug}`}>
+                    <CardContent className="p-4">
+                      <div className="grid md:grid-cols-12 gap-6">
+                        <div className="md:col-span-4">
+                          <Image
+                            src={post.featured_image || "/assets/blog.jpeg"}
+                            alt={post.title.rendered}
+                            width={300}
+                            height={200}
+                            className="object-contain w-full h-[200px] rounded-lg"
+                          />
                         </div>
-                      </CardContent>
-                    </Link>
-                  </Card>
-                ))}
+                        <div className="md:col-span-8 flex flex-col justify-center">
+                          <h2 className="text-xl font-bold mb-2 hover:text-red-500 transition-colors">
+                            {post.title.rendered}
+                          </h2>
+                          <p
+                            className="text-muted-foreground line-clamp-3"
+                            dangerouslySetInnerHTML={{
+                              __html: clean(post.excerpt.rendered),
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Link>
+                </Card>
+              ))}
           </div>
 
           {!isLoading && totalPages > 0 && (
