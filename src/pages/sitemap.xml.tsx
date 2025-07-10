@@ -4,7 +4,7 @@ import { GetServerSideProps } from "next";
 const Sitemap = () => { }; // Không render gì
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
-  const apiUrl = "https://admindsome.devlab.info.vn/wp-json/wp/v2/posts";
+  const apiUrl = "http://10.10.51.16:8686//wp-json/wp/v2/posts";
   let posts: any[] = [];
   let page = 1;
   let hasMorePosts = true;
@@ -29,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   <url><loc>https://ome.edu.vn/lien-he/</loc><priority>0.5</priority></url>
   ${posts
       .map((post) => {
-        const originalLink = post.link.replace("https://admindsome.devlab.info.vn", "https://ome.edu.vn");
+        const originalLink = post.link.replace("http://10.10.51.16:8686/", "https://ome.edu.vn");
         const slug = post.slug;
         const categories = post._embedded?.["wp:term"]?.[0] || [];
         const catSlugs = categories.map((cat:any) => cat.slug);
