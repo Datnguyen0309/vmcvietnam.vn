@@ -21,6 +21,9 @@
 .post__main h1 {
   font-size: 1.7rem;
 }
+.post__main h1[style*="text-align"] {
+  text-align: inherit !important;
+}
 
 .post__main h2 {
   font-size: 1.5rem;

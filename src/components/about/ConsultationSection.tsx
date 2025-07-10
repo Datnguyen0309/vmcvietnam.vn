@@ -45,7 +45,7 @@ export const ConsultationSection = ({
                   width={64}
                   height={67}
                   className="text-indigo-700" />
-                <h3 className="text-[#333399] text-[19px] font-bold">
+                <h3 className="text-[#300699] text-[19px] font-bold">
                   {consultation?.content?.contact_1?.text_line_1 ||
                     "Hotline tư vấn"}
                   <br></br>
