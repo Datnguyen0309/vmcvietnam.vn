@@ -1,4 +1,3 @@
-import { fetchAuthOdoo } from "@/utils/fetch-auth-odoo";
 import { fetchAuthOdooPayment } from "@/utils/fetch-auth-odoopayment";
 import type { NextApiRequest, NextApiResponse } from "next";
 
