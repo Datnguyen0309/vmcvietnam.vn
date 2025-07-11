@@ -1,59 +1,59 @@
 export const replaceSeoRM = (input: string) => {
   input = input.replace(
-    `link rel="canonical" href="http://10.10.51.16:8686/`,
-    `link rel="canonical" href="https://ome.edu.vn`
+    `link rel="canonical" href="https://admindsome.devlab.info.vn`,
+    `link rel="canonical" href="https://evome.devlab.info.vn`
   );
 
   input = input.replace(
-    `meta property="og:url" content="http://10.10.51.16:8686/`,
-    `meta property="og:url" content="https://ome.edu.vn`
+    `meta property="og:url" content="https://admindsome.devlab.info.vn`,
+    `meta property="og:url" content="https://evome.devlab.info.vn`
   );
 
   input = input.replace(
-    `"@id":"http://10.10.51.16:8686/#organization"`,
-    `"@id":"https://ome.edu.vn/#organization"`
+    `"@id":"https://admindsome.devlab.info.vn/#organization"`,
+    `"@id":"https://evome.devlab.info.vn/#organization"`
   );
 
   input = input.replace(
-    `http://10.10.51.16:8686/#logo`,
-    `https://ome.edu.vn/#logo`
+    `https://admindsome.devlab.info.vn/#logo`,
+    `https://evome.devlab.info.vn/#logo`
   );
 
   input = input.replace(
-    `http://10.10.51.16:8686/#website`,
-    `https://ome.edu.vn/#website`
+    `https://admindsome.devlab.info.vn/#website`,
+    `https://evome.devlab.info.vn/#website`
   );
   input = input.replace(
-    `http://10.10.51.16:8686/#webpage`,
-    `https://ome.edu.vn/#webpage`
+    `https://admindsome.devlab.info.vn/#webpage`,
+    `https://evome.devlab.info.vn/#webpage`
   );
   input = input.replace(
-    `"url":"http://10.10.51.16:8686/"`,
-    `"url":"https://ome.edu.vn"`
-  );
-
-  input = input.replace(
-    `"@type":"WebPage","@id":"http://10.10.51.16:8686/`,
-    `"@type":"WebPage","@id":"https://ome.edu.vn`
+    `"url":"https://admindsome.devlab.info.vn"`,
+    `"url":"https://evome.devlab.info.vn"`
   );
 
   input = input.replace(
-    `#webpage","url":"http://10.10.51.16:8686/`,
-    `#webpage","url":"https://ome.edu.vn`
+    `"@type":"WebPage","@id":"https://admindsome.devlab.info.vn`,
+    `"@type":"WebPage","@id":"https://evome.devlab.info.vn`
   );
 
   input = input.replace(
-    `"mainEntityOfPage":{"@id":"http://10.10.51.16:8686/`,
-    `"mainEntityOfPage":{"@id":"https://ome.edu.vn/`
-  );
-  input = input.replace(
-    `"worksFor":{"@id":"http://10.10.51.16:8686/#organization`,
-    `"worksFor":{"@id":"https://ome.edu.vn/#organization`
+    `#webpage","url":"https://admindsome.devlab.info.vn`,
+    `#webpage","url":"https://evome.devlab.info.vn`
   );
 
   input = input.replace(
-    `"sameAs":["http://10.10.51.16:8686/"]`,
-    `"sameAs":["https://ome.edu.vn"]`
+    `"mainEntityOfPage":{"@id":"https://admindsome.devlab.info.vn`,
+    `"mainEntityOfPage":{"@id":"https://evome.devlab.info.vn/`
+  );
+  input = input.replace(
+    `"worksFor":{"@id":"https://admindsome.devlab.info.vn/#organization`,
+    `"worksFor":{"@id":"https://evome.devlab.info.vn/#organization`
+  );
+
+  input = input.replace(
+    `"sameAs":["https://admindsome.devlab.info.vn"]`,
+    `"sameAs":["https://evome.devlab.info.vn"]`
   );
   input = input.replace("noindex", "index");
   input = input.replace("nofollow", "follow");

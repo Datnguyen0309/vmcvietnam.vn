@@ -17,7 +17,7 @@ export default async function handler(
   let totalPosts: string = "0";
 
   try {
-    const endPoint = `http://10.10.51.16:8686//wp-json/wp/v2/posts?slug=${slug}&_embed=true`;
+    const endPoint = `https://admin.ome.edu.vn/wp-json/wp/v2/posts?slug=${slug}&_embed=true`;
 
     const response = await fetch(endPoint, {
       next: { revalidate: 1 },

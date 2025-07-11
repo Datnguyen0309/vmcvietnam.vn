@@ -4,7 +4,7 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
   ) {
-    const wpUrl = 'http://10.10.51.16:8686//wp-json/wp/v2/su-kien?acf_format=standard'
+    const wpUrl = 'https://admin.ome.edu.vn/wp-json/wp/v2/su-kien?acf_format=standard'
   
     try {
       const response = await fetch(wpUrl)

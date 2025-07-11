@@ -69,7 +69,7 @@ export const postComment = async ({
   content: string;
 }) => {
   try {
-    const apiUrl = "http://10.10.51.16:8686//wp-json/wp/v2";
+    const apiUrl = "https://admin.ome.edu.vn/wp-json/wp/v2";
     const bodyData: Record<string, any> = {
       post: postId,
       author_name: authorName,
@@ -100,7 +100,7 @@ export const postComment = async ({
 
 export const fetchComments = async ({ postId }: { postId: number }) => {
   try {
-    const apiUrl = "http://10.10.51.16:8686//wp-json/wp/v2";
+    const apiUrl = "https://admin.ome.edu.vn/wp-json/wp/v2";
     const response = await fetch(`${apiUrl}/comments?post=${postId}`);
 
     if (!response.ok) {

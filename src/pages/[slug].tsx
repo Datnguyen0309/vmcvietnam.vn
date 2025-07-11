@@ -31,7 +31,6 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
 
         if (res.ok) {
             const posts = await res.json();
-            console.log(posts)
             post = posts?.[0] || null;
         }
     } catch (err) {

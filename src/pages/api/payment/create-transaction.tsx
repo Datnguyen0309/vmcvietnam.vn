@@ -1,4 +1,5 @@
 import { fetchAuthOdoo } from "@/utils/fetch-auth-odoo";
+import { fetchAuthOdooPayment } from "@/utils/fetch-auth-odoopayment";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -20,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
       // Gửi request đến Odoo API để thực hiện đăng nhập
-      const response = await fetchAuthOdoo({
+      const response = await fetchAuthOdooPayment({
         api_url: `${odoo_api}/transaction/create-transaction`,
         method: "POST",
         form_data: {

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-const API_URL = 'http://10.10.51.16:8686//wp-json/wp/v2/posts';
+const API_URL = 'https://admin.ome.edu.vn/wp-json/wp/v2/posts';
 
 export type Post = {
   slug: any;

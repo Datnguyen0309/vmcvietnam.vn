@@ -57,9 +57,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const ipAddr = (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress || "";
 
     // Build params
-   const TIMEZONE = "Asia/Ho_Chi_Minh";
-    const createDate = moment().tz(TIMEZONE).format("YYYYMMDDHHmmss");
-    const vnp_ExpireDate = moment().tz(TIMEZONE).add(30, "minutes").format("YYYYMMDDHHmmss");
+    const TIMEZONE = "Asia/Ho_Chi_Minh";
+    const now = moment().tz("Asia/Ho_Chi_Minh");
+    const vnp_CreateDate = now.format("YYYYMMDDHHmmss");
+    const vnp_ExpireDate = now.clone().add(15, "minutes").format("YYYYMMDDHHmmss");
+
 
 
     const orderInfo = `OME-Thanh toan cho ma GD: ${orderId}`;
@@ -78,8 +80,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       vnp_Amount: totalAmount * 100,
       vnp_ReturnUrl: config.vnp_ReturnUrl,
       vnp_IpAddr: ipAddr,
-      vnp_CreateDate: createDate,
-      vnp_ExpireDate: vnp_ExpireDate,
+     vnp_CreateDate: vnp_CreateDate,
+vnp_ExpireDate: vnp_ExpireDate,
+
     };
 
     // Thêm bankCode nếu có

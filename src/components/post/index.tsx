@@ -157,7 +157,7 @@ export const Post = ({ post }: { post: any }) => {
       if (!post?.author) return;
 
       try {
-        const res = await fetch(`http://10.10.51.16:8686//wp-json/wp/v2/users/${post.author}`);
+        const res = await fetch(`https://admin.ome.edu.vn/wp-json/wp/v2/users/${post.author}`);
         const data = await res.json();
         setAuthorName(data.name); // hoặc `data.nickname`, tuỳ cấu hình WP
       } catch (error) {
