@@ -56,15 +56,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Lấy IP
     const ipAddr = (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress || "";
 
-    // Build params
+     // const createDate = moment().format("YYYYMMDDHHmmss");
+    // const vnp_ExpireDate = moment().add(30, "minutes").format("YYYYMMDDHHmmss");
     const TIMEZONE = "Asia/Ho_Chi_Minh";
-    const now = moment().tz("Asia/Ho_Chi_Minh");
-    const vnp_CreateDate = now.format("YYYYMMDDHHmmss");
-    const vnp_ExpireDate = now.clone().add(15, "minutes").format("YYYYMMDDHHmmss");
-
-
-
-    const orderInfo = `OME-Thanh toan cho ma GD: ${orderId}`;
+    const createDate = moment().tz(TIMEZONE).format("YYYYMMDDHHmmss");
+    const vnp_ExpireDate = moment().tz(TIMEZONE).add(30, "minutes").format("YYYYMMDDHHmmss");
+    const orderInfo = `OME - Thanh toan cho ma GD: ${orderId}`;
     const locale = "vn";
     const currCode = "VND";
 
@@ -80,7 +77,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       vnp_Amount: totalAmount * 100,
       vnp_ReturnUrl: config.vnp_ReturnUrl,
       vnp_IpAddr: ipAddr,
-     vnp_CreateDate: vnp_CreateDate,
+     vnp_CreateDate: createDate,
 vnp_ExpireDate: vnp_ExpireDate,
 
     };

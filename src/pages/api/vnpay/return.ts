@@ -1,10 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createHmac } from "crypto";
 import qs from "qs";
-import { randomUUID } from "crypto";
 import config from "../../../utils/default.json";
 
-const resultMap = new Map();
 export const errorMessages: Record<string, string> = {
   "00": "Giao dịch thành công",
   "07": "Giao dịch bị nghi ngờ gian lận",
@@ -75,39 +73,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // Kiểm tra tính hợp lệ của chữ ký
   const isValid = secureHash === signed;
+  const success = isValid &&
+    filteredParams["vnp_ResponseCode"] === "00" &&
+    filteredParams["vnp_TransactionStatus"] === "00";
 
   // Tạo transaction ID và lưu thông tin vào resultMap
-  const transactionId = randomUUID();
-  resultMap.set(transactionId, {
-    isValid,
-    amount: Number(filteredParams["vnp_Amount"]) / 100,
-    orderId: filteredParams["vnp_TxnRef"],
-    bankCode: filteredParams["vnp_BankCode"],
-    payDate: filteredParams["vnp_PayDate"],
-    responseCode: filteredParams["vnp_ResponseCode"],
-    transactionStatus: filteredParams["vnp_TransactionStatus"],
-    transactionNo: filteredParams["vnp_TransactionNo"],
-    orderInfo: filteredParams["vnp_OrderInfo"],
+return res.json({
+    success,
+    message: errorMessages[filteredParams["vnp_ResponseCode"]] || "Không xác định",
+    data: {
+          isValid,
+          amount: Number(filteredParams["vnp_Amount"]) / 100,
+          orderId: filteredParams["vnp_TxnRef"],
+          bankCode: filteredParams["vnp_BankCode"],
+          payDate: filteredParams["vnp_PayDate"],
+          responseCode: filteredParams["vnp_ResponseCode"],
+          transactionStatus: filteredParams["vnp_TransactionStatus"],
+          transactionNo: filteredParams["vnp_TransactionNo"],
+          orderInfo: filteredParams["vnp_OrderInfo"],
+    },
   });
-console.log(filteredParams)
- console.log(resultMap)
-  return res.redirect(`/ket-qua-thanh-toan?tid=${transactionId}`);
 }
 
-export { resultMap };
 
-//   fetchAuthOdoo({
-//     api_url: `${odoo_api}/transaction/update-transaction-status`,
-//     method: "POST",
-//     form_data: {
-//       order_id: filteredParams["vnp_TxnRef"],
-//       new_status:
-//         isValid &&
-//         filteredParams["vnp_TransactionStatus"] === "00" &&
-//         filteredParams["vnp_ResponseCode"] === "00"
-//           ? "success"
-//           : "failed",
-//       description: errorMessages[filteredParams["vnp_ResponseCode"]] || "Lỗi không xác định",
-//       amount: Number(filteredParams["vnp_Amount"]) / 100,
-//     },
-//   });

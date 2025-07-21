@@ -22,7 +22,7 @@ ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV API_URL https://admindsome.devlab.info.vn/wp-json/wp/v2
 ENV ODOO_URL http://10.10.51.16:10026
-ENV ODOO_URL_PAYMENT https://eaof.aumpilot.com
+ENV ODOO_URL_PAYMENT https://adminpayment.eteaching.vn
 ENV API_RMS_URL https://admindsome.devlab.info.vn//wp-json/rankmath/v1/getHead?url=https://admindsome.devlab.info.vn/
 ENV NEXT_PUBLIC_DOMAIN https://evome.devlab.info.vn
 ENV NEXT_PUBLIC_TOKEN_NEXT 610f25e22dbccb07171

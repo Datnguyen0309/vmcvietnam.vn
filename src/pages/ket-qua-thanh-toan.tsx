@@ -1,28 +1,31 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { MdCheckCircle, MdCancel } from "react-icons/md";
+import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
+import { MdCancel, MdCheckCircle } from "react-icons/md";
 
 export default function PaymentResultPage() {
-  const { query } = useRouter();
   const [result, setResult] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (query?.tid) {
-      fetch(`/api/payment_result?tid=${query.tid}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setResult(data);
-          setLoading(false);
-        })
-        .catch(() => {
-          setResult({ success: false });
-          setLoading(false);
-        });
-    }
-  }, [query?.tid]);
+useEffect(() => {
+  const searchParams = new URLSearchParams(window.location.search);
+  if (searchParams.has("vnp_SecureHash")) {
+    fetch(`/api/vnpay/return?${searchParams.toString()}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setResult(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setResult({ success: false });
+        setLoading(false);
+      });
+  } else {
+    setResult({ success: false });
+    setLoading(false);
+  }
+}, []);
+
 
   const formatDate = (payDate: string) => {
     if (!payDate) return "";
@@ -40,7 +43,8 @@ export default function PaymentResultPage() {
     );
   }
 
-  if (!result || (!result.success && !result.data)) {
+  if (!result.data.isValid || (!result.success && !result.data)) {
+    console.log("result", result);
     return (
       <div className="flex flex-col items-center justify-center min-h-[80vh] bg-gray-50 p-4">
         <MdCancel className="text-red-800 w-16 h-16 mb-4" />
