@@ -17,6 +17,11 @@ export default function Document() {
           strategy="afterInteractive"
           src="https://www.googletagmanager.com/gtm.js?id=GTM-NNF45LPF"
         />
+        <Script
+          id="set-cookie-script"
+          strategy="afterInteractive"
+          src="https://2p.sambala.net/th_affiliate/static/src/js/set_cookie.js"
+        />
       </Head>
       <body className="bg-white text-gray-800">
         <noscript>
